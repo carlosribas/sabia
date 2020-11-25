@@ -1,0 +1,8 @@
+db.sqlite3
+env/
+.env
+.idea
+local.py
+*.mo
+.coverage
+media/**
