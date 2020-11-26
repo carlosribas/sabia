@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.conf.urls.i18n import i18n_patterns
 from django.urls import include, path
 from django.contrib import admin
 
@@ -15,9 +16,12 @@ urlpatterns = [
     path('documents/', include(wagtaildocs_urls)),
 
     path('search/', search_views.search, name='search'),
+]
+
+urlpatterns += i18n_patterns(
     path('accounts/', include('allauth.urls')),
     path('accounts/', include('userauth.urls')),
-]
+)
 
 
 if settings.DEBUG:
