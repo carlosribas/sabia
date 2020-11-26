@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'widget_tweaks',
     'userauth',
+    'allauth.socialaccount.providers.google',
 ]
 
 MIDDLEWARE = [
@@ -147,6 +148,7 @@ STATICFILES_FINDERS = [
 
 STATICFILES_DIRS = [
     os.path.join(PROJECT_DIR, 'static'),
+    os.path.join(BASE_DIR, 'userauth/static/userauth/'),
 ]
 
 # ManifestStaticFilesStorage is recommended in production, to prevent outdated
@@ -186,3 +188,22 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 SITE_ID = 1
+
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_SIGNUP_FORM_CLASS = 'userauth.forms.SignupForm'
+
+SOCIALACCOUNT_AUTO_SIGNUP = False
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        },
+    },
+}
