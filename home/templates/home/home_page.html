@@ -1,10 +1,11 @@
 {% extends "base.html" %}
 
-{% load wagtailcore_tags wagtailimages_tags %}
+{% load static wagtailcore_tags wagtailimages_tags %}
 
 {% block body_class %}template-homepage{% endblock %}
 
 {% block content %}
+    {# Slider #}
     <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
         <div class="carousel-inner">
             {% for loop_cycle in self.carousel_images.all %}
@@ -26,5 +27,56 @@
             <span class="carousel-control-next-icon" aria-hidden="true"></span>
             <span class="sr-only">Next</span>
         </a>
+    </div>
+
+    {# Nossos serviços #}
+    <div class="row">
+        <div class="col-12">
+            <div class="mt-3 text-center">
+                <h2>NOSSOS SERVIÇOS</h2>
+                <p>O Sabiá é uma plataforma de serviços veterinários online que oferece ensino à distância, telerradiologia e consultoria em imagem. Confira abaixo os detalhes de cada serviço prestrado.</p>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <a href="#">
+                    <img class="card-img img-fluid" src="{% static 'images/imagem-cursos.png' %}" alt="sans"/>
+                    <div class="card-img-overlay">
+                        <div class="col-8">
+                            <h4 class="card-title">Cursos <br />Interativos</h4>
+                            <p class="card-text">Módulos de aulas e palestras online em Medicina Veterinária</p>
+                        </div>
+                     </div>
+                </a>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <a href="#">
+                    <img class="card-img img-fluid" src="{% static 'images/imagem-telerradiologia.png' %}" alt="sans"/>
+                    <div class="card-img-overlay">
+                        <div class="col-8">
+                            <h4 class="card-title">Telerradiologia Veterinária</h4>
+                            <p class="card-text">Resultados online de exames feitos na sua clínica</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <a href="#">
+                    <img class="card-img img-fluid" src="{% static 'images/imagem-consultoria.png' %}" alt="sans"/>
+                    <div class="card-img-overlay">
+                        <div class="col-8">
+                            <h4 class="card-title">Consultoria em Imagem</h4>
+                            <p class="card-text">Auxilio em todas as etapas no seu novo negócio</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
     </div>
 {% endblock %}
