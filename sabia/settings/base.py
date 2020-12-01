@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'wagtail.search',
     'wagtail.admin',
     'wagtail.core',
+    'wagtail.contrib.modeladmin',
+    'wagtailfontawesome',
 
     'modelcluster',
     'taggit',
@@ -59,6 +61,8 @@ INSTALLED_APPS = [
     'userauth',
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.facebook',
+    'base',
+    'blog',
 ]
 
 MIDDLEWARE = [
@@ -82,6 +86,8 @@ TEMPLATES = [
         'DIRS': [
             os.path.join(PROJECT_DIR, 'templates'),
             os.path.join(BASE_DIR, 'userauth/templates/userauth/'),
+            os.path.join(BASE_DIR, 'base/templates/base/'),
+            os.path.join(BASE_DIR, 'blog/templates/blog/'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {
