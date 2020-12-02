@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 from modelcluster.fields import ParentalKey
 from modelcluster.models import ClusterableModel
@@ -25,8 +26,8 @@ from .blocks import BaseStreamBlock
 @register_snippet
 class TeamMember(index.Indexed, ClusterableModel):
     """A Django model to store team members."""
-    name = models.CharField("Name", max_length=254)
-    job_title = models.CharField("Job title", max_length=254, blank=True)
+    name = models.CharField(_("Name"), max_length=254)
+    job_title = models.CharField(_("Job title"), max_length=254, blank=True)
     body = RichTextField()
     image = models.ForeignKey(
         'wagtailimages.Image',
@@ -70,6 +71,7 @@ class FooterText(models.Model):
     to be accessible via the admin. It is made accessible on the template via a template tag defined in
     base/templatetags/navigation_tags.py
     """
+    max_count = 1
     body = RichTextField()
 
     panels = [
@@ -77,10 +79,10 @@ class FooterText(models.Model):
     ]
 
     def __str__(self):
-        return "Footer text"
+        return _("Footer Text")
 
     class Meta:
-        verbose_name_plural = 'Footer Text'
+        verbose_name_plural = _("Footer Text")
 
 
 class StandardPage(Page):
@@ -90,7 +92,7 @@ class StandardPage(Page):
     """
 
     introduction = models.TextField(
-        help_text='Text to describe the page',
+        help_text=_("Text to describe the page"),
         blank=True)
     image = models.ForeignKey(
         'wagtailimages.Image',
@@ -98,7 +100,7 @@ class StandardPage(Page):
         blank=True,
         on_delete=models.SET_NULL,
         related_name='+',
-        help_text='Landscape mode only; horizontal width between 1000px and 3000px.'
+        help_text=_("Landscape mode only; horizontal width between 1000px and 3000px.")
     )
     body = StreamField(
         BaseStreamBlock(), verbose_name="Page body", blank=True
@@ -117,7 +119,7 @@ class GalleryPage(Page):
     """
 
     introduction = models.TextField(
-        help_text='Text to describe the page',
+        help_text=_("Text to describe the page"),
         blank=True)
     image = models.ForeignKey(
         'wagtailimages.Image',
@@ -125,8 +127,7 @@ class GalleryPage(Page):
         blank=True,
         on_delete=models.SET_NULL,
         related_name='+',
-        help_text='Landscape mode only; horizontal width between 1000px and '
-        '3000px.'
+        help_text=_("Landscape mode only; horizontal width between 1000px and 3000px.")
     )
     body = StreamField(
         BaseStreamBlock(), verbose_name="Page body", blank=True
@@ -137,7 +138,7 @@ class GalleryPage(Page):
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
-        help_text='Select the image collection for this gallery.'
+        help_text=_("Select the image collection for this gallery.")
     )
 
     content_panels = Page.content_panels + [
