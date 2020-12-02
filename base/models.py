@@ -16,9 +16,51 @@ from wagtail.core.fields import RichTextField, StreamField
 from wagtail.core.models import Collection, Page
 from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField
 from wagtail.images.edit_handlers import ImageChooserPanel
+from wagtail.search import index
 from wagtail.snippets.models import register_snippet
 
 from .blocks import BaseStreamBlock
+
+
+@register_snippet
+class TeamMember(index.Indexed, ClusterableModel):
+    """A Django model to store team members."""
+    name = models.CharField("Name", max_length=254)
+    job_title = models.CharField("Job title", max_length=254, blank=True)
+    body = RichTextField()
+    image = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+'
+    )
+
+    panels = [
+        FieldPanel('name'),
+        FieldPanel('job_title'),
+        FieldPanel('body'),
+        ImageChooserPanel('image')
+    ]
+
+    search_fields = [
+        index.SearchField('name'),
+    ]
+
+    @property
+    def thumb_image(self):
+        # Returns an empty string if there is no profile pic or the rendition file can't be found.
+        try:
+            return self.image.get_rendition('fill-50x50').img_tag()
+        except:  # noqa: E722 FIXME: remove bare 'except:'
+            return ''
+
+    def __str__(self):
+        return '{}'.format(self.name)
+
+    class Meta:
+        verbose_name = 'Person'
+        verbose_name_plural = 'Team'
 
 
 @register_snippet
