@@ -10,20 +10,32 @@ from wagtail.images.edit_handlers import ImageChooserPanel
 class HomePageCarouselImages(Orderable):
     """Carousel for the home page."""
     page = ParentalKey("home.HomePage", related_name="carousel_images")
-    carousel_title = models.CharField(max_length=100, blank=True)
-    carousel_description = models.CharField(max_length=250, blank=True)
-    carousel_image = models.ForeignKey(
-        "wagtailimages.Image",
-        null=True,
-        blank=False,
-        on_delete=models.SET_NULL,
-        related_name="+",
+    title = models.CharField(max_length=100, blank=True)
+    description = models.CharField(max_length=250, blank=True)
+    image = models.ForeignKey(
+        "wagtailimages.Image", null=True, blank=False, on_delete=models.SET_NULL, related_name="+",
     )
 
     panels = [
-        FieldPanel("carousel_title"),
-        FieldPanel("carousel_description"),
-        ImageChooserPanel("carousel_image")
+        FieldPanel("title"),
+        FieldPanel("description"),
+        ImageChooserPanel("image")
+    ]
+
+
+class HomePageServices(Orderable):
+    """Services to show on the home page."""
+    page = ParentalKey("home.HomePage", related_name="services")
+    title = models.CharField(max_length=50)
+    description = models.CharField(max_length=200)
+    link = models.URLField()
+    image = models.ForeignKey("wagtailimages.Image", null=True, on_delete=models.SET_NULL, related_name="+")
+
+    panels = [
+        FieldPanel("title"),
+        FieldPanel("description"),
+        FieldPanel("link"),
+        ImageChooserPanel("image")
     ]
 
 
@@ -36,7 +48,9 @@ class HomePage(Page):
     content_panels = Page.content_panels + [
         FieldPanel("body", classname="full"),
         MultiFieldPanel(
-            [InlinePanel("carousel_images", min_num=1, label="Image")],
-            heading="Carousel Images",
+            [InlinePanel("carousel_images", min_num=1, label="Image")], heading="Carousel Images",
+        ),
+        MultiFieldPanel(
+            [InlinePanel("services", min_num=1, max_num=3, label="Service")], heading="Services",
         )
     ]
