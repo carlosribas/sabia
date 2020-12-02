@@ -41,16 +41,17 @@ class HomePageServices(Orderable):
 
 class HomePage(Page):
     """Home page model."""
-    template = "home/home_page.html"
     max_count = 1
-    body = RichTextField(blank=True)
+    service_title = models.CharField(max_length=50)
+    service_body = RichTextField(blank=True)
 
     content_panels = Page.content_panels + [
-        FieldPanel("body", classname="full"),
         MultiFieldPanel(
             [InlinePanel("carousel_images", min_num=1, label="Image")], heading="Carousel Images",
         ),
-        MultiFieldPanel(
-            [InlinePanel("services", min_num=1, max_num=3, label="Service")], heading="Services",
-        )
+        MultiFieldPanel([
+            FieldPanel('service_title'),
+            FieldPanel('service_body'),
+            InlinePanel("services", min_num=1, max_num=3, label="Service")
+        ], heading="Services"),
     ]
