@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% load static wagtailcore_tags wagtailimages_tags %}
+{% load static wagtailcore_tags wagtailimages_tags members %}
 
 {% block body_class %}template-homepage{% endblock %}
 
@@ -57,4 +57,7 @@
             {% endfor %}
         </div>
     </div>
+
+    {# Equipe #}
+    {% get_members %}
 {% endblock %}
