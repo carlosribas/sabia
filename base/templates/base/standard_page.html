@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load wagtailimages_tags %}
+{% load members_tags %}
 
 {% block content %}
     {% include "base/include/header.html" %}
@@ -11,4 +11,8 @@
             </div>
         </div>
     </div>
+
+    {% if page.slug == "equipe" %}
+        {% get_members %}
+    {% endif %}
 {% endblock content %}

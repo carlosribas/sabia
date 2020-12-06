@@ -1,0 +1,17 @@
+{% load wagtailcore_tags wagtailimages_tags %}
+
+<div class="container">
+    <div class="row">
+        {% for member in members %}
+            <div class="col-md-3">
+                {% image member.image fill-280x280 %}
+            </div>
+            <div class="col-md-9">
+                <h2>{{ member.name }}</h2>
+                <p>{{ member.job_title }}</p>
+                <hr>
+                <p>{{ member.body|richtext }}</p>
+            </div>
+        {% endfor %}
+    </div>
+</div>
