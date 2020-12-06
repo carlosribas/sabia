@@ -1,74 +1,9 @@
 from django import template
+from django.utils import translation
 
-from wagtail.core.models import Page, Site
-
-from base.models import FooterText
-
+from base.models import FooterText, Menu
 
 register = template.Library()
-# https://docs.djangoproject.com/en/1.9/howto/custom-template-tags/
-
-
-@register.simple_tag(takes_context=True)
-def get_site_root(context):
-    # This returns a core.Page. The main menu needs to have the site.root_page  defined else will return an
-    # object attribute error ('str' object has no attribute 'get_children')
-    return Site.find_for_request(context['request']).root_page
-
-
-def has_menu_children(page):
-    # This is used by the top_menu property get_children is a Treebeard API thing
-    # https://tabo.pe/projects/django-treebeard/docs/4.0.1/api.html
-    return page.get_children().live().in_menu().exists()
-
-
-def has_children(page):
-    # Generically allow index pages to list their children
-    return page.get_children().live().exists()
-
-
-def is_active(page, current_page):
-    # To give us active state on main navigation
-    return (current_page.url_path.startswith(page.url_path) if current_page else False)
-
-
-# Retrieves the top menu items - the immediate children of the parent page. The has_menu_children method is necessary
-# because the Foundation menu requires a dropdown class to be applied to a parent
-@register.inclusion_tag('tags/top_menu.html', takes_context=True)
-def top_menu(context, parent, calling_page=None):
-    menuitems = parent.get_children().live().in_menu()
-    for menuitem in menuitems:
-        menuitem.show_dropdown = has_menu_children(menuitem)
-        # We don't directly check if calling_page is None since the template engine can pass an empty string
-        # to calling_page if the variable passed as calling_page does not exist.
-        menuitem.active = (calling_page.url_path.startswith(menuitem.url_path)
-                           if calling_page else False)
-    return {
-        'calling_page': calling_page,
-        'menuitems': menuitems,
-        # required by the pageurl tag that we want to use within this template
-        'request': context['request'],
-    }
-
-
-# Retrieves the children of the top menu items for the drop downs
-@register.inclusion_tag('tags/top_menu_children.html', takes_context=True)
-def top_menu_children(context, parent, calling_page=None):
-    menuitems_children = parent.get_children()
-    menuitems_children = menuitems_children.live().in_menu()
-    for menuitem in menuitems_children:
-        menuitem.has_dropdown = has_menu_children(menuitem)
-        # We don't directly check if calling_page is None since the template engine can pass an empty string
-        # to calling_page if the variable passed as calling_page does not exist.
-        menuitem.active = (calling_page.url_path.startswith(menuitem.url_path)
-                           if calling_page else False)
-        menuitem.children = menuitem.get_children().live().in_menu()
-    return {
-        'parent': parent,
-        'menuitems_children': menuitems_children,
-        # required by the pageurl tag that we want to use within this template
-        'request': context['request'],
-    }
 
 
 @register.inclusion_tag('base/include/footer_text.html', takes_context=True)
@@ -80,3 +15,37 @@ def get_footer_text(context):
     return {
         'footer_text': footer_text,
     }
+
+
+@register.simple_tag()
+def get_menu(slug, page, logged_in):
+    # returns a list of dicts with title, url, slug, page and icon of all items in the menu of the given slug or page
+
+    try:
+        # see if there is a custom menu defined for the slug of the item
+        candidates = Menu.objects.get(slug=slug).menu_items.all()
+        language_code = translation.get_language()
+
+        # create a list of all items that should be shown in the menu depending on logged_in
+        menu_items = []
+        for candidate in candidates:
+            if candidate.show(logged_in):
+                menu_items.append({'title': candidate.title, 'url': candidate.trans_url(language_code),
+                                   'slug': candidate.slug_of_submenu, 'page': candidate, 'icon': candidate.icon})
+        return menu_items
+    except Menu.DoesNotExist:
+        pass
+    try:
+        # if there is no custom menu, then there should be a valid page argument; see if it has children
+        candidates = page.get_children()
+
+        # if so, create a list of all items that have show_in_menus == True
+        menu_items = []
+        for candidate in candidates:
+            if candidate.show_in_menus:
+                menu_items.append({'title': candidate.title, 'url': candidate.url,
+                                   'slug': None, 'page': candidate, 'icon': None})
+        return menu_items
+    except AttributeError:
+        # neither custom menu nor valid page argument; return None
+        return None

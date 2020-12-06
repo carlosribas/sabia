@@ -1,6 +1,8 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from django_extensions.db.fields import AutoSlugField
+from django.utils.text import slugify
 from django.utils.translation import ugettext as _
 
 from modelcluster.fields import ParentalKey
@@ -12,9 +14,10 @@ from wagtail.admin.edit_handlers import (
     InlinePanel,
     MultiFieldPanel,
     StreamFieldPanel,
+    PageChooserPanel,
 )
 from wagtail.core.fields import RichTextField, StreamField
-from wagtail.core.models import Collection, Page
+from wagtail.core.models import Collection, Page, Orderable
 from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField
 from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.search import index
@@ -186,3 +189,67 @@ class FormPage(AbstractEmailForm):
             FieldPanel('subject'),
         ], "Email"),
     ]
+
+
+@register_snippet
+class Menu(ClusterableModel):
+    title = models.CharField(max_length=50)
+    slug = AutoSlugField(populate_from='title', editable=True, help_text="Unique identifier of menu.")
+
+    panels = [
+        MultiFieldPanel([
+            FieldPanel('title'),
+            FieldPanel('slug'),
+        ], heading=_("Menu")),
+        InlinePanel('menu_items', label=_("Menu Item"))
+    ]
+
+    def __str__(self):
+        return self.title
+
+
+class MenuItem(Orderable):
+    menu = ParentalKey('Menu', related_name='menu_items', help_text=_("Menu to which this item belongs"))
+    title = models.CharField(max_length=50, help_text=_("Title of menu item that will be displayed"))
+    link_url = models.CharField(max_length=500, blank=True, null=True, help_text=_("URL to link to, e.g. /contato"))
+    link_page = models.ForeignKey(
+        Page, blank=True, null=True, related_name='+', on_delete=models.CASCADE, help_text=_("Page to link to"),
+    )
+    title_of_submenu = models.CharField(
+        blank=True, null=True, max_length=50, help_text=_("Title of submenu (LEAVE BLANK if there is no custom submenu)")
+    )
+    icon = models.CharField(max_length=100, blank=True, help_text=_("Fontawesome icon"))
+    show_when = models.CharField(
+        max_length=15,
+        choices=[('always', _("Always")), ('logged_in', _("When logged in")), ('not_logged_in', _("When not logged in"))],
+        default='always',
+    )
+
+    panels = [
+        FieldPanel('title'),
+        FieldPanel('link_url'),
+        PageChooserPanel('link_page'),
+        FieldPanel('title_of_submenu'),
+        FieldPanel('icon'),
+        FieldPanel('show_when'),
+    ]
+
+    def trans_url(self, language_code):
+        if self.link_url:
+            return '/' + language_code + self.link_url
+        return None
+
+    @property
+    def slug_of_submenu(self):
+        # becomes slug of submenu if there is one, otherwise None
+        if self.title_of_submenu:
+            return slugify(self.title_of_submenu)
+        return None
+
+    def show(self, authenticated):
+        return ((self.show_when == 'always')
+                or (self.show_when == 'logged_in' and authenticated)
+                or (self.show_when == 'not_logged_in' and not authenticated))
+
+    def __str__(self):
+        return self.title
