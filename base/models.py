@@ -74,7 +74,6 @@ class FooterText(models.Model):
     to be accessible via the admin. It is made accessible on the template via a template tag defined in
     base/templatetags/navigation_tags.py
     """
-    max_count = 1
     body = RichTextField()
 
     panels = [
@@ -94,9 +93,7 @@ class StandardPage(Page):
     image, introduction and body field.
     """
 
-    introduction = models.TextField(
-        help_text=_("Text to describe the page"),
-        blank=True)
+    introduction = models.TextField(help_text=_("Text to describe the page"), blank=True)
     image = models.ForeignKey(
         'wagtailimages.Image',
         null=True,
@@ -105,9 +102,7 @@ class StandardPage(Page):
         related_name='+',
         help_text=_("Landscape mode only; horizontal width between 1000px and 3000px.")
     )
-    body = StreamField(
-        BaseStreamBlock(), verbose_name="Page body", blank=True
-    )
+    body = StreamField(BaseStreamBlock(), verbose_name="Page body", blank=True)
     content_panels = Page.content_panels + [
         FieldPanel('introduction', classname="full"),
         StreamFieldPanel('body'),
