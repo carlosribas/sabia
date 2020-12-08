@@ -13,9 +13,9 @@ from taggit.models import Tag, TaggedItemBase
 from wagtail.contrib.routable_page.models import RoutablePageMixin, route
 from wagtail.admin.edit_handlers import FieldPanel, StreamFieldPanel
 from wagtail.core.fields import StreamField
-from wagtail.core.models import Page
 from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.search import index
+from wagtailtrans.models import TranslatablePage
 
 from base.blocks import BaseStreamBlock
 
@@ -27,7 +27,7 @@ class BlogPageTag(TaggedItemBase):
     content_object = ParentalKey('BlogPage', related_name='tagged_items', on_delete=models.CASCADE)
 
 
-class BlogPage(Page):
+class BlogPage(TranslatablePage):
     """A Blog Page"""
     introduction = models.TextField(_("Introduction"), help_text=_("Text to describe the page"), blank=True)
     image = models.ForeignKey(
@@ -45,7 +45,7 @@ class BlogPage(Page):
     tags = ClusterTaggableManager(through=BlogPageTag, blank=True)
     date_published = models.DateField(_("Date article published"), blank=True, null=True)
 
-    content_panels = Page.content_panels + [
+    content_panels = TranslatablePage.content_panels + [
         FieldPanel('subtitle', classname="full"),
         FieldPanel('introduction', classname="full"),
         ImageChooserPanel('image'),
@@ -54,7 +54,7 @@ class BlogPage(Page):
         FieldPanel('tags'),
     ]
 
-    search_fields = Page.search_fields + [
+    search_fields = TranslatablePage.search_fields + [
         index.SearchField('body'),
     ]
 
@@ -81,7 +81,7 @@ class BlogPage(Page):
     subpage_types = []
 
 
-class BlogIndexPage(RoutablePageMixin, Page):
+class BlogIndexPage(RoutablePageMixin, TranslatablePage):
     """Index page for blogs."""
     introduction = models.TextField(_("Introduction"), help_text=_("Text to describe the post"), blank=True)
     image = models.ForeignKey(
@@ -93,7 +93,7 @@ class BlogIndexPage(RoutablePageMixin, Page):
         help_text=_("Landscape mode only; horizontal width between 1000px and 3000px.")
     )
 
-    content_panels = Page.content_panels + [
+    content_panels = TranslatablePage.content_panels + [
         FieldPanel('introduction', classname="full"),
         ImageChooserPanel('image'),
     ]

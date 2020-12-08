@@ -1,10 +1,11 @@
 from django.db import models
 from modelcluster.fields import ParentalKey
 
-from wagtail.core.models import Page, Orderable
+from wagtail.core.models import Orderable
 from wagtail.core.fields import RichTextField
 from wagtail.admin.edit_handlers import FieldPanel, InlinePanel, MultiFieldPanel
 from wagtail.images.edit_handlers import ImageChooserPanel
+from wagtailtrans.models import TranslatablePage
 
 
 class HomePageCarouselImages(Orderable):
@@ -39,13 +40,13 @@ class HomePageServices(Orderable):
     ]
 
 
-class HomePage(Page):
+class HomePage(TranslatablePage):
     """Home page model."""
     max_count = 1
     service_title = models.CharField(max_length=50)
     service_body = RichTextField(blank=True)
 
-    content_panels = Page.content_panels + [
+    content_panels = TranslatablePage.content_panels + [
         MultiFieldPanel(
             [InlinePanel("carousel_images", min_num=1, label="Image")], heading="Carousel Images",
         ),

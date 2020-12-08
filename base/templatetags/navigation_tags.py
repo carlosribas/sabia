@@ -31,7 +31,8 @@ def get_menu(slug, page, logged_in):
         for candidate in candidates:
             if candidate.show(logged_in):
                 menu_items.append({'title': candidate.title, 'url': candidate.trans_url(language_code),
-                                   'slug': candidate.slug_of_submenu, 'page': candidate, 'icon': candidate.icon})
+                                   'slug': candidate.slug_of_submenu, 'page': candidate.trans_page(language_code),
+                                   'icon': candidate.icon})
         return menu_items
     except Menu.DoesNotExist:
         pass

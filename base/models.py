@@ -1,5 +1,6 @@
 from __future__ import unicode_literals
 
+from django.conf import settings
 from django.db import models
 from django_extensions.db.fields import AutoSlugField
 from django.utils.text import slugify
@@ -17,11 +18,12 @@ from wagtail.admin.edit_handlers import (
     PageChooserPanel,
 )
 from wagtail.core.fields import RichTextField, StreamField
-from wagtail.core.models import Collection, Page, Orderable
+from wagtail.core.models import Collection, Orderable
 from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField
 from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.search import index
 from wagtail.snippets.models import register_snippet
+from wagtailtrans.models import Language, TranslatablePage
 
 from .blocks import BaseStreamBlock
 
@@ -87,7 +89,7 @@ class FooterText(models.Model):
         verbose_name_plural = _("Footer Text")
 
 
-class StandardPage(Page):
+class StandardPage(TranslatablePage):
     """
     A generic content page. It could be used for any type of page content that only needs a title,
     image, introduction and body field.
@@ -103,14 +105,14 @@ class StandardPage(Page):
         help_text=_("Landscape mode only; horizontal width between 1000px and 3000px.")
     )
     body = StreamField(BaseStreamBlock(), verbose_name="Page body", blank=True)
-    content_panels = Page.content_panels + [
+    content_panels = TranslatablePage.content_panels + [
         FieldPanel('introduction', classname="full"),
         StreamFieldPanel('body'),
         ImageChooserPanel('image'),
     ]
 
 
-class GalleryPage(Page):
+class GalleryPage(TranslatablePage):
     """
     This is a page to list locations from the selected Collection. We use a Q object to list any Collection
     created (/admin/collections/) even if they contain no items.
@@ -139,7 +141,7 @@ class GalleryPage(Page):
         help_text=_("Select the image collection for this gallery.")
     )
 
-    content_panels = Page.content_panels + [
+    content_panels = TranslatablePage.content_panels + [
         FieldPanel('introduction', classname="full"),
         StreamFieldPanel('body'),
         ImageChooserPanel('image'),
@@ -208,10 +210,12 @@ class MenuItem(Orderable):
     title = models.CharField(max_length=50, help_text=_("Title of menu item that will be displayed"))
     link_url = models.CharField(max_length=500, blank=True, null=True, help_text=_("URL to link to, e.g. /contato"))
     link_page = models.ForeignKey(
-        Page, blank=True, null=True, related_name='+', on_delete=models.CASCADE, help_text=_("Page to link to"),
+        TranslatablePage, blank=True, null=True, related_name='+', on_delete=models.CASCADE,
+        help_text=_("Page to link to"),
     )
     title_of_submenu = models.CharField(
-        blank=True, null=True, max_length=50, help_text=_("Title of submenu (LEAVE BLANK if there is no custom submenu)")
+        blank=True, null=True, max_length=50,
+        help_text=_("Title of submenu (LEAVE BLANK if there is no custom submenu)")
     )
     icon = models.CharField(max_length=100, blank=True, help_text=_("Fontawesome icon"))
     show_when = models.CharField(
@@ -229,9 +233,23 @@ class MenuItem(Orderable):
         FieldPanel('show_when'),
     ]
 
+    def trans_page(self, language_code):
+        if self.link_page:
+            can_page = self.link_page.canonical_page if self.link_page.canonical_page else self.link_page
+            if language_code == settings.LANGUAGE_CODE:  # requested language is the canonical language
+                return can_page
+            try:
+                language = Language.objects.get(code=language_code)
+            except Language.DoesNotExist:  # no language found, return original page
+                return self.link_page
+            return TranslatablePage.objects.get(language=language, canonical_page=can_page)
+        return None
+
     def trans_url(self, language_code):
         if self.link_url:
             return '/' + language_code + self.link_url
+        elif self.link_page:
+            return self.trans_page(language_code).url
         return None
 
     @property
