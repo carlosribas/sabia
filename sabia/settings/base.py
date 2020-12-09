@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'wagtail.contrib.settings',
     'wagtailtrans',
     'wagtailfontawesome',
+    'wagtailstreamforms',
 
     'modelcluster',
     'taggit',
@@ -62,6 +63,7 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.facebook',
+    'captcha',
 
     'userauth',
     'base',
@@ -254,3 +256,10 @@ SOCIALACCOUNT_PROVIDERS = {
         'VERSION': 'v7.0',
     }
 }
+
+WAGTAILSTREAMFORMS_FORM_TEMPLATES = (
+    ('streamforms/form_block.html', "Default Form Template"),  # default
+    ('base/custom_form.html', "Custom Form Template"),
+)
+
+WAGTAILSTREAMFORMS_ADVANCED_SETTINGS_MODEL = 'base.AdvancedFormSetting'
