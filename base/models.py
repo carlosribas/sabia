@@ -11,7 +11,6 @@ from modelcluster.models import ClusterableModel
 
 from wagtail.admin.edit_handlers import (
     FieldPanel,
-    FieldRowPanel,
     InlinePanel,
     MultiFieldPanel,
     StreamFieldPanel,
@@ -23,7 +22,9 @@ from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField
 from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.search import index
 from wagtail.snippets.models import register_snippet
+from wagtailstreamforms.blocks import WagtailFormBlock
 from wagtailtrans.models import Language, TranslatablePage
+from wagtailstreamforms.models.abstract import AbstractFormSetting
 
 from .blocks import BaseStreamBlock
 
@@ -152,40 +153,24 @@ class GalleryPage(TranslatablePage):
     subpage_types = []
 
 
-class FormField(AbstractFormField):
-    """
-    Quick way to generate a general purpose data-collection form or contact form
-    without having to write code.
-    """
-    page = ParentalKey('FormPage', related_name='form_fields', on_delete=models.CASCADE)
-
-
-class FormPage(AbstractEmailForm):
+class FormPage(TranslatablePage):
+    intro = RichTextField(blank=True)
     image = models.ForeignKey(
-        'wagtailimages.Image',
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name='+'
+        'wagtailimages.Image', null=True, blank=True, on_delete=models.SET_NULL, related_name='+'
     )
-    body = StreamField(BaseStreamBlock())
-    thank_you_text = RichTextField(blank=True)
+    body = StreamField([
+        ('form', WagtailFormBlock()),
+    ])
 
-    # Note how we include the FormField object via an InlinePanel using the
-    # related_name value
-    content_panels = AbstractEmailForm.content_panels + [
+    content_panels = TranslatablePage.content_panels + [
+        FieldPanel('intro'),
         ImageChooserPanel('image'),
         StreamFieldPanel('body'),
-        InlinePanel('form_fields', label="Form fields"),
-        FieldPanel('thank_you_text', classname="full"),
-        MultiFieldPanel([
-            FieldRowPanel([
-                FieldPanel('from_address', classname="col6"),
-                FieldPanel('to_address', classname="col6"),
-            ]),
-            FieldPanel('subject'),
-        ], "Email"),
     ]
+
+
+class AdvancedFormSetting(AbstractFormSetting):
+    to_address = models.EmailField()
 
 
 @register_snippet
