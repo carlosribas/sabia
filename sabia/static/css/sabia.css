@@ -34,15 +34,25 @@ body {
 
 .btn-sabia:hover {
   color: #fff;
-  background-color: #696969;
-  border-color: #696969;
-}
-
-.btn-sabia:focus, .btn-sabia.focus {
-  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5);
+  background-color: #424248;
+  border-color: #424248;
 }
 
 .btn-sabia.disabled, .btn-sabia:disabled {
   background-color: #FFAF70;
   border-color: #FFAF70;
+}
+
+/* Footer */
+.copyright {
+    color: #ffffff;
+    font-size: 12px;
+}
+
+.link-icon {
+    color: #424248
+}
+
+.link-icon:hover {
+    color: #ff6600
 }
