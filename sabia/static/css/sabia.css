@@ -1,0 +1,48 @@
+body {
+    background-color: #2c2d33;
+    color: #ffffff
+}
+
+/* Fonte do Google */
+* {
+  font-family: 'Montserrat', sans-serif;
+}
+
+.w300 {
+  font-weight: 300;
+}
+.w400 {
+  font-weight: 400;
+}
+.w700 {
+  font-weight: 700;
+}
+
+/* Botão laranja */
+.btn {
+    letter-spacing: 1.1px;
+    padding: 16px 40px 15px;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.btn-sabia {
+  color: #fff;
+  background-color: #ff6600;
+  border-color: #ff6600;
+}
+
+.btn-sabia:hover {
+  color: #fff;
+  background-color: #696969;
+  border-color: #696969;
+}
+
+.btn-sabia:focus, .btn-sabia.focus {
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5);
+}
+
+.btn-sabia.disabled, .btn-sabia:disabled {
+  background-color: #FFAF70;
+  border-color: #FFAF70;
+}
