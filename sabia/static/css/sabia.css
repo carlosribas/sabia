@@ -3,6 +3,23 @@ body {
     color: #ffffff
 }
 
+a {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+a:hover,
+a:focus {
+    color: #ff6600;
+    text-decoration: none;
+}
+
+a:focus {
+    outline: thin dotted;
+    outline: 5px auto -webkit-focus-ring-color;
+    outline-offset: -2px;
+}
+
 /* Fonte do Google */
 * {
   font-family: 'Montserrat', sans-serif;
@@ -11,11 +28,25 @@ body {
 .w300 {
   font-weight: 300;
 }
+
 .w400 {
   font-weight: 400;
 }
-.w700 {
-  font-weight: 700;
+
+/* Menu principal */
+
+.main-menu a {
+    text-transform: uppercase;
+    letter-spacing: .6px;
+    font-size: 15px;
+    position: relative;
+}
+
+.main-menu a:hover {
+    color: #ff6600;
+    border-bottom: 5px solid #ff6600;
+    text-decoration: none;
+    padding-bottom: 10px
 }
 
 /* Botão laranja */
