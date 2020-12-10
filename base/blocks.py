@@ -4,6 +4,8 @@ from wagtail.core.blocks import (
     CharBlock, ChoiceBlock, RichTextBlock, StreamBlock, StructBlock, TextBlock,
 )
 
+from .richtext_options import RICHTEXT_FEATURES
+
 
 class ImageBlock(StructBlock):
     """
@@ -58,6 +60,7 @@ class BaseStreamBlock(StreamBlock):
     """
     heading_block = HeadingBlock()
     paragraph_block = RichTextBlock(
+        features=RICHTEXT_FEATURES,
         icon="fa-paragraph",
         template="blocks/paragraph_block.html"
     )
