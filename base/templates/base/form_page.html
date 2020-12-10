@@ -4,13 +4,13 @@
 {% block content %}
     <div class="container">
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-12 mt-2">
                 <h1>{{ page.title }}</h1>
                 {% if page.intro %}
                     <p class="intro">{{ page.intro|richtext }}</p>
                 {% endif %}
             </div>
-            <div class="col-md-8">
+            <div class="col-8">
                 {% if page.body %}
                     {% if messages %}
                         {% for message in messages %}
