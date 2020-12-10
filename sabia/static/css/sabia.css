@@ -25,12 +25,12 @@ a:focus {
   font-family: 'Montserrat', sans-serif;
 }
 
-.w300 {
-  font-weight: 300;
-}
-
 .w400 {
   font-weight: 400;
+}
+
+.w600 {
+  font-weight: 600;
 }
 
 /* Menu principal */
