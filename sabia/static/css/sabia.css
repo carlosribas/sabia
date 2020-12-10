@@ -3,38 +3,68 @@ body {
     color: #ffffff
 }
 
+/* Fonte do Google */
+* {
+    font-family: 'Montserrat', sans-serif;
+}
+
+/* Títulos */
+h1,
+.h1 {
+    font-size: 32px;
+    font-weight: 600;
+}
+h2,
+.h2 {
+    font-size: 26px;
+    font-weight: 600;
+}
+h3,
+.h3 {
+    font-size: 22px;
+}
+h4,
+h4 {
+    color: #ffffff;
+    padding: 10px;
+    background-color: #ff6600;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 24px;
+    letter-spacing: 0.6px;
+}
+
+/* Links */
 a {
     color: #ffffff;
     text-decoration: none;
 }
-
 a:hover,
 a:focus {
     color: #ff6600;
     text-decoration: none;
 }
-
 a:focus {
     outline: thin dotted;
     outline: 5px auto -webkit-focus-ring-color;
     outline-offset: -2px;
 }
-
-/* Fonte do Google */
-* {
-  font-family: 'Montserrat', sans-serif;
+/* Lista */
+.orange-bullet ul {
+    list-style-type: none;
 }
-
-.w400 {
-  font-weight: 400;
-}
-
-.w600 {
-  font-weight: 600;
+.orange-bullet ul li:before {
+    background-color: #ff6600;
+    border-radius: 50%;
+    content: "";
+    display: inline-block;
+    margin-right: 10px;
+    margin-bottom: 2px;
+    height: 10px;
+    width: 10px;
 }
 
 /* Menu principal */
-
 .main-menu a {
     text-transform: uppercase;
     letter-spacing: .6px;
@@ -56,19 +86,16 @@ a:focus {
     font-weight: 700;
     font-size: 14px;
 }
-
 .btn-sabia {
   color: #fff;
   background-color: #ff6600;
   border-color: #ff6600;
 }
-
 .btn-sabia:hover {
   color: #fff;
   background-color: #424248;
   border-color: #424248;
 }
-
 .btn-sabia.disabled, .btn-sabia:disabled {
   background-color: #FFAF70;
   border-color: #FFAF70;
@@ -79,11 +106,9 @@ a:focus {
     color: #ffffff;
     font-size: 12px;
 }
-
 .link-icon {
     color: #424248
 }
-
 .link-icon:hover {
     color: #ff6600
 }
