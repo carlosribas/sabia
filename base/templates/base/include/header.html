@@ -2,14 +2,14 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-md-7 base-header">
+        <div class="col-12 mt-2">
+            <h1>{{ page.title }}</h1>
             {% if page.image %}
                 <div class="image">
                     {% image page.image width-500 as photo %}
                     <img src="{{ photo.url }}" width="{{ photo.width }}" height="{{ photo.height }}" alt="{{ photo.alt }}" />
                 </div>
             {% endif %}
-            <h1>{{ page.title }}</h1>
         </div>
     </div>
 </div>
