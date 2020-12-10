@@ -13,7 +13,11 @@ class HomePageCarouselImages(Orderable):
     """Carousel for the home page."""
     page = ParentalKey("home.HomePage", related_name="carousel_images")
     title = models.CharField(_("Title"), max_length=100, blank=True)
+    title_color = models.CharField(_("Title color"), max_length=7, blank=True, help_text=_("For example: #ffffff"))
     description = models.CharField(_("Description"), max_length=250, blank=True)
+    description_color = models.CharField(
+        _("Description color"), max_length=7, blank=True, help_text=_("For example: #ffffff")
+    )
     image = models.ForeignKey(
         "wagtailimages.Image", verbose_name=_('Image'), null=True, blank=False, on_delete=models.SET_NULL,
         related_name="+"
@@ -21,7 +25,9 @@ class HomePageCarouselImages(Orderable):
 
     panels = [
         FieldPanel("title"),
+        FieldPanel("title_color"),
         FieldPanel("description"),
+        FieldPanel("description_color"),
         ImageChooserPanel("image")
     ]
 

@@ -13,8 +13,8 @@
                 <div class="carousel-item{% if forloop.counter == 1 %} active{% endif %}">
                     <img src="{{ img.url }}" class="d-block w-100" alt="{{ img.alt }}">
                     <div class="carousel-caption d-none d-md-block">
-                        <h1>{{ item.title }}</h1>
-                        <h4>{{ item.description }}</h4>
+                        <h1 {% if item.title_color %}style="color: {{ item.title_color }}" {% endif %}>{{ item.title }}</h1>
+                        <h4 {% if item.description_color %}style="color: {{ item.description_color }}" {% endif %}>{{ item.description }}</h4>
                     </div>
                 </div>
             {% endfor %}
