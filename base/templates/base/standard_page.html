@@ -7,7 +7,7 @@
     <div class="container">
         <div class="row">
             <div class="col-12 mt-2">
-                {{ page.body }}
+                {% if page.slug != "equipe" %}{{ page.body }}{% endif %}
             </div>
         </div>
     </div>
