@@ -4,7 +4,7 @@ from modelcluster.fields import ParentalKey
 
 from wagtail.core.models import Orderable
 from wagtail.core.fields import RichTextField
-from wagtail.admin.edit_handlers import FieldPanel, InlinePanel, MultiFieldPanel
+from wagtail.admin.edit_handlers import FieldPanel, InlinePanel, MultiFieldPanel, PageChooserPanel
 from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtailtrans.models import TranslatablePage
 
@@ -18,6 +18,7 @@ class HomePageCarouselImages(Orderable):
     description_color = models.CharField(
         _("Description color"), max_length=7, blank=True, help_text=_("For example: #ffffff")
     )
+    link = models.CharField(max_length=500, blank=True, null=True, help_text=_("URL to link to, e.g. /contato"))
     image = models.ForeignKey(
         "wagtailimages.Image", verbose_name=_('Image'), null=True, blank=False, on_delete=models.SET_NULL,
         related_name="+"
@@ -28,6 +29,7 @@ class HomePageCarouselImages(Orderable):
         FieldPanel("title_color"),
         FieldPanel("description"),
         FieldPanel("description_color"),
+        FieldPanel('link'),
         ImageChooserPanel("image")
     ]
 
