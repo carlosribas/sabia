@@ -34,6 +34,8 @@ class TeamMember(index.Indexed, ClusterableModel):
     """A Django model to store team members."""
     name = models.CharField(_("Name"), max_length=254)
     job_title = models.CharField(_("Job title"), max_length=254, blank=True)
+    linkedin = models.CharField(max_length=254, blank=True, help_text=_("Link to Linkedin"))
+    introduction = models.TextField(help_text=_("Brief description"))
     body = RichTextField()
     image = models.ForeignKey(
         'wagtailimages.Image',
@@ -46,6 +48,8 @@ class TeamMember(index.Indexed, ClusterableModel):
     panels = [
         FieldPanel('name'),
         FieldPanel('job_title'),
+        FieldPanel('linkedin'),
+        FieldPanel('introduction'),
         FieldPanel('body'),
         ImageChooserPanel('image')
     ]
