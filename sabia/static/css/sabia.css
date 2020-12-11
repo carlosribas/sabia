@@ -88,16 +88,16 @@ a:focus {
 
 /* Carousel - página principal */
 .carousel-caption {
-   position: absolute;
-   bottom: 20%;
+    position: absolute;
+    bottom: 15%;
 }
 
 .carousel .carousel-control-prev {
-  margin-left: -5%;
+    margin-left: -5%;
 }
 
 .carousel .carousel-control-next {
-  margin-right: -5%;
+    margin-right: -5%;
 }
 
 .carousel .carousel-control-prev-icon {
@@ -114,20 +114,21 @@ a:focus {
     padding: 16px 40px 15px;
     font-weight: 700;
     font-size: 14px;
+    text-transform: uppercase;
 }
 .btn-sabia {
-  color: #fff;
-  background-color: #ff6600;
-  border-color: #ff6600;
+    color: #fff;
+    background-color: #ff6600;
+    border-color: #ff6600;
 }
 .btn-sabia:hover {
-  color: #fff;
-  background-color: #424248;
-  border-color: #424248;
+    color: #fff;
+    background-color: #424248;
+    border-color: #424248;
 }
 .btn-sabia.disabled, .btn-sabia:disabled {
-  background-color: #FFAF70;
-  border-color: #FFAF70;
+    background-color: #FFAF70;
+    border-color: #FFAF70;
 }
 
 /* Footer */
