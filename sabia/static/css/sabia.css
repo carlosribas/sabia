@@ -134,6 +134,8 @@ a:focus {
     background-color: #ff6600;
     border-color: #ff6600;
 }
+.btn-sabia:focus,
+.btn-sabia:active,
 .btn-sabia:hover {
     color: #fff;
     background-color: #424248;
