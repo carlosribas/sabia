@@ -29,7 +29,7 @@ class HomePageCarouselImages(Orderable):
         FieldPanel("title_color"),
         FieldPanel("description"),
         FieldPanel("description_color"),
-        FieldPanel('link'),
+        FieldPanel("link"),
         ImageChooserPanel("image")
     ]
 
@@ -40,11 +40,11 @@ class HomePageServices(Orderable):
     title = models.CharField(_("Title"), max_length=50)
     description = models.CharField(_("Description"), max_length=200)
     link = models.ForeignKey(
-        TranslatablePage, verbose_name=_('Link'), blank=True, null=True, related_name='+', on_delete=models.CASCADE,
+        TranslatablePage, verbose_name=_("Link"), blank=True, null=True, related_name='+', on_delete=models.CASCADE,
         help_text=_("Page to link to"),
     )
     image = models.ForeignKey(
-        "wagtailimages.Image", verbose_name=_('Image'), null=True, on_delete=models.SET_NULL, related_name="+"
+        "wagtailimages.Image", verbose_name=_("Image"), null=True, on_delete=models.SET_NULL, related_name="+"
     )
 
     panels = [
@@ -60,14 +60,19 @@ class HomePage(TranslatablePage):
     max_count = 1
     service_title = models.CharField(_("Service title"), max_length=50)
     service_body = RichTextField(_("Service body"), blank=True)
+    member_link = models.ForeignKey(
+        TranslatablePage, verbose_name=_("Link to be a member"), blank=True, null=True, on_delete=models.PROTECT,
+        related_name='+', help_text=_("Page to link to"),
+    )
 
     content_panels = TranslatablePage.content_panels + [
         MultiFieldPanel(
             [InlinePanel("carousel_images", min_num=1, label=_("Image"))], heading=_("Carousel Images"),
         ),
         MultiFieldPanel([
-            FieldPanel('service_title'),
-            FieldPanel('service_body'),
+            FieldPanel("service_title"),
+            FieldPanel("service_body"),
             InlinePanel("services", min_num=1, max_num=3, label=_("Service"))
         ], heading=_("Services")),
+        FieldPanel("member_link"),
     ]
