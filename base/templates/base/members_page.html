@@ -3,7 +3,7 @@
 <div class="container">
     <div class="row">
         {% for member in members %}
-            <div class="card border-0">
+            <div class="card border-0 mb-5">
                 <div class="row no-gutters">
                     <div class="col-sm-3">
                         {% image member.image fill-280x280 %}
@@ -16,7 +16,7 @@
 
                             <p class="card-text">{{ member.introduction }}</p>
                             <p>
-                                <a class="btn btn-sabia-outline" data-toggle="collapse" href="#collapseCV" role="button" aria-expanded="false" aria-controls="collapseCV">Ver mais</a>
+                                <a class="btn btn-sabia-outline" data-toggle="collapse" href="#collapseCV-{{ member.id }}" role="button" aria-expanded="false" aria-controls="collapseCV-{{ member.id }}">Ver mais</a>
                                 <a class="link-icon ml-2" href="{{ member.linkedin }}" target="_blank">
                                     <span class="fa-stack fa-lg">
                                         <i class="fa fa-circle fa-stack-2x"></i>
@@ -24,7 +24,7 @@
                                     </span>
                                 </a>
                             </p>
-                            <div class="collapse" id="collapseCV">
+                            <div class="collapse" id="collapseCV-{{ member.id }}">
                                 <div class="card card-body border-0">
                                     {{ member.body|richtext }}
                                 </div>
