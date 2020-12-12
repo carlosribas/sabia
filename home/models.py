@@ -55,6 +55,20 @@ class HomePageServices(Orderable):
     ]
 
 
+class HomePageWhyChooseUs(Orderable):
+    """Content to show on the Why Choose Us."""
+    page = ParentalKey("home.HomePage", related_name="why_choose_us")
+    title = models.CharField(_("Title"), max_length=50)
+    description = models.CharField(_("Description"), max_length=254)
+    icon = models.CharField(max_length=100, blank=True, help_text=_("Fontawesome icon"))
+
+    panels = [
+        FieldPanel("title"),
+        FieldPanel("description"),
+        FieldPanel('icon'),
+    ]
+
+
 class HomePage(TranslatablePage):
     """Home page model."""
     max_count = 1
@@ -75,4 +89,7 @@ class HomePage(TranslatablePage):
             InlinePanel("services", min_num=1, max_num=3, label=_("Service"))
         ], heading=_("Services")),
         FieldPanel("member_link"),
+        MultiFieldPanel([
+            InlinePanel("why_choose_us", min_num=1, max_num=3, label=_("Item"))
+        ], heading=_("Why choose us")),
     ]

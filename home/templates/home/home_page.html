@@ -73,4 +73,27 @@
             </div>
         </div>
     </div>
+
+    {# Por que nos escolher #}
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="text-center mt-5">
+                    <h1>Por que nos escolher</h1>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            {% for item in self.why_choose_us.all %}
+                <div class="col-md-4 mt-3">
+                    <div class="card border-0">
+                        <h4 class="card-title text-orange font-weight-bold">
+                            <i class="{{ item.icon }}"></i> {{ item.title }}
+                        </h4>
+                        <p class="card-text">{{ item.description }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
 {% endblock %}
