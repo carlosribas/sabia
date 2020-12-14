@@ -12,38 +12,36 @@
     <div class="container">
         {% if tag %}
             <div class="row">
-                <div class="col-12">
-                    <p>Viewing all blog posts by <span class="outline">{{ tag }}</span></p>
+                <div class="col-12 mt-2">
+                    <h2>{{ tag }}</h2>
                 </div>
             </div>
         {% endif %}
 
         {% if posts %}
             {% for blog in posts %}
-                <li>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <a href="{% pageurl blog %}">
-                                {% image blog.image fill-342x304 as image %}
-                                <img class="img-fluid" src="{{ image.url }}" width="{{ image.width }}" height="{{ image.height }}" alt="{{ image.alt }}" />
-                            </a>
-                        </div>
-                        <div class="col-md-8 blog-item">
-                            <a href="{% pageurl blog %}">
-                                <h2 class="text-orange">{{ blog.title }}</h2>
-                            </a>
-                            <p>{{ blog.introduction }}</p>
-                            <div>
-                                {% if blog.date_published %}
-                                    <span class="small text-muted">{{ blog.date_published }}</span>
-                                {% endif %}
-                                <span class="pull-right blog-link">
-                                    <a class="text-muted" href="{% pageurl blog %}">Ver publicação</a>
-                                </span>
-                            </div>
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <a href="{% pageurl blog %}">
+                            {% image blog.image fill-342x304 as image %}
+                            <img class="img-fluid" src="{{ image.url }}" width="{{ image.width }}" height="{{ image.height }}" alt="{{ image.alt }}" />
+                        </a>
+                    </div>
+                    <div class="col-md-8 blog-item">
+                        <a href="{% pageurl blog %}">
+                            <h2 class="text-orange">{{ blog.title }}</h2>
+                        </a>
+                        <p>{{ blog.introduction }}</p>
+                        <div>
+                            {% if blog.date_published %}
+                                <span class="small text-muted">{{ blog.date_published }}</span>
+                            {% endif %}
+                            <span class="pull-right blog-link">
+                                <a class="text-muted" href="{% pageurl blog %}">Ver publicação</a>
+                            </span>
                         </div>
                     </div>
-                </li>
+                </div>
             {% endfor %}
         {% endif %}
     </div>
