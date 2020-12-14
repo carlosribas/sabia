@@ -36,7 +36,7 @@ class BlogPage(TranslatablePage):
         blank=True,
         on_delete=models.SET_NULL,
         related_name='+',
-        help_text = _("Landscape mode only; horizontal width between 1000px and 3000px.")
+        help_text=_("Landscape mode only; horizontal width between 1000px and 3000px.")
     )
     body = StreamField(
         BaseStreamBlock(), verbose_name="Page body", blank=True
