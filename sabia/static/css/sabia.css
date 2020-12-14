@@ -163,10 +163,9 @@ a:focus {
 /* Blog */
 .blog-page {
     padding: 20px;
-    background-color: #dcdcdc;
-    color: black;
+    background-color: #fff;
+    color: #3e3e3e;
 }
-
 .blog-link a {
     font-size: 12px;
     letter-spacing: 2px;
@@ -175,9 +174,22 @@ a:focus {
     text-decoration: underline #ff6600;
     text-underline-offset: 2px;
 }
-
 .blog-link a:hover {
     color: #ff6600 !important;
+}
+.btn-blog {
+    color: #fff;
+    font-size: 11px;
+    padding: 15px;
+    background-color: #424248;
+    border-color: #424248;
+}
+.btn-blog:focus,
+.btn-blog:active,
+.btn-blog:hover {
+    color: #fff;
+    background-color: #ff6600;
+    border-color: #ff6600;
 }
 
 /* Footer */

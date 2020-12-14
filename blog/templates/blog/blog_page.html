@@ -2,41 +2,26 @@
 {% load navigation_tags wagtailimages_tags %}
 
 {% block content %}
-    {% image self.image fill-1920x600 as hero_img %}
-    {% include "base/include/header-hero.html" %}
-
     <div class="container">
-        <div class="row">
-            <div class="col-md-8">
-                {% if page.introduction %}
-                    <p class="intro">{{ page.introduction }}</p>
-                {% endif %}
-
-                <div class="blog-meta">
-                    {% if page.authors %}
-                        <div class="blog-avatars">
-                            {% for author in page.authors %}
-                                <div class="author">{% image author.image fill-50x50-c100 class="blog-avatar" %}
-                                    {{ author.first_name }} {{ author.last_name }}</div>
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-
-                    {% if page.date_published %}
-                        <div class="blog-byline">
-                            {{ page.date_published }}
-                        </div>
+        <div class="blog-page mt-2">
+            <div class="row">
+                <div class="col-12">
+                    <h2>{{ page.title }}</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    {{ page.body }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 mt-5">
+                    {% if page.get_tags %}
+                        {% for tag in page.get_tags  %}
+                            <a href="{{ tag.url }}" class="btn btn-blog mb-1">{{ tag }}</a>
+                        {% endfor %}
                     {% endif %}
                 </div>
-
-                {{ page.body }}
-
-                {% if page.get_tags %}
-                    Tagged with:<br />
-                    {% for tag in page.get_tags  %}
-                        <a href="{{ tag.url }}" class="btn btn-sm">{{ tag }}</a>
-                    {% endfor %}
-                {% endif %}
             </div>
         </div>
     </div>
