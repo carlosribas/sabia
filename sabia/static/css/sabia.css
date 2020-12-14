@@ -160,6 +160,26 @@ a:focus {
     color: #ff6600
 }
 
+/* Blog */
+.blog-page {
+    padding: 20px;
+    background-color: #dcdcdc;
+    color: black;
+}
+
+.blog-link a {
+    font-size: 12px;
+    letter-spacing: 2px;
+    font-weight: 600;
+    text-transform: uppercase;
+    text-decoration: underline #ff6600;
+    text-underline-offset: 2px;
+}
+
+.blog-link a:hover {
+    color: #ff6600 !important;
+}
+
 /* Footer */
 .copyright {
     color: #ffffff;
