@@ -12,10 +12,10 @@
                 {% image item.image fill-900x400 as img %}
                 <div class="carousel-item{% if forloop.counter == 1 %} active{% endif %}">
                     <img src="{{ img.url }}" class="d-block w-100" alt="{{ img.alt }}">
-                    <div class="carousel-caption d-none d-md-block">
+                    <div class="carousel-caption">
                         <h1 {% if item.title_color %}style="color: {{ item.title_color }}" {% endif %}>{{ item.title }}</h1>
                         <h4 {% if item.description_color %}style="color: {{ item.description_color }}" {% endif %}>{{ item.description }}</h4>
-                        <a class="btn btn-sabia mt-2" href="{{item.link}}">Saiba mais</a>
+                        <a class="btn btn-sabia mt-sm-2" href="{{item.link}}">Saiba mais</a>
                     </div>
                 </div>
             {% endfor %}
