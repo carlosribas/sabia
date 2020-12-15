@@ -3,9 +3,10 @@ from django.utils.translation import ugettext as _
 from modelcluster.fields import ParentalKey
 
 from wagtail.core.models import Orderable
-from wagtail.core.fields import RichTextField
-from wagtail.admin.edit_handlers import FieldPanel, InlinePanel, MultiFieldPanel, PageChooserPanel
+from wagtail.core.fields import RichTextField, StreamField
+from wagtail.admin.edit_handlers import FieldPanel, InlinePanel, MultiFieldPanel, StreamFieldPanel
 from wagtail.images.edit_handlers import ImageChooserPanel
+from wagtailstreamforms.blocks import WagtailFormBlock
 from wagtailtrans.models import TranslatablePage
 
 
@@ -78,6 +79,9 @@ class HomePage(TranslatablePage):
         TranslatablePage, verbose_name=_("Link to be a member"), blank=True, null=True, on_delete=models.PROTECT,
         related_name='+', help_text=_("Page to link to"),
     )
+    form = StreamField([
+        ('form', WagtailFormBlock()),
+    ], blank=True, null=True)
 
     content_panels = TranslatablePage.content_panels + [
         MultiFieldPanel(
@@ -92,4 +96,5 @@ class HomePage(TranslatablePage):
         MultiFieldPanel([
             InlinePanel("why_choose_us", min_num=1, max_num=3, label=_("Item"))
         ], heading=_("Why choose us")),
+        StreamFieldPanel('form'),
     ]
