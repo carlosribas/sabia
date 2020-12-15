@@ -3,14 +3,14 @@
 {% get_menu "main" None request.user.is_authenticated as navigation %}
 {% get_menu "admin" None request.user.is_authenticated as navigation_admin %}
 
-<nav class="navbar navbar-expand-lg navbar-inverse justify-content-between">
+<nav class="navbar navbar-expand-lg navbar-dark justify-content-between">
     <a class="navbar-brand ml-2" href="/"><img src="{% static 'images/logo-and-name.svg' %}" alt="Logo da Plataforma Sabiá"></a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="orange-toggler navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav ml-auto text-center">
+        <ul class="navbar-nav ml-auto">
             {% for item in navigation %}
                 {% get_menu item.slug item.page request.user.is_authenticated as submenu %}
                 <li class="{% if submenu %}dropdown {% endif %}p-2 mr-3">
@@ -46,7 +46,7 @@
         <ul class="navbar-nav ml-auto mr-2">
             {% for item in navigation_admin %}
                 {% get_menu item.slug item.page request.user.is_authenticated as submenu %}
-                <li class="{% if submenu %}dropdown {% endif %}p-2 mr-3">
+                <li class="{% if submenu %}dropdown {% endif %}p-2 mr-1">
                     <div class="dropdown show">
                         <a href="{{ item.url }}"
                                 {% if submenu %} class="menuitem dropdown-toggle {% if item.icon %}menuicon{% endif %}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
@@ -75,12 +75,10 @@
                     </div>
                 </li>
             {% endfor %}
-            <li>
+            <li class="ml-2">
                 <a href="https://www.facebook.com/plataformasabia/" target="_blank">
                     <span class="fa-stack fa-lg"><i class="fa fa-facebook"></i></span>
                 </a>
-            </li>
-            <li>
                 <a href="https://www.instagram.com/plataforma_sabia/" target="_blank">
                     <span class="fa-stack fa-lg"><i class="fa fa-instagram"></i></span>
                 </a>
