@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-26 20:31+0000\n"
+"POT-Creation-Date: 2020-12-17 19:05+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,92 +17,209 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: home/templates/home/welcome_page.html:6
-msgid "Visit the Wagtail website"
+#: base/models.py:35
+msgid "Name"
+msgstr "Nome"
+
+#: base/models.py:36
+msgid "Job title"
+msgstr "Cargo"
+
+#: base/models.py:37
+msgid "Link to Linkedin"
+msgstr "Link para o Linkedin"
+
+#: base/models.py:38
+msgid "Brief description"
+msgstr "Breve descrição"
+
+#: base/models.py:91 base/models.py:94
+msgid "Footer Text"
+msgstr "Texto do rodapé"
+
+#: base/models.py:103 base/models.py:127 blog/models.py:32
+msgid "Text to describe the page"
+msgstr "Texto para descrever a página"
+
+#: base/models.py:110 base/models.py:135 blog/models.py:39 blog/models.py:93
+msgid "Landscape mode only; horizontal width between 1000px and 3000px."
 msgstr ""
 
-#: home/templates/home/welcome_page.html:15
-msgid "View the release notes"
+#: base/models.py:146
+msgid "Select the image collection for this gallery."
 msgstr ""
 
-#: home/templates/home/welcome_page.html:27
-msgid "Welcome to your new Wagtail site!"
+#: base/models.py:189
+msgid "Menu"
 msgstr ""
 
-#: home/templates/home/welcome_page.html:28
-msgid ""
-"Please feel free to <a href=\"https://github.com/wagtail/wagtail/wiki/Slack"
-"\">join our community on Slack</a>, or get started with one of the links "
-"below."
+#: base/models.py:190
+msgid "Menu Item"
 msgstr ""
 
-#: home/templates/home/welcome_page.html:35
-msgid "Wagtail Documentation"
+#: base/models.py:198
+msgid "Menu to which this item belongs"
 msgstr ""
 
-#: home/templates/home/welcome_page.html:36
-msgid "Topics, references, & how-tos"
+#: base/models.py:199
+msgid "Title of menu item that will be displayed"
 msgstr ""
 
-#: home/templates/home/welcome_page.html:42
-msgid "Tutorial"
+#: base/models.py:200 home/models.py:22
+msgid "URL to link to, e.g. /contato"
 msgstr ""
 
-#: home/templates/home/welcome_page.html:43
-msgid "Build your first Wagtail site"
+#: base/models.py:203 home/models.py:45 home/models.py:80
+msgid "Page to link to"
 msgstr ""
 
-#: home/templates/home/welcome_page.html:49
-msgid "Admin Interface"
+#: base/models.py:207
+msgid "Title of submenu (LEAVE BLANK if there is no custom submenu)"
 msgstr ""
 
-#: home/templates/home/welcome_page.html:50
-msgid "Create your superuser first!"
+#: base/models.py:209 home/models.py:64
+msgid "Fontawesome icon"
 msgstr ""
+
+#: base/models.py:212
+msgid "Always"
+msgstr "Sempre"
+
+#: base/models.py:212
+msgid "When logged in"
+msgstr "Quando logado"
+
+#: base/models.py:212
+msgid "When not logged in"
+msgstr "Quando não estiver logado"
+
+#: base/wagtailstreamforms_fields.py:11
+msgid "ReCaptcha field"
+msgstr ""
+
+#: blog/models.py:32 blog/models.py:86
+msgid "Introduction"
+msgstr "Introdução"
+
+#: blog/models.py:44
+msgid "Subtitle"
+msgstr "Subtítulo"
+
+#: blog/models.py:46
+msgid "Date article published"
+msgstr ""
+
+#: blog/models.py:86
+msgid "Text to describe the post"
+msgstr "Texto para descrever a postagem"
+
+#: blog/models.py:123
+msgid "There are no blog posts tagged with {}"
+msgstr "Não há postagens de blog marcadas com"
+
+#: home/models.py:16 home/models.py:41 home/models.py:62
+msgid "Title"
+msgstr "Título"
+
+#: home/models.py:17
+msgid "Title color"
+msgstr "Cor do título"
+
+#: home/models.py:17 home/models.py:20
+msgid "For example: #ffffff"
+msgstr "Por exemplo: #ffffff"
+
+#: home/models.py:18 home/models.py:42 home/models.py:63
+msgid "Description"
+msgstr "Descrição"
+
+#: home/models.py:20
+msgid "Description color"
+msgstr "Cor da descrição"
+
+#: home/models.py:24 home/models.py:48 home/models.py:88
+msgid "Image"
+msgstr "Imagem"
+
+#: home/models.py:44
+msgid "Link"
+msgstr ""
+
+#: home/models.py:76
+msgid "Service title"
+msgstr "Título do serviço"
+
+#: home/models.py:77
+msgid "Service body"
+msgstr "Corpo do serviço"
+
+#: home/models.py:79
+msgid "Link to be a member"
+msgstr "Link para ser um membro"
+
+#: home/models.py:88
+msgid "Carousel Images"
+msgstr "Imagens do carrossel"
+
+#: home/models.py:93
+msgid "Service"
+msgstr "Serviço"
+
+#: home/models.py:94
+msgid "Services"
+msgstr "Serviços"
+
+#: home/models.py:97
+msgid "Item"
+msgstr ""
+
+#: home/models.py:98
+msgid "Why choose us"
+msgstr "Por que nos escolher"
 
 #: userauth/forms.py:20 userauth/templates/userauth/account/profile.html:15
 msgid "First name"
-msgstr ""
+msgstr "Nome"
 
 #: userauth/forms.py:21 userauth/templates/userauth/account/profile.html:19
 msgid "Last name"
-msgstr ""
+msgstr "Sobrenome"
 
 #: userauth/models.py:11
 msgid "Enter a valid phone number starting with (DDD)"
-msgstr ""
+msgstr "Insira um número de telefone válido começando com (DDD)"
 
 #: userauth/models.py:13 userauth/templates/userauth/account/profile.html:29
 msgid "Phone"
-msgstr ""
+msgstr "Telefone"
 
 #: userauth/templates/userauth/account/delete.html:5
 #: userauth/templates/userauth/account/delete.html:8
 msgid "Delete account"
-msgstr ""
+msgstr "Apagar conta"
 
 #: userauth/templates/userauth/account/delete.html:14
 msgid "Are you sure you want to delete the account"
-msgstr ""
+msgstr "Tem certeza que deseja apagar a conta"
 
 #: userauth/templates/userauth/account/delete.html:15
 msgid "Delete"
-msgstr ""
+msgstr "Apagar"
 
 #: userauth/templates/userauth/account/delete.html:17
 msgid "No, keep my account"
-msgstr ""
+msgstr "Não, manter a minha conta"
 
 #: userauth/templates/userauth/account/delete.html:18
 #: userauth/templates/userauth/account/logout.html:21
 #: userauth/templates/userauth/socialaccount/connections.html:53
 msgid "Return to site"
-msgstr ""
+msgstr "Retornar ao site"
 
 #: userauth/templates/userauth/account/email_confirm.html:6
 #: userauth/templates/userauth/account/email_confirm.html:9
 msgid "Confirm E-mail Address"
-msgstr ""
+msgstr "Confirme o endereço de e-mail"
 
 #: userauth/templates/userauth/account/email_confirm.html:16
 #, python-format
@@ -113,7 +230,7 @@ msgstr ""
 
 #: userauth/templates/userauth/account/email_confirm.html:20
 msgid "Confirm"
-msgstr ""
+msgstr "Confirmar"
 
 #: userauth/templates/userauth/account/email_confirm.html:27
 #, python-format
@@ -127,15 +244,15 @@ msgstr ""
 #: userauth/templates/userauth/account/login.html:22
 #: userauth/templates/userauth/account/signup.html:47
 msgid "Sign in"
-msgstr ""
+msgstr "Entrar"
 
 #: userauth/templates/userauth/account/login.html:26
 msgid "or sign in with one of your existing third party accounts:"
-msgstr ""
+msgstr "ou faça login com uma de suas redes sociais:"
 
 #: userauth/templates/userauth/account/login.html:32
 msgid "Don't have an account?"
-msgstr ""
+msgstr "Não tem conta?"
 
 #: userauth/templates/userauth/account/login.html:32
 #: userauth/templates/userauth/account/signup.html:5
@@ -145,55 +262,55 @@ msgstr ""
 #: userauth/templates/userauth/socialaccount/signup.html:8
 #: userauth/templates/userauth/socialaccount/signup.html:35
 msgid "Sign up"
-msgstr ""
+msgstr "Cadastre-se"
 
 #: userauth/templates/userauth/account/login.html:34
 msgid "Forgot password?"
-msgstr ""
+msgstr "Esqueceu a senha?"
 
 #: userauth/templates/userauth/account/logout.html:5
 #: userauth/templates/userauth/account/logout.html:8
 #: userauth/templates/userauth/account/logout.html:17
 msgid "Sign Out"
-msgstr ""
+msgstr "Sair"
 
 #: userauth/templates/userauth/account/logout.html:13
 msgid "Are you sure you want to sign out?"
-msgstr ""
+msgstr "Você tem certeza que deseja sair?"
 
 #: userauth/templates/userauth/account/logout.html:20
 msgid "No, stay logged in"
-msgstr ""
+msgstr "Não, continuar logado"
 
 #: userauth/templates/userauth/account/password_reset.html:5
 #: userauth/templates/userauth/account/password_reset.html:8
 msgid "Password reset"
-msgstr ""
+msgstr "Redefinir senha"
 
 #: userauth/templates/userauth/account/password_reset.html:17
 msgid "Reset password"
-msgstr ""
+msgstr "Redefinir senha"
 
 #: userauth/templates/userauth/account/password_reset_done.html:6
 #: userauth/templates/userauth/account/password_reset_done.html:9
 msgid "Password Reset"
-msgstr ""
+msgstr "Redefinir senha"
 
 #: userauth/templates/userauth/account/password_reset_done.html:13
 msgid ""
 "We have sent you an e-mail. Please contact us if you do not receive it "
 "within a few minutes."
-msgstr ""
+msgstr "Enviamos um e-mail para você. Entre em contato caso não o receba em alguns minutos."
 
 #: userauth/templates/userauth/account/password_reset_from_key.html:5
 #: userauth/templates/userauth/account/password_reset_from_key.html:8
 #: userauth/templates/userauth/account/password_reset_from_key.html:25
 msgid "Change password"
-msgstr ""
+msgstr "Alterar a senha"
 
 #: userauth/templates/userauth/account/password_reset_from_key.html:8
 msgid "Bad token"
-msgstr ""
+msgstr "Token incorreto"
 
 #: userauth/templates/userauth/account/password_reset_from_key.html:14
 #, python-format
@@ -206,20 +323,20 @@ msgstr ""
 #: userauth/templates/userauth/account/password_reset_from_key.html:28
 #: userauth/templates/userauth/account/password_reset_from_key_done.html:11
 msgid "Your password is now changed."
-msgstr ""
+msgstr "Sua senha foi alterada."
 
 #: userauth/templates/userauth/account/password_reset_from_key_done.html:4
 #: userauth/templates/userauth/account/password_reset_from_key_done.html:7
 msgid "Change Password"
-msgstr ""
+msgstr "Mudar senha"
 
 #: userauth/templates/userauth/account/profile.html:5
 msgid "Profile"
-msgstr ""
+msgstr "Perfil"
 
 #: userauth/templates/userauth/account/profile.html:8
 msgid "Account profile"
-msgstr ""
+msgstr "Perfil da conta"
 
 #: userauth/templates/userauth/account/profile.html:25
 msgid "E-mail"
@@ -227,38 +344,38 @@ msgstr ""
 
 #: userauth/templates/userauth/account/profile.html:37
 msgid "Update your account"
-msgstr ""
+msgstr "Atualize sua conta"
 
 #: userauth/templates/userauth/account/signup.html:41
 msgid "or sign up with one of your existing third party accounts:"
-msgstr ""
+msgstr "ou registre-se com uma de suas redes sociais:"
 
 #: userauth/templates/userauth/account/signup.html:47
 #: userauth/templates/userauth/socialaccount/signup.html:36
 msgid "Already have an account?"
-msgstr ""
+msgstr "Já tem uma conta?"
 
 #: userauth/templates/userauth/account/update.html:5
 #: userauth/templates/userauth/account/update.html:8
 msgid "Update account"
-msgstr ""
+msgstr "Atualizar conta"
 
 #: userauth/templates/userauth/account/update.html:26
 msgid "Save"
-msgstr ""
+msgstr "Salvar"
 
 #: userauth/templates/userauth/account/update.html:30
 msgid "Connect your existing account to one of your social accounts:"
-msgstr ""
+msgstr "Conecte sua conta com uma de suas redes sociais:"
 
 #: userauth/templates/userauth/account/update.html:36
 msgid "Delete your account"
-msgstr ""
+msgstr "Apagar sua conta"
 
 #: userauth/templates/userauth/account/verification_sent.html:5
 #: userauth/templates/userauth/account/verification_sent.html:8
 msgid "Verify Your E-mail Address"
-msgstr ""
+msgstr "Verifique seu endereço de e-mail"
 
 #: userauth/templates/userauth/account/verification_sent.html:12
 msgid ""
@@ -266,30 +383,36 @@ msgid ""
 "finalize the signup process. Please contact us if you do not receive it "
 "within a few minutes."
 msgstr ""
+"Enviamos um e-mail para você para verificação. Acesse o link fornecido para "
+"finalizar o processo de inscrição. Entre em contato conosco se não o receber "
+"dentro de alguns minutos."
 
 #: userauth/templates/userauth/socialaccount/connections.html:5
 #: userauth/templates/userauth/socialaccount/connections.html:8
 msgid "Account connections"
-msgstr ""
+msgstr "Conexões da conta"
 
 #: userauth/templates/userauth/socialaccount/connections.html:13
 msgid ""
 "Done! You can now sign in to your account using any of the following third "
 "party accounts:"
 msgstr ""
+"Pronto! Agora você pode acessar sua conta usando qualquer uma das seguintes "
+"redes sociais:"
 
 #: userauth/templates/userauth/socialaccount/connections.html:35
 msgid "Remove"
-msgstr ""
+msgstr "Apagar"
 
 #: userauth/templates/userauth/socialaccount/connections.html:41
 msgid ""
 "You currently have no social network accounts connected to this account."
 msgstr ""
+"No momento você não tem redes sociais conectadas a sua conta."
 
 #: userauth/templates/userauth/socialaccount/connections.html:45
 msgid "Add a social account"
-msgstr ""
+msgstr "Adicionar uma rede social"
 
 #: userauth/templates/userauth/socialaccount/signup.html:12
 #, python-format
@@ -297,19 +420,21 @@ msgid ""
 "You are about to use your %(provider_name)s account to login to\n"
 "    %(site_name)s. As a final step, please complete the following form:"
 msgstr ""
+"Você está prestes a usar sua conta do %(provider_name)s para fazer o login na\n"
+"    %(site_name)s. Para finalizar, preencha o seguinte formulário:"
 
 #: userauth/templates/userauth/socialaccount/signup.html:30
 msgid "Sign Up"
-msgstr ""
+msgstr "Registre-se"
 
 #: userauth/templates/userauth/socialaccount/signup.html:35
 msgid "Sign up with e-mail and password?"
-msgstr ""
+msgstr "Se cadastrar com e-mail e senha?"
 
 #: userauth/templates/userauth/socialaccount/signup.html:36
 msgid "Sign in first"
-msgstr ""
+msgstr "Faça login primeiro"
 
 #: userauth/templates/userauth/socialaccount/signup.html:36
 msgid " and connect to your social account in your profile."
-msgstr ""
+msgstr " e conecte sua rede social ao seu perfil."
