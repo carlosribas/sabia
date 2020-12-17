@@ -5,16 +5,18 @@
 {% for provider in socialaccount_providers %}
     {% if provider.id == "openid" %}
     {% for brand in provider.get_brands %}
-        <a title="{{brand.name}}"
-             class="socialaccount_provider {{provider.id}} {{brand.id}}"
-             href="{% provider_login_url provider.id openid=brand.openid_url process=process %}"
-             >
-             <img alt="{{ brand.name }}" src="{% static 'images/'%}{{ brand.name }}logo.png" width="40" height="40">
+        <a title="{{brand.name}}" class="link-icon" href="{% provider_login_url provider.id openid=brand.openid_url process=process %}">
+            <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-{{ brand.name|lower }} fa-stack-1x fa-inverse"></i>
+            </span>
         </a>
     {% endfor %}
     {% endif %}
-    <a title="{{ provider.name }}" class="socialaccount_provider {{ provider.id }}"
-         href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}">
-         <img alt="{{ provider.name }}" src="{% static 'images/' %}{{ provider.name }}logo.png" width="40" height="40">
+    <a title="{{ provider.name }}" class="link-icon"  href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}">
+        <span class="fa-stack fa-lg">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-{{ provider.name|lower }} fa-stack-1x fa-inverse"></i>
+        </span>
     </a>
 {% endfor %}

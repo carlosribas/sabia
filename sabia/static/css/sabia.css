@@ -226,6 +226,20 @@ a:focus {
     color: #ff6600
 }
 
+/* Login */
+.userauth{
+    background-color: #fff;
+    color: #3e3e3e;
+}
+.userauth a {
+    color: dodgerblue;
+}
+.userauth a:hover {
+    text-decoration: underline;
+    background: none;
+    color: dodgerblue;
+}
+
 /* Blog */
 .blog-page {
     padding: 20px;
@@ -270,8 +284,13 @@ a:focus {
     color: #ff6600
 }
 
-/* Equipe - Linkedin icon */
+/* Equipe (Linkedin) e Entrar/Resgistre-se */
+p .link-icon {
+    background-color: transparent;
+    color: #424248
+}
 p .link-icon:hover {
     background-color: transparent;
-    color: #ff6600
+    color: #ff6600;
+    text-decoration: none;
 }
