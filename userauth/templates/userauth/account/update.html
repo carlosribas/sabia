@@ -23,15 +23,15 @@
         <div class="form-group">
             {% with field=form.phone %}{% include "account/form_field.html" %}{% endwith %}
         </div>
-        <button type="submit" class="btn btn-outline-primary">{% trans "Save" %}</button>
+        <button type="submit" class="btn btn-sabia">{% trans "Save" %}</button>
     </form>
     {% if socialaccount_providers %}
         <br>
         <p>{% blocktrans with site.name as site_name %}Connect your existing account to one of your social accounts:{% endblocktrans %}</p>
-        {% include "socialaccount/provider_list.html" with process="connect" %}
+        <p>{% include "socialaccount/provider_list.html" with process="connect" %}</p>
     {% endif %}
 {% endblock %}
 
 {% block card-footer %}
-    <a href="{% url 'account_delete' request.user.pk %}" class="text-muted">{% trans "Delete your account" %}</a>
+    <a href="{% url 'account_delete' request.user.pk %}">{% trans "Delete your account" %}</a>
 {% endblock %}
