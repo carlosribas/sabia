@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-17 21:49+0000\n"
+"POT-Creation-Date: 2020-12-18 19:04+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -206,11 +206,7 @@ msgstr "Tem certeza que deseja apagar a conta"
 msgid "Delete"
 msgstr "Apagar"
 
-#: userauth/templates/userauth/account/delete.html:17
-msgid "No, keep my account"
-msgstr "Não, manter a minha conta"
-
-#: userauth/templates/userauth/account/delete.html:18
+#: userauth/templates/userauth/account/delete.html:20
 #: userauth/templates/userauth/account/logout.html:21
 #: userauth/templates/userauth/socialaccount/connections.html:53
 msgid "Return to site"
@@ -221,18 +217,18 @@ msgstr "Retornar ao site"
 msgid "Confirm E-mail Address"
 msgstr "Confirme o endereço de e-mail"
 
-#: userauth/templates/userauth/account/email_confirm.html:16
+#: userauth/templates/userauth/account/email_confirm.html:15
 #, python-format
 msgid ""
 "Please confirm that <a href=\"mailto:%(email)s\">%(email)s</a> is an e-mail "
 "address for user %(user_display)s."
 msgstr ""
 
-#: userauth/templates/userauth/account/email_confirm.html:20
+#: userauth/templates/userauth/account/email_confirm.html:19
 msgid "Confirm"
 msgstr "Confirmar"
 
-#: userauth/templates/userauth/account/email_confirm.html:27
+#: userauth/templates/userauth/account/email_confirm.html:23
 #, python-format
 msgid ""
 "This e-mail confirmation link expired or is invalid. Please <a href="
@@ -304,7 +300,7 @@ msgstr ""
 #: userauth/templates/userauth/account/password_reset_from_key.html:8
 #: userauth/templates/userauth/account/password_reset_from_key.html:25
 msgid "Change password"
-msgstr "Alterar a senha"
+msgstr "Alterar senha"
 
 #: userauth/templates/userauth/account/password_reset_from_key.html:8
 msgid "Bad token"
@@ -326,7 +322,7 @@ msgstr "Sua senha foi alterada."
 #: userauth/templates/userauth/account/password_reset_from_key_done.html:4
 #: userauth/templates/userauth/account/password_reset_from_key_done.html:7
 msgid "Change Password"
-msgstr "Mudar senha"
+msgstr "Alterar senha"
 
 #: userauth/templates/userauth/account/profile.html:5
 msgid "Profile"
