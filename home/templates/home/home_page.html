@@ -14,7 +14,7 @@
                     <img src="{{ img.url }}" class="d-block w-100" alt="{{ img.alt }}">
                     <div class="carousel-caption">
                         <h1 {% if item.title_color %}style="color: {{ item.title_color }}" {% endif %}>{{ item.title }}</h1>
-                        <h4 {% if item.description_color %}style="color: {{ item.description_color }}" {% endif %}>{{ item.description }}</h4>
+                        <h5 {% if item.description_color %}style="color: {{ item.description_color }}" {% endif %}>{{ item.description }}</h5>
                         <a class="btn btn-sabia mt-sm-2" href="{{item.link}}">Saiba mais</a>
                     </div>
                 </div>
@@ -44,7 +44,7 @@
     <div class="container-fluid">
         <div class="row">
             {% for service in self.services.all %}
-                <div class="col-md-4 mt-3">
+                <div class="col-lg-4 mt-3">
                     <div class="card border-0">
                         <a href="{{service.link.url}}">
                             {% image service.image fill-574x286 class="card-img img-fluid" %}
@@ -89,9 +89,9 @@
             {% for item in self.why_choose_us.all %}
                 <div class="col-md-4 mt-3">
                     <div class="card border-0">
-                        <h4 class="card-title text-orange font-weight-bold">
+                        <h5 class="card-title text-orange font-weight-bold">
                             <i class="{{ item.icon }}"></i> {{ item.title }}
-                        </h4>
+                        </h5>
                         <p class="card-text">{{ item.description }}</p>
                     </div>
                 </div>

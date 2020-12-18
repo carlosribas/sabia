@@ -28,10 +28,15 @@ h3,
 }
 h4,
 .h4 {
-    font-size: 22px;
+    font-size: 23px;
+    font-weight: 600;
 }
 h5,
 h5 {
+    font-size: 22px;
+}
+h6,
+h6 {
     color: #ffffff;
     padding: 10px;
     background-color: #ff6600;
@@ -55,6 +60,9 @@ h5 {
     }
     h5{
         font-size:16px;
+    }
+    h6{
+        font-size:14px;
     }
 }
 
