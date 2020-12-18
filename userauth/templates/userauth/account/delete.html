@@ -12,8 +12,10 @@
     <form method="POST">
         {% csrf_token %}
         <p>{% trans "Are you sure you want to delete the account" %} {{ object.email }}?</p>
-        <button type="submit" class="btn btn-danger">{% trans "Delete" %}</button>
+        <button type="submit" class="btn btn-sabia">{% trans "Delete" %}</button>
     </form>
-    <br><p>{% trans "No, keep my account" %}</p>
-    <a href="/" class="btn btn-outline-primary">{% trans "Return to site" %}</a>
+{% endblock %}
+
+{% block card-footer %}
+    <a href="/">{% trans "Return to site" %}</a>
 {% endblock %}
