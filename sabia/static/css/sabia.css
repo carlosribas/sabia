@@ -180,6 +180,15 @@ a:focus {
     color: #ffffff;
     background-color: #ff6600;
 }
+.card-img-overlay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding: 1.25rem 0.5rem;
+    width: 50%;
+}
 /*@media (min-width: 34em) {*/
 /*    .card-columns {*/
 /*        -webkit-column-count: 2;*/
