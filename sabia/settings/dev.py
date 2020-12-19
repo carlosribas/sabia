@@ -9,6 +9,13 @@ SECRET_KEY = '-sw(#_=0oy36fh3#ebxj@==67jn%cwtvx^60ya@!b7@2rkumk)'
 # SECURITY WARNING: define the correct hosts in production!
 ALLOWED_HOSTS = ['*']
 
+# reCaptcha settings
+RECAPTCHA_PUBLIC_KEY = 'dev_fake_public_key'
+RECAPTCHA_PRIVATE_KEY = 'dev_fake_private_key'
+
+# enable no captcha
+NOCAPTCHA = True
+
 INSTALLED_APPS = INSTALLED_APPS + [
     'debug_toolbar',
 ]
