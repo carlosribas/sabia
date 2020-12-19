@@ -155,7 +155,7 @@ USE_L10N = True
 USE_TZ = True
 
 LANGUAGES = [
-    ('pt-br', 'Português'),
+    ('pt-br', 'Portugues'),
     ('en', 'English'),
 ]
 
@@ -176,7 +176,7 @@ STATICFILES_FINDERS = [
 
 STATICFILES_DIRS = [
     os.path.join(PROJECT_DIR, 'static'),
-    os.path.join(BASE_DIR, 'userauth/static/userauth/'),
+    # os.path.join(BASE_DIR, 'userauth/static/userauth/'),
 ]
 
 # ManifestStaticFilesStorage is recommended in production, to prevent outdated
