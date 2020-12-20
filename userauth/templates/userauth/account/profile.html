@@ -10,24 +10,25 @@
 
 {% block card-body %}
     <div class="container">
-        <div class="row">
-            <div class="col border">
-                <small>{% trans "First name" %}:</small><br>
-                {{ request.user.first_name|default:'' }}
+        <div class="form-row">
+            <div class="col-12 col-md-6">
+                <label for="first_name">{% trans "First name" %}</label>
+                <input type="text" class="form-control" id="first_name" placeholder="{{ request.user.first_name|default:'' }}" disabled>
             </div>
-            <div class="col border">
-                <small>{% trans "Last name" %}:</small><br>
-                {{ request.user.last_name|default:'' }}
+            <div class="col-12 col-md-6">
+                <label for="last_name">{% trans "Last name" %}</label>
+                <input type="text" class="form-control" id="last_name" placeholder="{{ request.user.last_name|default:'' }}" disabled>
             </div>
         </div>
-        <div class="row">
-            <div class="col border">
-                <small>{% trans "E-mail" %}:</small><br>
-                {{ request.user.email }}
+        <br>
+        <div class="form-row">
+            <div class="col-12 col-md-6">
+                <label for="email">{% trans "E-mail" %}</label>
+                <input type="text" class="form-control" id="email" placeholder="{{ request.user.email }}" disabled>
             </div>
-            <div class="col border">
-                <small>{% trans "Phone" %}:</small><br>
-                {{ request.user.phone|default:'' }}
+            <div class="col-12 col-md-6">
+                <label for="phone">{% trans "Phone" %}</label>
+                <input type="text" class="form-control" id="phone" placeholder="{{ request.user.phone|default:'' }}" disabled>
             </div>
         </div>
     </div>
