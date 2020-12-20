@@ -56,7 +56,11 @@
 
         {% if messages %}
             {% for message in messages %}
-                <script>new Toast({message: '{{ message }}', type: '{{ message.tags }}'});</script>
+                {% if message.tags == "error" %}
+                    <script>new Toast({message: '{{ message }}', type: 'danger'});</script>
+                {% else %}
+                    <script>new Toast({message: '{{ message }}', type: '{{ message.tags }}'});</script>
+                {% endif %}
             {% endfor %}
         {% endif %}
 
