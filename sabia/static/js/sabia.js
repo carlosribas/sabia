@@ -1,3 +1,5 @@
+/* ref: https://ireade.github.io/Toast.js/ */
+
 'use strict';
 
 function Toast(options) {
@@ -8,6 +10,7 @@ function Toast(options) {
 
     this.options = options;
     this.options.type = options.type || 'default';
+    this.options.fadeAway = options.fadeAway || 5000;
     this.toastContainerEl = document.querySelector('.toastjs-container');
     this.toastEl = document.querySelector('.toastjs');
     this._init();
@@ -101,5 +104,8 @@ Toast.prototype._init = function () {
     }).then(function () {
         _this4._open();
         _this4._addEventListeners();
+    }).then(() => new Promise(resolve => setTimeout(resolve, _this4.options.fadeAway)))
+    .then(function() {
+        _this4._close();
     });
 };
