@@ -70,8 +70,8 @@ class TeamMember(index.Indexed, ClusterableModel):
         return '{}'.format(self.name)
 
     class Meta:
-        verbose_name = 'Person'
-        verbose_name_plural = 'Team'
+        verbose_name = _("Person")
+        verbose_name_plural = _("Team")
 
 
 @register_snippet

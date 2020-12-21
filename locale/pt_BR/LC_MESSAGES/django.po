@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-18 19:04+0000\n"
+"POT-Creation-Date: 2020-12-21 10:58+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -32,6 +32,14 @@ msgstr "Link para o Linkedin"
 #: base/models.py:38
 msgid "Brief description"
 msgstr "Breve descrição"
+
+#: base/models.py:73
+msgid "Person"
+msgstr "Pessoa"
+
+#: base/models.py:74 base/wagtail_hooks.py:10
+msgid "Team"
+msgstr "Equipe"
 
 #: base/models.py:91 base/models.py:94
 msgid "Footer Text"
@@ -93,6 +101,10 @@ msgstr "Quando logado"
 msgid "When not logged in"
 msgstr "Quando não estiver logado"
 
+#: base/wagtail_hooks.py:23
+msgid "General"
+msgstr "Geral"
+
 #: base/wagtailstreamforms_fields.py:11
 msgid "ReCaptcha field"
 msgstr ""
@@ -129,7 +141,8 @@ msgstr "Cor do título"
 msgid "For example: #ffffff"
 msgstr "Por exemplo: #ffffff"
 
-#: home/models.py:18 home/models.py:42 home/models.py:63
+#: home/models.py:18 home/models.py:42 home/models.py:63 service/models.py:17
+#: service/templates/service/teleradiology.html:28
 msgid "Description"
 msgstr "Descrição"
 
@@ -137,7 +150,8 @@ msgstr "Descrição"
 msgid "Description color"
 msgstr "Cor da descrição"
 
-#: home/models.py:24 home/models.py:48 home/models.py:88
+#: home/models.py:24 home/models.py:48 home/models.py:88 service/models.py:18
+#: service/templates/service/teleradiology.html:37
 msgid "Image"
 msgstr "Imagem"
 
@@ -177,6 +191,45 @@ msgstr ""
 msgid "Why choose us"
 msgstr "Por que nos escolher"
 
+#: service/models.py:16 service/templates/service/teleradiology.html:19
+msgid "Date"
+msgstr ""
+
+#: service/models.py:19
+msgid "Report"
+msgstr ""
+
+#: service/templates/service/teleradiology.html:4
+#: service/templates/service/teleradiology.html:10
+msgid "Teleradiology"
+msgstr ""
+
+#: service/templates/service/teleradiology.html:45
+#: service/templates/service/teleradiology.html:50
+#: userauth/templates/userauth/account/update.html:26
+msgid "Save"
+msgstr "Salvar"
+
+#: service/templates/service/teleradiology.html:47
+msgid "Edit"
+msgstr ""
+
+#: service/templates/service/teleradiology.html:48
+msgid "Back"
+msgstr ""
+
+#: service/views.py:25 service/views.py:73
+msgid "Item created successfully."
+msgstr ""
+
+#: service/views.py:30 service/views.py:78
+msgid "Information not saved."
+msgstr ""
+
+#: service/views.py:32
+msgid "Action not available."
+msgstr ""
+
 #: userauth/forms.py:20 userauth/templates/userauth/account/profile.html:15
 msgid "First name"
 msgstr "Nome"
@@ -189,7 +242,7 @@ msgstr "Sobrenome"
 msgid "Enter a valid phone number starting with (DDD)"
 msgstr "Insira um número de telefone válido começando com (DDD)"
 
-#: userauth/models.py:13 userauth/templates/userauth/account/profile.html:29
+#: userauth/models.py:13 userauth/templates/userauth/account/profile.html:30
 msgid "Phone"
 msgstr "Telefone"
 
@@ -238,6 +291,7 @@ msgstr ""
 #: userauth/templates/userauth/account/login.html:5
 #: userauth/templates/userauth/account/login.html:8
 #: userauth/templates/userauth/account/login.html:22
+#: userauth/templates/userauth/account/password_reset_from_key_done.html:15
 #: userauth/templates/userauth/account/signup.html:47
 msgid "Sign in"
 msgstr "Entrar"
@@ -274,12 +328,26 @@ msgstr "Sair"
 msgid "Are you sure you want to sign out?"
 msgstr "Você tem certeza que deseja sair?"
 
+#: userauth/templates/userauth/account/password_change.html:5
+#: userauth/templates/userauth/account/password_change.html:8
+#: userauth/templates/userauth/account/password_change.html:27
+#: userauth/templates/userauth/account/password_reset_from_key_done.html:4
+#: userauth/templates/userauth/account/password_reset_from_key_done.html:7
+msgid "Change Password"
+msgstr "Alterar senha"
+
+#: userauth/templates/userauth/account/password_change.html:32
+#, fuzzy
+#| msgid "Forgot password?"
+msgid "Forgot Password?"
+msgstr "Esqueceu a senha?"
+
 #: userauth/templates/userauth/account/password_reset.html:5
 #: userauth/templates/userauth/account/password_reset.html:8
 msgid "Password reset"
 msgstr "Redefinir senha"
 
-#: userauth/templates/userauth/account/password_reset.html:17
+#: userauth/templates/userauth/account/password_reset.html:18
 msgid "Reset password"
 msgstr "Redefinir senha"
 
@@ -319,11 +387,6 @@ msgstr ""
 msgid "Your password is now changed."
 msgstr "Sua senha foi alterada."
 
-#: userauth/templates/userauth/account/password_reset_from_key_done.html:4
-#: userauth/templates/userauth/account/password_reset_from_key_done.html:7
-msgid "Change Password"
-msgstr "Alterar senha"
-
 #: userauth/templates/userauth/account/profile.html:5
 msgid "Profile"
 msgstr "Perfil"
@@ -332,11 +395,11 @@ msgstr "Perfil"
 msgid "Account profile"
 msgstr "Perfil da conta"
 
-#: userauth/templates/userauth/account/profile.html:25
+#: userauth/templates/userauth/account/profile.html:26
 msgid "E-mail"
 msgstr ""
 
-#: userauth/templates/userauth/account/profile.html:37
+#: userauth/templates/userauth/account/profile.html:38
 msgid "Update your account"
 msgstr "Atualizar conta"
 
@@ -353,10 +416,6 @@ msgstr "Já tem uma conta?"
 #: userauth/templates/userauth/account/update.html:8
 msgid "Update account"
 msgstr "Atualizar conta"
-
-#: userauth/templates/userauth/account/update.html:26
-msgid "Save"
-msgstr "Salvar"
 
 #: userauth/templates/userauth/account/update.html:30
 msgid "Connect your existing account to one of your social accounts:"
