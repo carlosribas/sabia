@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load i18n static %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12 mt-2">
+                <h2>{% trans "Registration" %}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-12 mt-2">
+                <div id="accordion">
+                    {% for course in courses %}
+                        <div class="light-card">
+                            <div class="light-header" id="heading{{ course.id }}">
+                                <h5 class="mb-0">
+                                    <button class="btn btn-link" data-toggle="collapse" data-target="#collapse{{ course.id }}" aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}" aria-controls="collapse{{ course.id }}">
+                                        {{ course.name }}
+                                    </button>
+                                </h5>
+                            </div>
+                            <div id="collapse{{ course.id }}" class="collapse {% if forloop.first %}show{% endif %}" aria-labelledby="heading{{ course.id }}" data-parent="#accordion">
+                                <div class="light-body course-body">
+                                    <p>
+                                        {% if course.start_date and course.end_date %}
+                                            <strong>{% trans "Course date" %}:</strong>
+                                            {{ course.start_date|date:'d/m/Y' }}{% if course.end_date %} a {{ course.end_date|date:'d/m/Y' }}{% endif %}{% if course.start_time and course.end_time %} das {{ course.start_time }} às {{ course.end_time }}{% endif %}
+                                        {% endif %}
+                                    </p>
+                                    <p>{{ course.description|safe }}</p>
+                                    <p>
+                                        {% if course.price %}<strong>{% trans "Price" %}:</strong> R${{ course.price }} {% trans "one-time payment" %}{% endif %}
+                                        {% if course.price2x %}{% trans " or 2 monthly payments of " %}R${{ course.price2x }}{% endif %}
+                                        {% if course.price23 %}{% trans " or 3 monthly payments of " %}R${{ course.price3x }}{% endif %}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

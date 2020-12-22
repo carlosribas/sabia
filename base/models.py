@@ -15,6 +15,7 @@ from wagtail.admin.edit_handlers import (
     MultiFieldPanel,
     StreamFieldPanel,
     PageChooserPanel,
+    FieldRowPanel,
 )
 from wagtail.core.fields import RichTextField, StreamField
 from wagtail.core.models import Collection, Orderable
@@ -26,7 +27,9 @@ from wagtailstreamforms.blocks import WagtailFormBlock
 from wagtailtrans.models import Language, TranslatablePage
 from wagtailstreamforms.models.abstract import AbstractFormSetting
 
+from userauth.models import CustomUser
 from .blocks import BaseStreamBlock
+from .richtext_options import RICHTEXT_FEATURES
 
 
 @register_snippet
@@ -72,6 +75,58 @@ class TeamMember(index.Indexed, ClusterableModel):
     class Meta:
         verbose_name = _("Person")
         verbose_name_plural = _("Team")
+
+
+@register_snippet
+class Course(index.Indexed, ClusterableModel):
+    """A Django model to create courses."""
+    name = models.CharField(_("Name"), max_length=254)
+    start_date = models.DateField(_("Start date"))
+    end_date = models.DateField(_("End date"))
+    start_time = models.TimeField(_("Start time"), blank=True, null=True)
+    end_time = models.TimeField(_("End time"), blank=True, null=True)
+    price = models.DecimalField(_("Price"), max_digits=10, decimal_places=2, blank=True, null=True)
+    price2x = models.DecimalField(_("Price 2x"), max_digits=10, decimal_places=2, blank=True, null=True)
+    price3x = models.DecimalField(_("Price 3x"), max_digits=10, decimal_places=2, blank=True, null=True)
+    vacancies = models.IntegerField(_("Vacancies"))
+    registered = models.IntegerField(_("Registered"), blank=True, null=True)
+    description = RichTextField(_("Description"), features=RICHTEXT_FEATURES, blank=True)
+
+    panels = [
+        FieldPanel('name'),
+        MultiFieldPanel([
+            FieldRowPanel([
+                FieldPanel('start_date', classname="col6"),
+                FieldPanel('end_date', classname="col6"),
+            ])
+        ], heading=_("Dates")),
+        MultiFieldPanel([
+            FieldRowPanel([
+                FieldPanel('start_time', classname="col6"),
+                FieldPanel('end_time', classname="col6"),
+            ])
+        ], heading=_("Schedule")),
+        MultiFieldPanel([
+            FieldRowPanel([
+                FieldPanel('price', classname="col4"),
+                FieldPanel('price2x', classname="col4"),
+                FieldPanel('price3x', classname="col4"),
+            ])
+        ], heading=_("Price")),
+        FieldPanel('vacancies'),
+        FieldPanel('description'),
+    ]
+
+    search_fields = [
+        index.SearchField('name'),
+    ]
+
+    def __str__(self):
+        return '{}'.format(self.name)
+
+    class Meta:
+        verbose_name = _("Course")
+        verbose_name_plural = _("Courses")
 
 
 @register_snippet

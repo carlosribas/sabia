@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-21 10:58+0000\n"
+"POT-Creation-Date: 2020-12-22 14:50+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,91 +17,167 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: base/models.py:35
+#: base/models.py:38 base/models.py:83
 msgid "Name"
 msgstr "Nome"
 
-#: base/models.py:36
+#: base/models.py:39
 msgid "Job title"
 msgstr "Cargo"
 
-#: base/models.py:37
+#: base/models.py:40
 msgid "Link to Linkedin"
 msgstr "Link para o Linkedin"
 
-#: base/models.py:38
+#: base/models.py:41
 msgid "Brief description"
 msgstr "Breve descrição"
 
-#: base/models.py:73
+#: base/models.py:76
 msgid "Person"
 msgstr "Pessoa"
 
-#: base/models.py:74 base/wagtail_hooks.py:10
+#: base/models.py:77 base/wagtail_hooks.py:16
 msgid "Team"
 msgstr "Equipe"
 
-#: base/models.py:91 base/models.py:94
+#: base/models.py:84
+msgid "Start date"
+msgstr "Início"
+
+#: base/models.py:85
+msgid "End date"
+msgstr "Término"
+
+#: base/models.py:86
+msgid "Start time"
+msgstr "Início"
+
+#: base/models.py:87
+msgid "End time"
+msgstr "Término"
+
+#: base/models.py:88 base/models.py:115 base/templates/base/course_list.html:35
+msgid "Price"
+msgstr "Valor"
+
+#: base/models.py:89
+msgid "Price 2x"
+msgstr "Valor em 2x"
+
+#: base/models.py:90
+msgid "Price 3x"
+msgstr "Valor em 3x"
+
+#: base/models.py:91
+msgid "Vacancies"
+msgstr "Vagas"
+
+#: base/models.py:92
+msgid "Registered"
+msgstr "Inscritos"
+
+#: base/models.py:93 home/models.py:18 home/models.py:42 home/models.py:63
+msgid "Description"
+msgstr "Descrição"
+
+#: base/models.py:102
+msgid "Dates"
+msgstr "Datas"
+
+#: base/models.py:108
+msgid "Schedule"
+msgstr "Horário"
+
+#: base/models.py:128 base/wagtail_hooks.py:38
+msgid "Course"
+msgstr "Curso"
+
+#: base/models.py:129
+msgid "Courses"
+msgstr "Cursos"
+
+#: base/models.py:146 base/models.py:149 base/wagtail_hooks.py:25
 msgid "Footer Text"
 msgstr "Texto do rodapé"
 
-#: base/models.py:103 base/models.py:127 blog/models.py:32
+#: base/models.py:158 base/models.py:182 blog/models.py:32
 msgid "Text to describe the page"
 msgstr "Texto para descrever a página"
 
-#: base/models.py:110 base/models.py:135 blog/models.py:39 blog/models.py:93
+#: base/models.py:165 base/models.py:190 blog/models.py:39 blog/models.py:93
 msgid "Landscape mode only; horizontal width between 1000px and 3000px."
 msgstr ""
 
-#: base/models.py:146
+#: base/models.py:201
 msgid "Select the image collection for this gallery."
 msgstr ""
 
-#: base/models.py:189
+#: base/models.py:244 base/wagtail_hooks.py:31
 msgid "Menu"
 msgstr ""
 
-#: base/models.py:190
+#: base/models.py:245
 msgid "Menu Item"
 msgstr ""
 
-#: base/models.py:198
+#: base/models.py:253
 msgid "Menu to which this item belongs"
 msgstr ""
 
-#: base/models.py:199
+#: base/models.py:254
 msgid "Title of menu item that will be displayed"
 msgstr ""
 
-#: base/models.py:200 home/models.py:22
+#: base/models.py:255 home/models.py:22
 msgid "URL to link to, e.g. /contato"
 msgstr ""
 
-#: base/models.py:203 home/models.py:45 home/models.py:80
+#: base/models.py:258 home/models.py:45 home/models.py:80
 msgid "Page to link to"
 msgstr ""
 
-#: base/models.py:207
+#: base/models.py:262
 msgid "Title of submenu (LEAVE BLANK if there is no custom submenu)"
 msgstr ""
 
-#: base/models.py:209 home/models.py:64
+#: base/models.py:264 home/models.py:64
 msgid "Fontawesome icon"
 msgstr ""
 
-#: base/models.py:212
+#: base/models.py:267
 msgid "Always"
 msgstr "Sempre"
 
-#: base/models.py:212
+#: base/models.py:267
 msgid "When logged in"
 msgstr "Quando logado"
 
-#: base/models.py:212
+#: base/models.py:267
 msgid "When not logged in"
 msgstr "Quando não estiver logado"
 
-#: base/wagtail_hooks.py:23
+#: base/templates/base/course_list.html:8
+msgid "Registration"
+msgstr "Inscrição"
+
+#: base/templates/base/course_list.html:29
+msgid "Course date"
+msgstr "Data do curso"
+
+#: base/templates/base/course_list.html:35
+msgid "one-time payment"
+msgstr "à vista"
+
+#: base/templates/base/course_list.html:36
+msgid " or 2 monthly payments of "
+msgstr " ou 2x de "
+
+#: base/templates/base/course_list.html:37
+msgid " or 3 monthly payments of "
+msgstr " ou 3x de "
+
+#: base/wagtail_hooks.py:46
 msgid "General"
 msgstr "Geral"
 
@@ -141,17 +217,11 @@ msgstr "Cor do título"
 msgid "For example: #ffffff"
 msgstr "Por exemplo: #ffffff"
 
-#: home/models.py:18 home/models.py:42 home/models.py:63 service/models.py:17
-#: service/templates/service/teleradiology.html:28
-msgid "Description"
-msgstr "Descrição"
-
 #: home/models.py:20
 msgid "Description color"
 msgstr "Cor da descrição"
 
-#: home/models.py:24 home/models.py:48 home/models.py:88 service/models.py:18
-#: service/templates/service/teleradiology.html:37
+#: home/models.py:24 home/models.py:48 home/models.py:88
 msgid "Image"
 msgstr "Imagem"
 
@@ -190,45 +260,6 @@ msgstr ""
 #: home/models.py:98
 msgid "Why choose us"
 msgstr "Por que nos escolher"
-
-#: service/models.py:16 service/templates/service/teleradiology.html:19
-msgid "Date"
-msgstr ""
-
-#: service/models.py:19
-msgid "Report"
-msgstr ""
-
-#: service/templates/service/teleradiology.html:4
-#: service/templates/service/teleradiology.html:10
-msgid "Teleradiology"
-msgstr ""
-
-#: service/templates/service/teleradiology.html:45
-#: service/templates/service/teleradiology.html:50
-#: userauth/templates/userauth/account/update.html:26
-msgid "Save"
-msgstr "Salvar"
-
-#: service/templates/service/teleradiology.html:47
-msgid "Edit"
-msgstr ""
-
-#: service/templates/service/teleradiology.html:48
-msgid "Back"
-msgstr ""
-
-#: service/views.py:25 service/views.py:73
-msgid "Item created successfully."
-msgstr ""
-
-#: service/views.py:30 service/views.py:78
-msgid "Information not saved."
-msgstr ""
-
-#: service/views.py:32
-msgid "Action not available."
-msgstr ""
 
 #: userauth/forms.py:20 userauth/templates/userauth/account/profile.html:15
 msgid "First name"
@@ -337,8 +368,6 @@ msgid "Change Password"
 msgstr "Alterar senha"
 
 #: userauth/templates/userauth/account/password_change.html:32
-#, fuzzy
-#| msgid "Forgot password?"
 msgid "Forgot Password?"
 msgstr "Esqueceu a senha?"
 
@@ -416,6 +445,10 @@ msgstr "Já tem uma conta?"
 #: userauth/templates/userauth/account/update.html:8
 msgid "Update account"
 msgstr "Atualizar conta"
+
+#: userauth/templates/userauth/account/update.html:26
+msgid "Save"
+msgstr "Salvar"
 
 #: userauth/templates/userauth/account/update.html:30
 msgid "Connect your existing account to one of your social accounts:"
