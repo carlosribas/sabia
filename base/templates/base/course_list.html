@@ -20,6 +20,9 @@
                                     <button class="btn btn-link" data-toggle="collapse" data-target="#collapse{{ course.id }}" aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}" aria-controls="collapse{{ course.id }}">
                                         {{ course.name }}
                                     </button>
+                                    {% if course.id in enrolled_courses %}
+                                        <span class="label label-as-badge">{% trans "Enrolled" %}</span>
+                                    {% endif %}
                                 </h5>
                             </div>
                             <div id="collapse{{ course.id }}" class="collapse {% if forloop.first %}show{% endif %}" aria-labelledby="heading{{ course.id }}" data-parent="#accordion">
@@ -35,6 +38,16 @@
                                         {% if course.price %}<strong>{% trans "Price" %}:</strong> R${{ course.price }} {% trans "one-time payment" %}{% endif %}
                                         {% if course.price2x %}{% trans " or 2 monthly payments of " %}R${{ course.price2x }}{% endif %}
                                         {% if course.price23 %}{% trans " or 3 monthly payments of " %}R${{ course.price3x }}{% endif %}
+                                    </p>
+                                    <p>
+                                        <form role="form" method="post">{% csrf_token %}
+                                            <input type="hidden" name="content" value="{{course.id}}">
+                                            {% if course.id in enrolled_courses %}
+                                                <button type="submit" name="action" value="unsubscribe" class="btn btn-danger">{% trans "Unsubscribe" %}</button>
+                                            {% else %}
+                                                <button type="submit" name="action" value="enroll" class="btn btn-sabia">{% trans "Enroll" %}</button>
+                                            {% endif %}
+                                        </form>
                                     </p>
                                 </div>
                             </div>

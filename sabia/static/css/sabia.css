@@ -329,14 +329,12 @@ p .link-icon:hover {
     border: 1px solid rgba(0,0,0,.125);
     border-radius: .25rem;
 }
-
 .light-header {
     padding: .75rem 1.25rem;
     margin-bottom: 0;
     background-color: rgba(0,0,0,.03);
     border-bottom: 1px solid rgba(0,0,0,.125);
 }
-
 .light-body {
     color: #3e3e3e;
     -webkit-box-flex: 1;
@@ -350,20 +348,25 @@ p .link-icon:hover {
     color: #ff6600;
     text-decoration: none;
 }
-
 .btn-link:hover {
     color: #ff6600;
     text-decoration: underline;
 }
-
 .btn-link:focus, .btn-link.focus {
     text-decoration: underline;
     box-shadow: none;
 }
-
 .btn-link:disabled, .btn-link.disabled {
     color: #6c757d;
     pointer-events: none;
+}
+
+.label-as-badge {
+    border-radius: 1em;
+    padding: 5px;
+    font-size: 16px;
+    color: #ffffff;
+    background-color: #ff6600;
 }
 
 /* Mensagens */

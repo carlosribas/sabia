@@ -129,6 +129,12 @@ class Course(index.Indexed, ClusterableModel):
         verbose_name_plural = _("Courses")
 
 
+class CourseUser(models.Model):
+    """A Django model to register the user in a course"""
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+
+
 @register_snippet
 class FooterText(models.Model):
     """
