@@ -4,6 +4,10 @@
 
 {% block body_class %}template-homepage{% endblock %}
 
+{% block extra_js %}
+    <script type="text/javascript" src="{% static 'js/carousel.js' %}"></script>
+{% endblock %}
+
 {% block content %}
     {# Slider #}
     <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
@@ -44,7 +48,7 @@
     <div class="container-fluid">
         <div class="row">
             {% for service in self.services.all %}
-                <div class="col-lg-4 mt-3">
+                <div class="col-md-4 mt-3">
                     <div class="card border-0">
                         <a href="{{service.link.url}}">
                             {% image service.image fill-574x286 class="card-img img-fluid" %}

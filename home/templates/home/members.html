@@ -9,29 +9,23 @@
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div id="myCarousel" class="carousel slide w-100" data-ride="carousel">
-                <div class="carousel-inner w-100" role="listbox">
+        <div class="row row-team">
+            <button id="btnPrev" class="btn-team btn-previous">
+                <i class="fa fa-chevron-left" aria-hidden="true"></i>
+            </button>
+            <button id="btnNext" class="btn-team btn-next">
+                <i class="fa fa-chevron-right" aria-hidden="true"></i>
+            </button>
+            <div id="teambox">
+                <div class="container container-team">
                     {% for member in members %}
-                        <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                            <div class="col-md-4">
-                                <div class="card card-body border-0">
-                                    {% if member.image %}
-                                        <a class="link-member" href="equipe/#{{ member.id }}">{% image member.image fill-280x280 %}</a>
-                                    {% endif %}
-                                </div>
-                            </div>
+                        {# <a href="equipe/#{{ member.id }}">{% image member.image fill-280x280 %}</a> #}
+                        {% image member.image fill-280x280 as photo %}
+                        <div class="person" style="background-image: url({{photo.url}})">
+                            <h2 class="title">{{member}} <br /> <small>{{member.job_title}}</small></h2>
                         </div>
                     {% endfor %}
                 </div>
-                <a class="carousel-control-prev w-auto" href="#myCarousel" role="button" data-slide="prev">
-                    <span class="carousel-control-prev-icon bg-dark border border-dark rounded-circle" aria-hidden="true"></span>
-                    <span class="sr-only">Previous</span>
-                </a>
-                <a class="carousel-control-next w-auto" href="#myCarousel" role="button" data-slide="next">
-                    <span class="carousel-control-next-icon bg-dark border border-dark rounded-circle" aria-hidden="true"></span>
-                    <span class="sr-only">Next</span>
-                </a>
             </div>
         </div>
     </div>
