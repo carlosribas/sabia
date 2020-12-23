@@ -45,7 +45,11 @@
                                             {% if course.id in enrolled_courses %}
                                                 <button type="submit" name="action" value="unsubscribe" class="btn btn-danger">{% trans "Unsubscribe" %}</button>
                                             {% else %}
-                                                <button type="submit" name="action" value="enroll" class="btn btn-sabia">{% trans "Enroll" %}</button>
+                                                {% if course.registered >= course.vacancies %}
+                                                    <button type="submit" name="action" value="enroll" class="btn btn-sabia" disabled>Vagas esgotadas</button>
+                                                {% else %}
+                                                    <button type="submit" name="action" value="enroll" class="btn btn-sabia">{% trans "Enroll" %}</button>
+                                                {% endif %}
                                             {% endif %}
                                         </form>
                                     </p>

@@ -89,7 +89,7 @@ class Course(index.Indexed, ClusterableModel):
     price2x = models.DecimalField(_("Price 2x"), max_digits=10, decimal_places=2, blank=True, null=True)
     price3x = models.DecimalField(_("Price 3x"), max_digits=10, decimal_places=2, blank=True, null=True)
     vacancies = models.IntegerField(_("Vacancies"))
-    registered = models.IntegerField(_("Registered"), blank=True, null=True)
+    registered = models.IntegerField(_("Registered"), blank=True, null=True, default=0)
     description = RichTextField(_("Description"), features=RICHTEXT_FEATURES, blank=True)
 
     panels = [

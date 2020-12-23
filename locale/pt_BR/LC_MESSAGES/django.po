@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-22 20:11+0000\n"
+"POT-Creation-Date: 2020-12-23 15:00+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -57,7 +57,7 @@ msgstr "Início"
 msgid "End time"
 msgstr "Término"
 
-#: base/models.py:88 base/models.py:115 base/templates/base/course_list.html:36
+#: base/models.py:88 base/models.py:115 base/templates/base/course_list.html:38
 msgid "Price"
 msgstr "Valor"
 
@@ -161,39 +161,43 @@ msgstr "Quando não estiver logado"
 msgid "Registration"
 msgstr "Inscrição"
 
-#: base/templates/base/course_list.html:23
+#: base/templates/base/course_list.html:24
 msgid "Enrolled"
 msgstr "Inscrito"
 
-#: base/templates/base/course_list.html:30
+#: base/templates/base/course_list.html:32
 msgid "Course date"
 msgstr "Data do curso"
 
-#: base/templates/base/course_list.html:36
+#: base/templates/base/course_list.html:38
 msgid "one-time payment"
 msgstr "à vista"
 
-#: base/templates/base/course_list.html:37
+#: base/templates/base/course_list.html:39
 msgid " or 2 monthly payments of "
 msgstr " ou 2x de "
 
-#: base/templates/base/course_list.html:38
+#: base/templates/base/course_list.html:40
 msgid " or 3 monthly payments of "
 msgstr " ou 3x de "
 
-#: base/templates/base/course_list.html:44
+#: base/templates/base/course_list.html:46
 msgid "Unsubscribe"
 msgstr "Cancelar inscrição"
 
-#: base/templates/base/course_list.html:46
+#: base/templates/base/course_list.html:48
 msgid "Enroll"
 msgstr "Fazer inscrição"
 
-#: base/views.py:26
+#: base/views.py:33
 msgid "Registration successful"
 msgstr "Inscrição realizada com sucesso"
 
-#: base/views.py:32
+#: base/views.py:35
+msgid "Sorry, there are no more vacancies for this course"
+msgstr "Desculpa, vagas esgotadas!"
+
+#: base/views.py:45
 msgid "Unsubscribe successfully"
 msgstr "Inscrição cancelada"
 

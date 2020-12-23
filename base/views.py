@@ -23,12 +23,23 @@ def course_list(request, template_name="base/course_list.html"):
         if request.POST['action'] == "enroll":
             course = get_object_or_404(Course, pk=request.POST['content'])
             user = request.user
-            course_user = CourseUser(course=course, user=user)
-            course_user.save()
-            messages.success(request, _('Registration successful'))
+            if course.registered < course.vacancies:
+                # Update total enrolled students
+                course.registered = course.registered + 1
+                course.save()
+                # Create course/user object
+                course_user = CourseUser(course=course, user=user)
+                course_user.save()
+                messages.success(request, _('Registration successful'))
+            else:
+                messages.error(request, _('Sorry, there are no more vacancies for this course'))
         elif request.POST['action'] == "unsubscribe":
             course = get_object_or_404(Course, pk=request.POST['content'])
             user = request.user
+            # Update total enrolled students
+            course.registered = course.registered - 1
+            course.save()
+            # Remove course/user object
             course_user = CourseUser.objects.get(course=course, user=user)
             course_user.delete()
             messages.success(request, _('Unsubscribe successfully'))
