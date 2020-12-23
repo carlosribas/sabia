@@ -10,10 +10,10 @@ class CustomUserAdmin(UserAdmin):
     model = CustomUser
     list_display = ['pk', 'email', 'username', 'first_name', 'last_name']
     add_fieldsets = UserAdmin.add_fieldsets + (
-        (None, {'fields': ('email', 'first_name', 'last_name', 'phone',)}),
+        (None, {'fields': ('email', 'first_name', 'last_name', 'academic_background', 'other', 'newsletter', 'phone')}),
     )
     fieldsets = UserAdmin.fieldsets + (
-        (None, {'fields': ('phone',)}),
+        (None, {'fields': ('academic_background', 'other', 'newsletter', 'phone')}),
     )
 
 
