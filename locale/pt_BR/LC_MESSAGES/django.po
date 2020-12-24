@@ -389,8 +389,8 @@ msgid ""
 msgstr ""
 "Você está recebendo este e-mail porque você ou outra pessoa solicitou uma "
 "redefinição de senha.\n"
-"Se você não solicitou essa redefinição de senha, por favor ignore "
-"este email. Clique no link abaixo para redefinir sua senha."
+"Ignore este email caso não tenha solicitado uma redefinição de senha. "
+"Clique no link abaixo para redefinir a sua senha."
 
 #: userauth/templates/userauth/account/email_confirm.html:6
 #: userauth/templates/userauth/account/email_confirm.html:9
