@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-24 16:12+0000\n"
+"POT-Creation-Date: 2020-12-24 16:23+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -380,12 +380,25 @@ msgstr ""
 msgid "Please confirm your e-mail address"
 msgstr "Por favor, confirme seu endereço de email"
 
+#: userauth/templates/userauth/account/email/password_reset_key_message.txt:4
+msgid ""
+"You're receiving this e-mail because you or someone else has requested a "
+"password for your user account.\n"
+"It can be safely ignored if you did not request a password reset. Click the "
+"link below to reset your password."
+msgstr ""
+"Você está recebendo este e-mail porque você ou outra pessoa solicitou uma "
+"redefinição de senha.\n"
+"Se você não solicitou essa redefinição de senha, por favor ignore "
+"este email. Clique no link abaixo para redefinir sua senha."
+
 #: userauth/templates/userauth/account/email_confirm.html:6
 #: userauth/templates/userauth/account/email_confirm.html:9
 msgid "Confirm E-mail Address"
 msgstr "Confirme o endereço de e-mail"
 
 #: userauth/templates/userauth/account/email_confirm.html:15
+#, python-format
 msgid ""
 "Your account is almost ready. To activate it, please confirm your email "
 "address (%(email)s) by clicking the button below."
@@ -403,6 +416,8 @@ msgid ""
 "This e-mail confirmation link expired or is invalid. Please <a href="
 "\"%(email_url)s\">issue a new e-mail confirmation request</a>."
 msgstr ""
+"Este link de confirmação de e-mail expirou ou é inválido. "
+"\"%(email_url)s\">Por favor, faça um novo pedido</a>."
 
 #: userauth/templates/userauth/account/login.html:5
 #: userauth/templates/userauth/account/login.html:8
