@@ -1,4 +1,9 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block extra_js %}
+    <script type="text/javascript" src="{% static 'js/academic_background.js' %}"></script>
+{% endblock %}
 
 {% block content %}
 

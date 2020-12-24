@@ -177,6 +177,7 @@ STATICFILES_FINDERS = [
 STATICFILES_DIRS = [
     os.path.join(PROJECT_DIR, 'static'),
     os.path.join(BASE_DIR, 'home/static/home'),
+    os.path.join(BASE_DIR, 'userauth/static/userauth'),
 ]
 
 # ManifestStaticFilesStorage is recommended in production, to prevent outdated
@@ -204,7 +205,7 @@ AUTH_USER_MODEL = 'userauth.CustomUser'
 
 WAGTAIL_USER_CREATION_FORM = 'userauth.forms.WagtailUserCreationForm'
 WAGTAIL_USER_EDIT_FORM = 'userauth.forms.WagtailUserEditForm'
-WAGTAIL_USER_CUSTOM_FIELDS = ['academic_background', 'other', 'newsletter', 'phone']
+WAGTAIL_USER_CUSTOM_FIELDS = ['academic_background', 'other', 'certificate', 'phone']
 
 # allauth settings
 AUTHENTICATION_BACKENDS = [

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-23 15:00+0000\n"
+"POT-Creation-Date: 2020-12-23 20:08+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -185,7 +185,7 @@ msgstr " ou 3x de "
 msgid "Unsubscribe"
 msgstr "Cancelar inscrição"
 
-#: base/templates/base/course_list.html:48
+#: base/templates/base/course_list.html:51
 msgid "Enroll"
 msgstr "Fazer inscrição"
 
@@ -293,13 +293,37 @@ msgstr "Nome"
 msgid "Last name"
 msgstr "Sobrenome"
 
-#: userauth/models.py:11
+#: userauth/forms.py:23 userauth/models.py:30
+msgid "Other"
+msgstr "Outro"
+
+#: userauth/models.py:12
+msgid "Veterinarian"
+msgstr "Médico veterinário"
+
+#: userauth/models.py:13
+msgid "Veterinary medicine student"
+msgstr "Aluno de medicina veterinária"
+
+#: userauth/models.py:14
+msgid "Others"
+msgstr "Outros"
+
+#: userauth/models.py:26
 msgid "Enter a valid phone number starting with (DDD)"
 msgstr "Insira um número de telefone válido começando com (DDD)"
 
-#: userauth/models.py:13 userauth/templates/userauth/account/profile.html:30
+#: userauth/models.py:28 userauth/templates/userauth/account/profile.html:30
 msgid "Phone"
 msgstr "Telefone"
+
+#: userauth/models.py:29
+msgid "Academic background"
+msgstr "Formação acadêmica"
+
+#: userauth/models.py:31
+msgid "Certificate"
+msgstr "Comprovante"
 
 #: userauth/templates/userauth/account/delete.html:5
 #: userauth/templates/userauth/account/delete.html:8
@@ -347,7 +371,7 @@ msgstr ""
 #: userauth/templates/userauth/account/login.html:8
 #: userauth/templates/userauth/account/login.html:22
 #: userauth/templates/userauth/account/password_reset_from_key_done.html:15
-#: userauth/templates/userauth/account/signup.html:47
+#: userauth/templates/userauth/account/signup.html:55
 msgid "Sign in"
 msgstr "Entrar"
 
@@ -362,7 +386,7 @@ msgstr "Não tem conta?"
 #: userauth/templates/userauth/account/login.html:32
 #: userauth/templates/userauth/account/signup.html:5
 #: userauth/templates/userauth/account/signup.html:8
-#: userauth/templates/userauth/account/signup.html:37
+#: userauth/templates/userauth/account/signup.html:45
 #: userauth/templates/userauth/socialaccount/signup.html:5
 #: userauth/templates/userauth/socialaccount/signup.html:8
 #: userauth/templates/userauth/socialaccount/signup.html:35
@@ -456,11 +480,11 @@ msgstr ""
 msgid "Update your account"
 msgstr "Atualizar conta"
 
-#: userauth/templates/userauth/account/signup.html:41
+#: userauth/templates/userauth/account/signup.html:49
 msgid "or sign up with one of your existing third party accounts:"
 msgstr "ou registre-se com uma de suas redes sociais:"
 
-#: userauth/templates/userauth/account/signup.html:47
+#: userauth/templates/userauth/account/signup.html:55
 #: userauth/templates/userauth/socialaccount/signup.html:36
 msgid "Already have an account?"
 msgstr "Já tem uma conta?"
