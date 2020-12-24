@@ -1,7 +1,7 @@
 {% load wagtailimages_tags static %}
 
 {% if members %}
-    <div class="container">
+    <div class="container container-members">
         <div class="row">
             <div class="col-12">
                 <div class="text-center mt-5">
@@ -19,11 +19,10 @@
             <div id="teambox">
                 <div class="container container-team">
                     {% for member in members %}
-                        {# <a href="equipe/#{{ member.id }}">{% image member.image fill-280x280 %}</a> #}
                         {% image member.image fill-280x280 as photo %}
-                        <div class="person" style="background-image: url({{photo.url}})">
+                        <a class="person" href="equipe/#{{ member.id }}" style="background-image: url({{photo.url}})">
                             <h2 class="title">{{member}} <br /> <small>{{member.job_title}}</small></h2>
-                        </div>
+                        </a>
                     {% endfor %}
                 </div>
             </div>

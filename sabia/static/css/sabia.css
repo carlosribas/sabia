@@ -321,14 +321,14 @@ p .link-icon:hover {
   word-wrap: break-word;
   background-color: #fff;
   background-clip: border-box;
-  border: 1px solid rgba(0,0,0,.125);
-  border-radius: .25rem;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 0.25rem;
 }
 .light-header {
-  padding: .75rem 1.25rem;
+  padding: 0.75rem 1.25rem;
   margin-bottom: 0;
-  background-color: rgba(0,0,0,.03);
-  border-bottom: 1px solid rgba(0,0,0,.125);
+  background-color: rgba(0, 0, 0, 0.03);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
 }
 .light-body {
   color: #3e3e3e;
@@ -347,11 +347,13 @@ p .link-icon:hover {
   color: #ff6600;
   text-decoration: underline;
 }
-.btn-link:focus, .btn-link.focus {
+.btn-link:focus,
+.btn-link.focus {
   text-decoration: underline;
   box-shadow: none;
 }
-.btn-link:disabled, .btn-link.disabled {
+.btn-link:disabled,
+.btn-link.disabled {
   color: #6c757d;
   pointer-events: none;
 }
@@ -385,24 +387,24 @@ p .link-icon:hover {
   border-left-style: solid;
   border-left-width: 10px;
   border-radius: 4px;
-  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.2);
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2);
   color: #2c2d33;
 }
 .toastjs.default {
-  border-left-color: #AAAAAA;
+  border-left-color: #aaaaaa;
 }
 .toastjs.success {
-  border-left-color: #2ECC40;
+  border-left-color: #2ecc40;
 }
 .toastjs.warning {
-  border-left-color: #FF851B;
+  border-left-color: #ff851b;
 }
 .toastjs.danger {
-  border-left-color: #FF4136;
+  border-left-color: #ff4136;
 }
 
 .toastjs-btn {
-  background: rgb(240,240,240);
+  background: rgb(240, 240, 240);
   padding: 5px 10px;
   border: 0;
   border-radius: 4px;
@@ -413,13 +415,13 @@ p .link-icon:hover {
   cursor: pointer;
 }
 .toastjs-btn--custom {
-  background: rgb(50,50,50);
+  background: rgb(50, 50, 50);
   color: #fff;
 }
 .toastjs-btn:hover,
 .toastjs-btn:focus {
   outline: none;
-  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.2);
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2);
 }
 
 /* TEAM MEMBERS CAROUSEL STYLES */
@@ -464,7 +466,7 @@ p .link-icon:hover {
 
 #teambox {
   position: relative;
-  width: 74.5%;
+  width: 98.5%;
   height: 250px;
   margin: auto;
   overflow: hidden;
@@ -478,7 +480,7 @@ p .link-icon:hover {
   outline: none;
   position: absolute;
   top: 110px;
-  left: 10%;
+  left: -2%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -499,10 +501,10 @@ p .link-icon:hover {
 }
 .row-team .btn-team.btn-next {
   left: auto !important;
-  right: 10%;
+  right: -2%;
 }
 
-@media screen and (max-width: 992px) {
+@media screen and (max-width: 768px) {
   .container-team {
     left: -12px;
   }
@@ -522,9 +524,10 @@ p .link-icon:hover {
   }
 }
 
-@media all and (min-width: 992px) and (max-width: 1024px) {
+/* iPad Pro styles */
+@media all and (min-width: 1024px) and (max-height: 1366px) and (max-width: 1333px) {
   #teambox {
-    width: 85.5% !important;
+    width: 88.4% !important;
   }
   .row-team .btn-team {
     left: 3%;
@@ -533,5 +536,36 @@ p .link-icon:hover {
   .row-team .btn-team.btn-next {
     left: auto !important;
     right: 3%;
+  }
+
+  .card-img-overlay h4 {
+    font-size: 1.3em;
+  }
+}
+
+/* iPad styles */
+@media all and (min-width: 768px) and (max-height: 1024px) and (max-width: 1024px) {
+  .container-members {
+    margin-top: 94px;
+  }
+  .person {
+    width: 180px;
+    height: 180px;
+  }
+  #teambox {
+    width: 85.5% !important;
+    height: 180px;
+  }
+  .row-team .btn-team {
+    top: 68px;
+    left: 3%;
+    background-color: #e56010;
+  }
+  .row-team .btn-team.btn-next {
+    left: auto !important;
+    right: 3%;
+  }
+  .card-img-overlay h4 {
+    font-size: 1em;
   }
 }

@@ -12,7 +12,6 @@ const btnPrev = $('#btnPrev');
 
 // handle infinite next slides
 function nextMember() {
-    console.log('next');
     $(teamNodes[firstSlide]).children('.title').animate({
         opacity: 0
     }, 200);
@@ -52,3 +51,5 @@ function prevMember() {
 
 btnNext.click(() => nextMember());
 btnPrev.click(() => prevMember());
+
+setInterval(() => nextMember(), 4000);
