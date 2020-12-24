@@ -251,6 +251,13 @@ a:focus {
   background: none;
   color: dodgerblue;
 }
+.btn-profile a {
+  color: #fff;
+}
+.btn-profile a:hover {
+  color: #3e3e3e;
+  text-decoration: none;
+}
 
 /* Blog */
 .blog-page {
