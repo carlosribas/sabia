@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-23 20:08+0000\n"
+"POT-Creation-Date: 2020-12-24 16:12+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -293,35 +293,37 @@ msgstr "Nome"
 msgid "Last name"
 msgstr "Sobrenome"
 
-#: userauth/forms.py:23 userauth/models.py:30
-msgid "Other"
-msgstr "Outro"
-
-#: userauth/models.py:12
-msgid "Veterinarian"
-msgstr "Médico veterinário"
-
-#: userauth/models.py:13
-msgid "Veterinary medicine student"
-msgstr "Aluno de medicina veterinária"
-
-#: userauth/models.py:14
-msgid "Others"
-msgstr "Outros"
-
-#: userauth/models.py:26
-msgid "Enter a valid phone number starting with (DDD)"
-msgstr "Insira um número de telefone válido começando com (DDD)"
-
-#: userauth/models.py:28 userauth/templates/userauth/account/profile.html:30
-msgid "Phone"
-msgstr "Telefone"
-
-#: userauth/models.py:29
+#: userauth/forms.py:22 userauth/models.py:31
+#: userauth/templates/userauth/account/profile.html:30
 msgid "Academic background"
 msgstr "Formação acadêmica"
 
-#: userauth/models.py:31
+#: userauth/forms.py:23 userauth/models.py:32
+#: userauth/templates/userauth/account/profile.html:42
+msgid "Other"
+msgstr "Outro"
+
+#: userauth/models.py:14 userauth/templates/userauth/account/profile.html:33
+msgid "Veterinarian"
+msgstr "Médico veterinário"
+
+#: userauth/models.py:15 userauth/templates/userauth/account/profile.html:33
+msgid "Veterinary medicine student"
+msgstr "Aluno de medicina veterinária"
+
+#: userauth/models.py:16 userauth/templates/userauth/account/profile.html:33
+msgid "Others"
+msgstr "Outros"
+
+#: userauth/models.py:28
+msgid "Enter a valid phone number starting with (DDD)"
+msgstr "Insira um número de telefone válido começando com (DDD)"
+
+#: userauth/models.py:30 userauth/templates/userauth/account/profile.html:50
+msgid "Phone"
+msgstr "Telefone"
+
+#: userauth/models.py:33 userauth/templates/userauth/account/profile.html:54
 msgid "Certificate"
 msgstr "Comprovante"
 
@@ -334,15 +336,49 @@ msgstr "Apagar conta"
 msgid "Are you sure you want to delete the account"
 msgstr "Tem certeza que deseja apagar a conta"
 
-#: userauth/templates/userauth/account/delete.html:15
+#: userauth/templates/userauth/account/delete.html:16
 msgid "Delete"
 msgstr "Apagar"
 
-#: userauth/templates/userauth/account/delete.html:20
-#: userauth/templates/userauth/account/logout.html:21
-#: userauth/templates/userauth/socialaccount/connections.html:53
-msgid "Return to site"
-msgstr "Retornar ao site"
+#: userauth/templates/userauth/account/delete.html:17
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: userauth/templates/userauth/account/email/base_message.txt:1
+msgid "Hello,"
+msgstr "Olá"
+
+#: userauth/templates/userauth/account/email/base_message.txt:5
+#, python-format
+msgid ""
+"With best wishes,\n"
+"%(site_domain)s"
+msgstr ""
+"Atenciosamente,\n"
+"%(site_domain)s"
+
+#: userauth/templates/userauth/account/email/email_confirmation_message.txt:5
+#, python-format
+msgid ""
+"You're receiving this e-mail because someone has given your e-mail address "
+"to register an account on %(site_domain)s.\n"
+"\n"
+"To confirm this is correct, go to %(activate_url)s\n"
+"\n"
+"If you have not registered with the Plataforma Sabia recently, please ignore "
+"this email."
+msgstr ""
+"Você está recebendo esta mensagem porque alguém forneceu seu endereço de e-"
+"mail para registrar uma conta em %(site_domain)s.\n"
+"\n"
+"Para ativar a sua conta, acesse este endereço %(activate_url)s\n"
+"\n"
+"Se você não se cadastrou na Plataforma Sabiá recentemente, por favor ignore "
+"este email."
+
+#: userauth/templates/userauth/account/email/email_confirmation_subject.txt:3
+msgid "Please confirm your e-mail address"
+msgstr "Por favor, confirme seu endereço de email"
 
 #: userauth/templates/userauth/account/email_confirm.html:6
 #: userauth/templates/userauth/account/email_confirm.html:9
@@ -350,11 +386,12 @@ msgid "Confirm E-mail Address"
 msgstr "Confirme o endereço de e-mail"
 
 #: userauth/templates/userauth/account/email_confirm.html:15
-#, python-format
 msgid ""
-"Please confirm that <a href=\"mailto:%(email)s\">%(email)s</a> is an e-mail "
-"address for user %(user_display)s."
+"Your account is almost ready. To activate it, please confirm your email "
+"address (%(email)s) by clicking the button below."
 msgstr ""
+"Sua conta na Plataforma Sabiá está quase pronta. Para ativá-la, por favor "
+"confirme o seu endereço de email (%(email)s) clicando no botão abaixo."
 
 #: userauth/templates/userauth/account/email_confirm.html:19
 msgid "Confirm"
@@ -406,6 +443,11 @@ msgstr "Sair"
 #: userauth/templates/userauth/account/logout.html:12
 msgid "Are you sure you want to sign out?"
 msgstr "Você tem certeza que deseja sair?"
+
+#: userauth/templates/userauth/account/logout.html:21
+#: userauth/templates/userauth/socialaccount/connections.html:53
+msgid "Return to site"
+msgstr "Retornar ao site"
 
 #: userauth/templates/userauth/account/password_change.html:5
 #: userauth/templates/userauth/account/password_change.html:8
@@ -473,10 +515,11 @@ msgid "Account profile"
 msgstr "Perfil da conta"
 
 #: userauth/templates/userauth/account/profile.html:26
+#: userauth/templates/userauth/account/update.html:25
 msgid "E-mail"
 msgstr ""
 
-#: userauth/templates/userauth/account/profile.html:38
+#: userauth/templates/userauth/account/profile.html:62
 msgid "Update your account"
 msgstr "Atualizar conta"
 
@@ -494,15 +537,19 @@ msgstr "Já tem uma conta?"
 msgid "Update account"
 msgstr "Atualizar conta"
 
-#: userauth/templates/userauth/account/update.html:26
+#: userauth/templates/userauth/account/update.html:49
 msgid "Save"
 msgstr "Salvar"
 
-#: userauth/templates/userauth/account/update.html:30
+#: userauth/templates/userauth/account/update.html:50
+msgid "Back"
+msgstr "Voltar"
+
+#: userauth/templates/userauth/account/update.html:55
 msgid "Connect your existing account to one of your social accounts:"
 msgstr "Conecte sua conta com uma de suas redes sociais:"
 
-#: userauth/templates/userauth/account/update.html:36
+#: userauth/templates/userauth/account/update.html:61
 msgid "Delete your account"
 msgstr "Apagar sua conta"
 
@@ -517,9 +564,9 @@ msgid ""
 "finalize the signup process. Please contact us if you do not receive it "
 "within a few minutes."
 msgstr ""
-"Enviamos um e-mail para você para verificação. Acesse o link fornecido para "
-"finalizar o processo de inscrição. Entre em contato conosco se não o receber "
-"dentro de alguns minutos."
+"Enviamos um e-mail para você. Acesse o link fornecido para finalizar o "
+"processo de inscrição. Entre em contato conosco se não o receber dentro de "
+"alguns minutos."
 
 #: userauth/templates/userauth/socialaccount/connections.html:5
 #: userauth/templates/userauth/socialaccount/connections.html:8
