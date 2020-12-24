@@ -45,8 +45,10 @@
             </div>
         </div>
         <br>
-        <button type="submit" class="btn btn-sabia">{% trans "Save" %}</button>
-        <a href="{% url 'account_profile' %}" class="btn btn-secondary">{% trans "Back" %}</a>
+        <div class="btn-profile">
+            <button type="submit" class="btn btn-sabia">{% trans "Save" %}</button>
+            <a href="{% url 'account_profile' %}" class="btn btn-secondary">{% trans "Back" %}</a>
+        </div>
     </form>
     {% if socialaccount_providers %}
         <br>
