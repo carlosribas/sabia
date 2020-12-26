@@ -629,7 +629,7 @@ msgstr "Se cadastrar com e-mail e senha?"
 
 #: userauth/templates/userauth/socialaccount/signup.html:36
 msgid "Sign in first"
-msgstr "Faça login primeiro"
+msgstr "Faça login"
 
 #: userauth/templates/userauth/socialaccount/signup.html:36
 msgid " and connect to your social account in your profile."
