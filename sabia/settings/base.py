@@ -60,14 +60,14 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    'widget_tweaks',
-    'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.facebook',
+    'allauth.socialaccount.providers.google',
     'captcha',
+    'widget_tweaks',
 
-    'userauth',
     'base',
     'blog',
+    'userauth',
 ]
 
 MIDDLEWARE = [
@@ -163,9 +163,6 @@ LOCALE_PATHS = (os.path.join(BASE_DIR, 'locale'),)
 
 WAGTAILTRANS_HIDE_TRANSLATION_TREES = True
 
-LOGIN_URL = reverse_lazy('account_login')
-LOGIN_REDIRECT_URL = reverse_lazy('account_profile')
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
@@ -198,7 +195,7 @@ WAGTAIL_SITE_NAME = "sabia"
 
 # Base URL to use when referring to full URLs within the Wagtail admin backend -
 # e.g. in notification emails. Don't include '/admin' or a trailing slash
-BASE_URL = 'http://example.com'
+BASE_URL = 'https://plataformasabia.com.br'
 
 # custom user model
 AUTH_USER_MODEL = 'userauth.CustomUser'
@@ -218,6 +215,8 @@ AUTHENTICATION_BACKENDS = [
 
 SITE_ID = 1
 
+LOGIN_URL = reverse_lazy('account_login')
+LOGIN_REDIRECT_URL = '/'
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
