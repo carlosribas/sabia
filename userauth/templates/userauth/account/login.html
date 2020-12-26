@@ -11,7 +11,7 @@
 {% block card-body %}
     {% get_providers as socialaccount_providers %}
 
-    <form method="POST" action="{% url 'account_login' %}" class="needs-validation" novalidate>
+    <form method="POST" action="{% url 'account_login' %}?next={{ request.GET.next }}" class="needs-validation" novalidate>
         {% csrf_token %}
         <div class="form-group">
             {% with field=form.login %}{% include "account/form_field.html" %}{% endwith %}
