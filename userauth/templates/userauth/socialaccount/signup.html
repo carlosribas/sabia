@@ -15,11 +15,6 @@
     <form method="POST" action="{% url 'socialaccount_signup' %}" class="needs-validation" novalidate>
         {% csrf_token %}
         <div class="form-row">
-            <div class="form-group col-12">
-                {% with field=form.email %}{% include "account/form_field.html" %}{% endwith %}
-            </div>
-        </div>
-        <div class="form-row">
             <div class="form-group col-md-6">
                 {% with field=form.first_name %}{% include "account/form_field.html" %}{% endwith %}
             </div>
@@ -27,7 +22,20 @@
                 {% with field=form.last_name %}{% include "account/form_field.html" %}{% endwith %}
             </div>
         </div>
-        <button type="submit" class="btn btn-outline-primary">{% trans "Sign Up" %}</button>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                {% with field=form.email %}{% include "account/form_field.html" %}{% endwith %}
+            </div>
+            <div class="form-group col-md-6">
+                {% with field=form.academic_background %}{% include "account/form_field.html" %}{% endwith %}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-12">
+                {% with field=form.other %}{% include "account/form_field.html" %}{% endwith %}
+            </div>
+        </div>
+        <button type="submit" class="btn btn-sabia">{% trans "Sign Up" %}</button>
     </form>
 {% endblock %}
 

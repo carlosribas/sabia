@@ -31,8 +31,9 @@
                 {% endfor %}
 
                 <br>
-                <div>
-                    <button type="submit" class="btn btn-outline-danger">{% trans "Remove" %}</button>
+                <div class="btn-profile">
+                    <button type="submit" class="btn btn-sabia">{% trans "Remove" %}</button>
+                    <a href="{% url 'account_profile' %}" class="btn btn-secondary">{% trans "Back" %}</a>
                 </div>
             </fieldset>
         </form>
@@ -42,13 +43,6 @@
     {% endif %}
 
     <br>
-    <h5>{% trans "Add a social account" %}</h5>
-
-    <ul class="socialaccount_providers">
-        {% include "socialaccount/provider_list.html" with process="connect" %}
-    </ul>
-{% endblock %}
-
-{% block card-footer %}
-    <a href="/" class="btn btn-outline-primary">{% trans "Return to site" %}</a>
+    <p>{% trans "Add a social account" %}</p>
+    <p>{% include "socialaccount/provider_list.html" with process="connect" %} </p>
 {% endblock %}
