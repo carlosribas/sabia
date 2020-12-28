@@ -6,6 +6,7 @@ from django_extensions.db.fields import AutoSlugField
 from django.utils.text import slugify
 from django.utils.translation import ugettext as _
 
+from embed_video.fields import EmbedVideoField
 from modelcluster.fields import ParentalKey
 from modelcluster.models import ClusterableModel
 
@@ -30,6 +31,11 @@ from wagtailstreamforms.models.abstract import AbstractFormSetting
 from userauth.models import CustomUser
 from .blocks import BaseStreamBlock
 from .richtext_options import RICHTEXT_FEATURES
+
+
+def course_directory_path(instance, filename):
+    # file will be uploaded to MEDIA_ROOT/cursos/<course>/<course.start_date>/<title>/<filename>
+    return 'cursos/{0}/{1}/{2}/{3}'.format(instance.course.name, instance.course.start_date, instance.title, filename)
 
 
 @register_snippet
@@ -127,6 +133,41 @@ class Course(index.Indexed, ClusterableModel):
     class Meta:
         verbose_name = _("Course")
         verbose_name_plural = _("Courses")
+
+
+@register_snippet
+class CourseMaterial(index.Indexed, ClusterableModel):
+    """A Django model to create content for courses."""
+    course = models.ForeignKey(Course, verbose_name=_('Course'), on_delete=models.CASCADE)
+    title = models.CharField(_("Title"), max_length=254)
+    date = models.DateField(_("Date"))
+    document = models.FileField(_("Document"),  upload_to=course_directory_path, blank=True, null=True)
+    video = EmbedVideoField(_('Video'), blank=True, null=True)
+    content = StreamField(BaseStreamBlock(required=False), verbose_name=_("Content"), blank=True)
+
+    panels = [
+        FieldPanel('course'),
+        MultiFieldPanel([
+            FieldRowPanel([
+                FieldPanel('title', classname="col6"),
+                FieldPanel('date', classname="col6"),
+            ])
+        ], heading=_("Info")),
+        FieldPanel('document'),
+        FieldPanel('video'),
+        StreamFieldPanel('content'),
+    ]
+
+    search_fields = [
+        index.SearchField('title'),
+    ]
+
+    def __str__(self):
+        return '{}'.format(self.title)
+
+    class Meta:
+        verbose_name = _("Course material")
+        verbose_name_plural = _("Course materials")
 
 
 class CourseUser(models.Model):

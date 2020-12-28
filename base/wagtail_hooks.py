@@ -3,7 +3,7 @@ from django.utils.translation import ugettext as _
 from wagtail.core import hooks
 from wagtail.contrib.modeladmin.options import (ModelAdmin, ModelAdminGroup, modeladmin_register)
 
-from base.models import Course, FooterText, Menu, TeamMember
+from base.models import Course, CourseMaterial, FooterText, Menu, TeamMember
 
 
 @hooks.register('construct_main_menu')
@@ -42,11 +42,20 @@ class CourseAdmin(ModelAdmin):
     list_display = ('name', 'start_date', 'end_date', 'vacancies', 'registered')
 
 
+class CourseMaterialAdmin(ModelAdmin):
+    model = CourseMaterial
+    menu_label = _('Course material')
+    menu_icon = 'fa-book'
+    search_fields = ('title',)
+    list_filter = ('title',)
+    list_display = ('course', 'title', 'date')
+
+
 class SabiaModelAdminGroup(ModelAdminGroup):
     menu_label = _('General')
     menu_icon = 'cog'
     menu_order = 300  # will put in 4th place (000 being 1st, 100 2nd)
-    items = (CourseAdmin, TeamMemberAdmin, FooterTextAdmin, MenuAdmin)
+    items = (CourseAdmin, CourseMaterialAdmin, TeamMemberAdmin, FooterTextAdmin, MenuAdmin)
 
 
 # When using a ModelAdminGroup class to group several ModelAdmin classes together,

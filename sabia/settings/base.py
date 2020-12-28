@@ -64,6 +64,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'captcha',
     'widget_tweaks',
+    'embed_video',
 
     'base',
     'blog',
@@ -203,6 +204,11 @@ AUTH_USER_MODEL = 'userauth.CustomUser'
 WAGTAIL_USER_CREATION_FORM = 'userauth.forms.WagtailUserCreationForm'
 WAGTAIL_USER_EDIT_FORM = 'userauth.forms.WagtailUserEditForm'
 WAGTAIL_USER_CUSTOM_FIELDS = ['academic_background', 'other', 'certificate', 'phone']
+WAGTAILEMBEDS_FINDERS = [
+    {
+        'class': 'wagtail.embeds.finders.oembed'
+    }
+]
 
 # allauth settings
 AUTHENTICATION_BACKENDS = [

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-24 16:23+0000\n"
+"POT-Creation-Date: 2020-12-28 16:49+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,143 +17,175 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: base/models.py:38 base/models.py:83
+#: base/models.py:44 base/models.py:89
 msgid "Name"
 msgstr "Nome"
 
-#: base/models.py:39
+#: base/models.py:45
 msgid "Job title"
 msgstr "Cargo"
 
-#: base/models.py:40
+#: base/models.py:46
 msgid "Link to Linkedin"
 msgstr "Link para o Linkedin"
 
-#: base/models.py:41
+#: base/models.py:47
 msgid "Brief description"
 msgstr "Breve descrição"
 
-#: base/models.py:76
+#: base/models.py:82
 msgid "Person"
 msgstr "Pessoa"
 
-#: base/models.py:77 base/wagtail_hooks.py:16
+#: base/models.py:83 base/wagtail_hooks.py:16
 msgid "Team"
 msgstr "Equipe"
 
-#: base/models.py:84
+#: base/models.py:90
 msgid "Start date"
 msgstr "Início"
 
-#: base/models.py:85
+#: base/models.py:91
 msgid "End date"
 msgstr "Término"
 
-#: base/models.py:86
+#: base/models.py:92
 msgid "Start time"
 msgstr "Início"
 
-#: base/models.py:87
+#: base/models.py:93
 msgid "End time"
 msgstr "Término"
 
-#: base/models.py:88 base/models.py:115 base/templates/base/course_list.html:38
+#: base/models.py:94 base/models.py:121 base/templates/base/course_list.html:38
 msgid "Price"
 msgstr "Valor"
 
-#: base/models.py:89
+#: base/models.py:95
 msgid "Price 2x"
 msgstr "Valor em 2x"
 
-#: base/models.py:90
+#: base/models.py:96
 msgid "Price 3x"
 msgstr "Valor em 3x"
 
-#: base/models.py:91
+#: base/models.py:97
 msgid "Vacancies"
 msgstr "Vagas"
 
-#: base/models.py:92
+#: base/models.py:98
 msgid "Registered"
 msgstr "Inscritos"
 
-#: base/models.py:93 home/models.py:18 home/models.py:42 home/models.py:63
+#: base/models.py:99 home/models.py:18 home/models.py:42 home/models.py:63
 msgid "Description"
 msgstr "Descrição"
 
-#: base/models.py:102
+#: base/models.py:108
 msgid "Dates"
 msgstr "Datas"
 
-#: base/models.py:108
+#: base/models.py:114
 msgid "Schedule"
 msgstr "Horário"
 
-#: base/models.py:128 base/wagtail_hooks.py:38
+#: base/models.py:134 base/models.py:141 base/wagtail_hooks.py:38
 msgid "Course"
 msgstr "Curso"
 
-#: base/models.py:129
+#: base/models.py:135
 msgid "Courses"
 msgstr "Cursos"
 
-#: base/models.py:152 base/models.py:155 base/wagtail_hooks.py:25
+#: base/models.py:142 home/models.py:16 home/models.py:41 home/models.py:62
+msgid "Title"
+msgstr "Título"
+
+#: base/models.py:143
+msgid "Date"
+msgstr "Data"
+
+#: base/models.py:144
+msgid "Document"
+msgstr "Documento"
+
+#: base/models.py:145
+msgid "Video"
+msgstr "Vídeo"
+
+#: base/models.py:146
+msgid "Content"
+msgstr "Conteúdo"
+
+#: base/models.py:155
+msgid "Info"
+msgstr "Informações"
+
+#: base/models.py:169 base/wagtail_hooks.py:47
+msgid "Course material"
+msgstr "Material do curso"
+
+#: base/models.py:170
+msgid "Course materials"
+msgstr "Materiais do curso"
+
+#: base/models.py:193 base/models.py:196 base/wagtail_hooks.py:25
 msgid "Footer Text"
 msgstr "Texto do rodapé"
 
-#: base/models.py:164 base/models.py:188 blog/models.py:32
+#: base/models.py:205 base/models.py:229 blog/models.py:32
 msgid "Text to describe the page"
 msgstr "Texto para descrever a página"
 
-#: base/models.py:171 base/models.py:196 blog/models.py:39 blog/models.py:93
+#: base/models.py:212 base/models.py:237 blog/models.py:39 blog/models.py:93
 msgid "Landscape mode only; horizontal width between 1000px and 3000px."
 msgstr ""
 
-#: base/models.py:207
+#: base/models.py:248
 msgid "Select the image collection for this gallery."
 msgstr ""
 
-#: base/models.py:250 base/wagtail_hooks.py:31
+#: base/models.py:291 base/wagtail_hooks.py:31
 msgid "Menu"
 msgstr ""
 
-#: base/models.py:251
+#: base/models.py:292
 msgid "Menu Item"
 msgstr ""
 
-#: base/models.py:259
+#: base/models.py:300
 msgid "Menu to which this item belongs"
 msgstr ""
 
-#: base/models.py:260
+#: base/models.py:301
 msgid "Title of menu item that will be displayed"
 msgstr ""
 
-#: base/models.py:261 home/models.py:22
+#: base/models.py:302 home/models.py:22
 msgid "URL to link to, e.g. /contato"
 msgstr ""
 
-#: base/models.py:264 home/models.py:45 home/models.py:80
+#: base/models.py:305 home/models.py:45 home/models.py:80
 msgid "Page to link to"
 msgstr ""
 
-#: base/models.py:268
+#: base/models.py:309
 msgid "Title of submenu (LEAVE BLANK if there is no custom submenu)"
 msgstr ""
 
-#: base/models.py:270 home/models.py:64
+#: base/models.py:311 home/models.py:64
 msgid "Fontawesome icon"
 msgstr ""
 
-#: base/models.py:273
+#: base/models.py:314
 msgid "Always"
 msgstr "Sempre"
 
-#: base/models.py:273
+#: base/models.py:314
 msgid "When logged in"
 msgstr "Quando logado"
 
-#: base/models.py:273
+#: base/models.py:314
 msgid "When not logged in"
 msgstr "Quando não estiver logado"
 
@@ -201,7 +233,7 @@ msgstr "Desculpa, vagas esgotadas!"
 msgid "Unsubscribe successfully"
 msgstr "Inscrição cancelada"
 
-#: base/wagtail_hooks.py:46
+#: base/wagtail_hooks.py:55
 msgid "General"
 msgstr "Geral"
 
@@ -228,10 +260,6 @@ msgstr "Texto para descrever a postagem"
 #: blog/models.py:123
 msgid "There are no blog posts tagged with {}"
 msgstr "Não há postagens de blog marcadas com"
-
-#: home/models.py:16 home/models.py:41 home/models.py:62
-msgid "Title"
-msgstr "Título"
 
 #: home/models.py:17
 msgid "Title color"
@@ -389,8 +417,8 @@ msgid ""
 msgstr ""
 "Você está recebendo este e-mail porque você ou outra pessoa solicitou uma "
 "redefinição de senha.\n"
-"Ignore este email caso não tenha solicitado uma redefinição de senha. "
-"Clique no link abaixo para redefinir a sua senha."
+"Ignore este email caso não tenha solicitado uma redefinição de senha. Clique "
+"no link abaixo para redefinir a sua senha."
 
 #: userauth/templates/userauth/account/email_confirm.html:6
 #: userauth/templates/userauth/account/email_confirm.html:9
@@ -416,8 +444,8 @@ msgid ""
 "This e-mail confirmation link expired or is invalid. Please <a href="
 "\"%(email_url)s\">issue a new e-mail confirmation request</a>."
 msgstr ""
-"Este link de confirmação de e-mail expirou ou é inválido. "
-"\"%(email_url)s\">Por favor, faça um novo pedido</a>."
+"Este link de confirmação de e-mail expirou ou é inválido. \"%(email_url)s"
+"\">Por favor, faça um novo pedido</a>."
 
 #: userauth/templates/userauth/account/login.html:5
 #: userauth/templates/userauth/account/login.html:8
@@ -441,7 +469,7 @@ msgstr "Não tem conta?"
 #: userauth/templates/userauth/account/signup.html:45
 #: userauth/templates/userauth/socialaccount/signup.html:5
 #: userauth/templates/userauth/socialaccount/signup.html:8
-#: userauth/templates/userauth/socialaccount/signup.html:35
+#: userauth/templates/userauth/socialaccount/signup.html:43
 msgid "Sign up"
 msgstr "Cadastre-se"
 
@@ -460,7 +488,6 @@ msgid "Are you sure you want to sign out?"
 msgstr "Você tem certeza que deseja sair?"
 
 #: userauth/templates/userauth/account/logout.html:21
-#: userauth/templates/userauth/socialaccount/connections.html:53
 msgid "Return to site"
 msgstr "Retornar ao site"
 
@@ -543,7 +570,7 @@ msgid "or sign up with one of your existing third party accounts:"
 msgstr "ou registre-se com uma de suas redes sociais:"
 
 #: userauth/templates/userauth/account/signup.html:55
-#: userauth/templates/userauth/socialaccount/signup.html:36
+#: userauth/templates/userauth/socialaccount/signup.html:44
 msgid "Already have an account?"
 msgstr "Já tem uma conta?"
 
@@ -557,6 +584,7 @@ msgid "Save"
 msgstr "Salvar"
 
 #: userauth/templates/userauth/account/update.html:50
+#: userauth/templates/userauth/socialaccount/connections.html:36
 msgid "Back"
 msgstr "Voltar"
 
@@ -600,12 +628,12 @@ msgstr ""
 msgid "Remove"
 msgstr "Apagar"
 
-#: userauth/templates/userauth/socialaccount/connections.html:41
+#: userauth/templates/userauth/socialaccount/connections.html:42
 msgid ""
 "You currently have no social network accounts connected to this account."
 msgstr "No momento você não tem redes sociais conectadas a sua conta."
 
-#: userauth/templates/userauth/socialaccount/connections.html:45
+#: userauth/templates/userauth/socialaccount/connections.html:46
 msgid "Add a social account"
 msgstr "Adicionar uma rede social"
 
@@ -619,18 +647,18 @@ msgstr ""
 "na\n"
 "    %(site_name)s. Para finalizar, preencha o seguinte formulário:"
 
-#: userauth/templates/userauth/socialaccount/signup.html:30
+#: userauth/templates/userauth/socialaccount/signup.html:38
 msgid "Sign Up"
 msgstr "Registre-se"
 
-#: userauth/templates/userauth/socialaccount/signup.html:35
+#: userauth/templates/userauth/socialaccount/signup.html:43
 msgid "Sign up with e-mail and password?"
 msgstr "Se cadastrar com e-mail e senha?"
 
-#: userauth/templates/userauth/socialaccount/signup.html:36
+#: userauth/templates/userauth/socialaccount/signup.html:44
 msgid "Sign in first"
 msgstr "Faça login"
 
-#: userauth/templates/userauth/socialaccount/signup.html:36
+#: userauth/templates/userauth/socialaccount/signup.html:44
 msgid " and connect to your social account in your profile."
 msgstr " e conecte sua rede social ao seu perfil."
