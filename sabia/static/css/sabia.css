@@ -315,62 +315,25 @@ p .link-icon:hover {
 }
 
 /* Cursos */
-.light-card {
-  position: relative;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  min-width: 0;
-  word-wrap: break-word;
-  background-color: #fff;
-  background-clip: border-box;
-  border: 1px solid rgba(0, 0, 0, 0.125);
-  border-radius: 0.25rem;
-}
-.light-header {
-  padding: 0.75rem 1.25rem;
-  margin-bottom: 0;
-  background-color: rgba(0, 0, 0, 0.03);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
-}
-.light-body {
-  color: #3e3e3e;
-  -webkit-box-flex: 1;
-  -ms-flex: 1 1 auto;
-  flex: 1 1 auto;
-  padding: 1.25rem;
-}
-
-.btn-link {
-  font-weight: 600;
-  color: #ff6600;
-  text-decoration: none;
-}
-.btn-link:hover {
-  color: #ff6600;
-  text-decoration: underline;
-}
-.btn-link:focus,
-.btn-link.focus {
-  text-decoration: underline;
-  box-shadow: none;
-}
-.btn-link:disabled,
-.btn-link.disabled {
-  color: #6c757d;
-  pointer-events: none;
-}
-
 .label-as-badge {
   border-radius: 1em;
   padding: 5px;
   font-size: 16px;
-  color: #ffffff;
+  color: #ff6600;
+  background-color: #ffffff;
+}
+
+.btn-course {
+  color: #fff;
+  background-color: #424248;
+  border-color: #424248;
+}
+.btn-course:focus,
+.btn-course:active,
+.btn-course:hover {
+  color: #fff;
   background-color: #ff6600;
+  border-color: #ff6600;
 }
 
 /* Mensagens */

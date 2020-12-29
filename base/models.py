@@ -84,6 +84,44 @@ class TeamMember(index.Indexed, ClusterableModel):
 
 
 @register_snippet
+class CoursePage(ClusterableModel):
+    """Page to create the introduction text for the course page."""
+    title = models.CharField(max_length=50)
+    slug = AutoSlugField(populate_from='title', editable=True)
+
+    panels = [
+        MultiFieldPanel([
+            FieldPanel('title'),
+            FieldPanel('slug'),
+        ], heading=_("Course page")),
+        InlinePanel('course_page_items', label=_("Course page text"))
+    ]
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name = _("Course page")
+        verbose_name_plural = _("Course page")
+
+
+class CoursePageItem(Orderable):
+    course_page = ParentalKey('CoursePage', related_name='course_page_items')
+    description = RichTextField(_("Description"), features=RICHTEXT_FEATURES, blank=True)
+    link_url = models.CharField(max_length=254, blank=True, null=True, help_text=_("URL to link to, e.g. /contato"))
+    link_page = models.ForeignKey(
+        TranslatablePage, blank=True, null=True, related_name='+', on_delete=models.CASCADE,
+        help_text=_("Page to link to"),
+    )
+
+    panels = [
+        FieldPanel('description'),
+        FieldPanel('link_url'),
+        PageChooserPanel('link_page'),
+    ]
+
+
+@register_snippet
 class Course(index.Indexed, ClusterableModel):
     """A Django model to create courses."""
     name = models.CharField(_("Name"), max_length=254)
