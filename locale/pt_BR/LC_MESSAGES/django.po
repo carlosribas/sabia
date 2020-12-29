@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-29 12:53+0000\n"
+"POT-Creation-Date: 2020-12-29 16:57+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -506,6 +506,10 @@ msgstr "Você tem certeza que deseja sair?"
 #: userauth/templates/userauth/account/logout.html:21
 msgid "Return to site"
 msgstr "Retornar ao site"
+
+#: userauth/templates/userauth/account/messages/logged_in.txt:4
+msgid "Successfully signed in."
+msgstr "Login realizado com sucesso."
 
 #: userauth/templates/userauth/account/password_change.html:5
 #: userauth/templates/userauth/account/password_change.html:8
