@@ -496,9 +496,9 @@ p .link-icon:hover {
 
 /* iPad Pro styles */
 @media all and (min-width: 1024px) and (max-height: 1366px) and (max-width: 1333px) {
-  #teambox {
-    width: 88.4% !important;
-  }
+  /*#teambox {*/
+  /*  width: 88.4% !important;*/
+  /*}*/
   .row-team .btn-team {
     left: 3%;
     background-color: #e56010;
