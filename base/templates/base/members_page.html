@@ -1,4 +1,4 @@
-{% load wagtailcore_tags wagtailimages_tags %}
+{% load i18n wagtailcore_tags wagtailimages_tags %}
 
 <div class="container">
     {% for member in members %}
@@ -14,7 +14,7 @@
 
                     <p class="card-text">{{ member.introduction }}</p>
                     <p>
-                        <a class="btn btn-sabia-outline" data-toggle="collapse" href="#collapseCV-{{ member.id }}" role="button" aria-expanded="false" aria-controls="collapseCV-{{ member.id }}">Ver mais</a>
+                        <a class="btn btn-sabia-outline" data-toggle="collapse" href="#collapseCV-{{ member.id }}" role="button" aria-expanded="false" aria-controls="collapseCV-{{ member.id }}">{% trans "See more" %}</a>
                         {% if member.linkedin %}
                             <a class="link-icon ml-2" href="{{ member.linkedin }}" target="_blank" data-toggle="tooltip" data-placement="right" title="Clique para ver o Linkedin de {{ member.name }}">
                                 <span class="fa-stack fa-lg">
