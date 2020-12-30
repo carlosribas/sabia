@@ -28,6 +28,8 @@
                             {{ course.name }}
                             {% if course.id in enrolled_courses %}
                                 <span class="label label-as-badge ml-2">{% trans "Enrolled" %}</span>
+                            {% elif course.id in pre_booked_courses %}
+                                <span class="label label-as-badge ml-2">{% trans "Pre-booked" %}</span>
                             {% endif %}
                         </h6>
                         <p>
@@ -46,18 +48,26 @@
                             {% if user.is_authenticated %}
                                 <form role="form" method="post">{% csrf_token %}
                                     <input type="hidden" name="content" value="{{course.id}}">
-                                    {% if course.id in enrolled_courses %}
-                                        <button type="submit" name="action" value="unsubscribe" class="btn btn-danger">{% trans "Unsubscribe" %}</button>
-                                    {% else %}
-                                        {% if course.registered >= course.vacancies %}
-                                            <button type="submit" name="action" value="enroll" class="btn btn-course" disabled>Vagas esgotadas</button>
+                                    {% if course.start_date and course.end_date %}
+                                        {% if course.id in enrolled_courses %}
+                                            <button type="submit" name="action" value="unsubscribe" class="btn btn-danger">{% trans "Unsubscribe" %}</button>
                                         {% else %}
-                                            <button type="submit" name="action" value="enroll" class="btn btn-course">{% trans "Enroll" %}</button>
+                                            {% if course.registered >= course.vacancies %}
+                                                <button type="submit" name="action" value="enroll" class="btn btn-course" disabled>{% trans "Exhausted vacancies" %}</button>
+                                            {% else %}
+                                                <button type="submit" name="action" value="enroll" class="btn btn-course">{% trans "Enroll" %}</button>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% else %}
+                                        {% if course.id in pre_booked_courses %}
+                                            <button type="submit" name="action" value="pre-booking-unsubscribe" class="btn btn-danger">{% trans "Cancel pre-booking" %}</button>
+                                        {% else %}
+                                            <button type="submit" name="action" value="pre-booking" class="btn btn-course">{% trans "Make pre-booking" %}</button>
                                         {% endif %}
                                     {% endif %}
                                 </form>
                             {% else %}
-                                <a class="btn btn-course" href="{% url 'account_login' %}?next={% url 'cursos' %}">{% trans "Enroll" %}</a>
+                                <a class="btn btn-course" href="{% url 'account_login' %}?next={% url 'cursos' %}">{% if course.start_date %}{% trans "Enroll" %}{% else %}{% trans "Make pre-booking" %}{% endif %}</a>
                             {% endif %}
                         </p>
                     </div>

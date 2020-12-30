@@ -39,7 +39,7 @@ class CourseAdmin(ModelAdmin):
     menu_icon = 'fa-money'
     search_fields = ('name',)
     list_filter = ('name',)
-    list_display = ('name', 'start_date', 'end_date', 'vacancies', 'registered')
+    list_display = ('name', 'start_date', 'end_date', 'vacancies', 'registered', 'pre_booking')
 
 
 class CoursePageAdmin(ModelAdmin):

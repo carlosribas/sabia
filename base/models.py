@@ -33,6 +33,14 @@ from .blocks import BaseStreamBlock
 from .richtext_options import RICHTEXT_FEATURES
 
 
+ENROLL = 'enroll'
+PRE_BOOKING = 'pre-booking'
+STATUS = (
+    (ENROLL, _('Enroll')),
+    (PRE_BOOKING, _('Pre-booking')),
+)
+
+
 def course_directory_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT/cursos/<course>/<course.start_date>/<title>/<filename>
     return 'cursos/{0}/{1}/{2}/{3}'.format(instance.course.name, instance.course.start_date, instance.title, filename)
@@ -125,15 +133,16 @@ class CoursePageItem(Orderable):
 class Course(index.Indexed, ClusterableModel):
     """A Django model to create courses."""
     name = models.CharField(_("Name"), max_length=254)
-    start_date = models.DateField(_("Start date"))
-    end_date = models.DateField(_("End date"))
+    start_date = models.DateField(_("Start date"), blank=True, null=True)
+    end_date = models.DateField(_("End date"), blank=True, null=True)
     start_time = models.TimeField(_("Start time"), blank=True, null=True)
     end_time = models.TimeField(_("End time"), blank=True, null=True)
     price = models.DecimalField(_("Price"), max_digits=10, decimal_places=2, blank=True, null=True)
     price2x = models.DecimalField(_("Price 2x"), max_digits=10, decimal_places=2, blank=True, null=True)
     price3x = models.DecimalField(_("Price 3x"), max_digits=10, decimal_places=2, blank=True, null=True)
-    vacancies = models.IntegerField(_("Vacancies"))
+    vacancies = models.IntegerField(_("Vacancies"), blank=True, null=True)
     registered = models.IntegerField(_("Registered"), blank=True, null=True, default=0)
+    pre_booking = models.IntegerField(_("Pre-booking"), blank=True, null=True, default=0)
     description = RichTextField(_("Description"), features=RICHTEXT_FEATURES, blank=True)
 
     panels = [
@@ -212,6 +221,8 @@ class CourseUser(models.Model):
     """A Django model to register the user in a course"""
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    status = models.CharField(_("Status"), max_length=30, choices=STATUS)
+    date = models.DateTimeField(auto_now_add=True, blank=True)
 
 
 @register_snippet
