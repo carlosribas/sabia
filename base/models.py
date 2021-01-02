@@ -167,6 +167,7 @@ class Course(index.Indexed, ClusterableModel):
             ])
         ], heading=_("Price")),
         FieldPanel('vacancies'),
+        FieldPanel('registered'),
         FieldPanel('description'),
     ]
 
@@ -219,10 +220,13 @@ class CourseMaterial(index.Indexed, ClusterableModel):
 
 class CourseUser(models.Model):
     """A Django model to register the user in a course"""
-    course = models.ForeignKey(Course, on_delete=models.CASCADE)
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, verbose_name=_('Course'), on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, verbose_name=_('User'), on_delete=models.CASCADE)
     status = models.CharField(_("Status"), max_length=30, choices=STATUS)
-    date = models.DateTimeField(auto_now_add=True, blank=True)
+    date = models.DateTimeField(_("Date"), auto_now_add=True, blank=True)
+    payment_id = models.CharField(_("Payment Id"), max_length=254, blank=True)
+    payment_status = models.CharField(_("Payment status"), max_length=254, blank=True)
+    payment_note = models.CharField(_("Note"), max_length=254, blank=True)
 
 
 @register_snippet

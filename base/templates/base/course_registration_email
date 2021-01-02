@@ -1,0 +1,8 @@
+{% load i18n %}{% autoescape off %}{% blocktrans %}Hello,{% endblocktrans %}
+{% blocktrans %}
+Este é um email automático para confirmar a sua inscrição no curso {{course}}. Em breve você receberá um email com informações importantes do curso.
+{% endblocktrans %}
+{% blocktrans %}Atenciosamente,{% endblocktrans %}
+
+Plataforma Sabiá.
+{% endautoescape %}

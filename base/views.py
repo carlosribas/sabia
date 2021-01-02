@@ -1,9 +1,13 @@
 import datetime
+import json
 
+from django.conf import settings
 from django.contrib import messages
+from django.core.mail import send_mail
 from django.db.models import Q
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, get_object_or_404
+from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils.translation import ugettext as _
 
@@ -32,28 +36,7 @@ def course_list(request, template_name="base/course_list.html"):
         course = get_object_or_404(Course, pk=request.POST['content'])
         user = request.user
 
-        if request.POST['action'] == "enroll":
-            if course.registered < course.vacancies:
-                # Increase the number of registered students
-                course.registered = course.registered + 1
-                course.save()
-                # Create course/user object
-                course_user = CourseUser(course=course, user=user, status=ENROLL)
-                course_user.save()
-                messages.success(request, _('Registration successful'))
-            else:
-                messages.error(request, _('Sorry, there are no more vacancies for this course'))
-
-        elif request.POST['action'] == "unsubscribe":
-            # Decrease the number of registered students
-            course.registered = course.registered - 1
-            course.save()
-            # Remove course/user object
-            course_user = CourseUser.objects.get(course=course, user=user, status=ENROLL)
-            course_user.delete()
-            messages.success(request, _('Unsubscribe successfully'))
-
-        elif request.POST['action'] == "pre-booking":
+        if request.POST['action'] == "pre-booking":
             # Increase the pre-booking number
             course.pre_booking = course.pre_booking + 1
             course.save()
@@ -82,3 +65,63 @@ def course_list(request, template_name="base/course_list.html"):
     }
 
     return render(request, template_name, context)
+
+
+def course_registration(request, course_id, template_name="base/course_registration.html"):
+    course = get_object_or_404(Course, pk=course_id)
+
+    # Check the number of possible installments
+    if course.price3x:
+        installment = 3
+    elif course.price2x:
+        installment = 2
+    else:
+        installment = 1
+
+    context = {'course': course, 'installment': installment}
+    return render(request, template_name, context)
+
+
+def payment_complete(request):
+    body = json.loads(request.body)
+    course = get_object_or_404(Course, pk=body['courseId'])
+
+    # Increase the number of registered students
+    course.registered = course.registered + 1
+    course.save()
+
+    # Check if the amount paid is correct
+    payment_note = ''
+    possible_installment = [str(course.price2x), str(course.price3x)]
+    if str(course.price) != body['price']:
+        payment_note = 'Valor total incorreto'
+    elif body['installmentPrice'] not in possible_installment:
+        payment_note = 'Valor parcelado incorreto'
+
+    # Create course/user object with payment information
+    course_user = CourseUser(
+        course=course,
+        user=request.user,
+        status=ENROLL,
+        payment_id=body['paymentId'],
+        payment_status=body['paymentStatus'],
+        payment_note=payment_note
+    )
+    course_user.save()
+
+    # Send email to the user
+    msg_plain = render_to_string('course_registration_email', {'course': course.name})
+    send_mail(
+        '[Plataforma Sabiá] Confirmação de inscrição',
+        msg_plain,
+        settings.EMAIL_HOST_USER,
+        [request.user.email],
+        fail_silently=False,
+    )
+
+    if body['paymentStatus'] == 'COMPLETED':
+        response = {'message': _("Payment successful")}
+    else:
+        response = {'message': _("Waiting for payment confirmation")}
+
+    return JsonResponse(response)

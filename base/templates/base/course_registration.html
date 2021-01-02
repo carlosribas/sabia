@@ -1,0 +1,142 @@
+{% extends 'account/base_card.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Enroll" %}{% endblock %}
+
+{% block card-header %}
+    <h3>{% trans "Enroll" %}</h3>
+{% endblock %}
+
+{% block extra_css %}
+    {{ course.price|json_script:"course-price" }}
+    {{ course.id|json_script:"course-id" }}
+    {{ installment|json_script:"course-installment" }}
+    {{ course.price2x|json_script:"course-price2x" }}
+    {{ course.price3x|json_script:"course-price3x" }}
+
+    <script src="https://www.paypal.com/sdk/js?client-id=AVyBVIBtYVesxfO07nU9gaoi6KbRIVDetZmSrZgFEfTkg91MFJ4_Ndt6DZM0ji5ZYxicx-blnCVoSAj8&currency=BRL"></script>
+    <script>
+      // Acquire the token
+      function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+          const cookies = document.cookie.split(';');
+          for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+              cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+              break;
+            }
+          }
+        }
+        return cookieValue;
+      }
+
+      const csrftoken = getCookie('csrftoken');
+      const price = JSON.parse(document.getElementById('course-price').textContent);
+      const courseId = JSON.parse(document.getElementById('course-id').textContent);
+      const installment = JSON.parse(document.getElementById('course-installment').textContent);
+      const price2x = JSON.parse(document.getElementById('course-price2x').textContent);
+      const price3x = JSON.parse(document.getElementById('course-price3x').textContent);
+
+      let installmentPrice = ''
+      if (installment === 3){
+        installmentPrice = price3x
+      } else if (installment === 2) {
+        installmentPrice = price2x
+      } else {
+        installmentPrice = price
+      }
+
+      // Submit payment information
+      function completeOrder(paymentId, paymentStatus){
+        let url = "{% url 'course_paid' %}"
+
+        fetch(url, {
+            method: 'POST',
+            headers: {'Content-type': 'application/json', 'X-CSRFToken': csrftoken},
+            body: JSON.stringify(
+              {
+                'price': price,
+                'courseId': courseId,
+                'installmentPrice': installmentPrice,
+                'paymentId': paymentId,
+                'paymentStatus': paymentStatus
+              }
+            )
+          }
+        )
+        .then(function (response) {
+          if (response.ok) { return response.json() }
+          else { throw response }
+        })
+        .then(data => {
+          $("#cover").fadeOut(100);
+          window.location.href = "{% url 'cursos' %}"
+          new Toast({message: data.message, type: 'success'});
+        })
+      }
+
+      // Render the PayPal button into #paypal-button-container
+      paypal.Buttons({
+        // Button style
+        style: {
+            color:  'blue',
+            shape:  'pill',
+            label:  'pay',
+            height: 40
+        },
+
+        // Set up transaction
+        createOrder: function(data, actions) {
+          return actions.order.create({
+            purchase_units: [{
+              amount: {
+                value: price
+              },
+              installment_options: {
+                term: installment,
+                monthly_payment: {
+                  currency: 'BRL',
+                  value: installmentPrice
+                }
+              }
+            }]
+          });
+        },
+
+        // Finalize the transaction
+        onApprove: function (data, actions) {
+          $("#cover").fadeIn(100);
+          new Toast({message: "{% trans "Please wait. We are finalizing your registration." %}", type: 'success'});
+          return actions.order.capture().then(function (details) {
+            completeOrder(details['id'], details['status']);
+          })
+        }
+      }).render('#paypal-button-container');
+    </script>
+{% endblock %}
+
+{% block card-body %}
+    <div id="cover"></div>
+    <p>
+        <strong>{% trans "Course" %}</strong>:
+        <br>{{ course.name }}
+    </p>
+    <p>
+        <strong>{% trans "Date" %}</strong>:
+        <br>{{ course.start_date|date:'d/m/Y' }} a {{ course.end_date|date:'d/m/Y' }}{% if course.start_time and course.end_time %} das {{ course.start_time }} às {{ course.end_time }}{% endif %}
+    </p>
+    <p>
+        <strong>{% trans "Description" %}</strong>:
+        {{ course.description|safe }}
+    </p>
+    <p>
+        <strong>{% trans "Price" %}</strong>:
+        <br>{% if course.price %}R${{ course.price }} {% trans "one-time payment" %}{% endif %}
+        {% if course.price2x %}{% trans " or 2 monthly payments of " %}R${{ course.price2x }}{% endif %}
+        {% if course.price23 %}{% trans " or 3 monthly payments of " %}R${{ course.price3x }}{% endif %}
+    </p>
+    <div id="paypal-button-container"></div>
+{% endblock %}
