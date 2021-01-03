@@ -95,11 +95,13 @@
               amount: {
                 value: price
               },
-              installment_options: {
-                term: installment,
-                monthly_payment: {
-                  currency: 'BRL',
-                  value: installmentPrice
+              installment_info: {
+                installment_options: {
+                  term: installment,
+                  monthly_payment: {
+                    currency: 'BRL',
+                    value: installmentPrice
+                  }
                 }
               }
             }]
