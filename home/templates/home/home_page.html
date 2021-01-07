@@ -50,7 +50,7 @@
             {% for service in self.services.all %}
                 <div class="col-md-4 mt-3">
                     <div class="card border-0">
-                        <a href="{{service.link.url}}">
+                        <a href="{{service.link}}">
                             {% image service.image fill-574x286 class="card-img img-fluid" %}
                             <div class="card-img-overlay">
                                 <h4>{{ service.title }}</h4>
