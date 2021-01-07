@@ -567,3 +567,10 @@ p .link-icon:hover {
   z-index: 10;
   display: none;
 }
+
+/* Formulários */
+.form-group ul
+{
+  list-style-type: none;
+  padding-left: 0;
+}

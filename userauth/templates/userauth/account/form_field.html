@@ -1,6 +1,6 @@
 {% load widget_tweaks %}
 
-<small>{{ field.label_tag }}</small>
+{{ field.label_tag }}
 
 {% if form.is_bound %}
     {% if field.errors or form.non_field_errors %}
@@ -13,5 +13,9 @@
         {% render_field field class="form-control is-valid" %}
     {% endif %}
 {% else %}
-    {% with "form-control input-field-"|add:field.name as field_class %}{% render_field field class=field_class %}{% endwith %}
+    {% if field.widget_type == "checkboxselectmultiple" or field.widget_type == "radioselect" %}
+        {% with "input-field-"|add:field.name as field_class %}{% render_field field class=field_class %}{% endwith %}
+    {% else %}
+        {% with "form-control input-field-"|add:field.name as field_class %}{% render_field field class=field_class %}{% endwith %}
+    {% endif %}
 {% endif %}
