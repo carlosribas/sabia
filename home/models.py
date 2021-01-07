@@ -40,10 +40,7 @@ class HomePageServices(Orderable):
     page = ParentalKey("home.HomePage", related_name="services")
     title = models.CharField(_("Title"), max_length=50)
     description = models.CharField(_("Description"), max_length=200)
-    link = models.ForeignKey(
-        TranslatablePage, verbose_name=_("Link"), blank=True, null=True, related_name='+', on_delete=models.CASCADE,
-        help_text=_("Page to link to"),
-    )
+    link = models.CharField(max_length=255, blank=True, null=True, help_text=_("URL to link to, e.g. /contato"))
     image = models.ForeignKey(
         "wagtailimages.Image", verbose_name=_("Image"), null=True, on_delete=models.SET_NULL, related_name="+"
     )
