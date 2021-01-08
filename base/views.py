@@ -69,16 +69,7 @@ def course_list(request, template_name="base/course_list.html"):
 
 def course_registration(request, course_id, template_name="base/course_registration.html"):
     course = get_object_or_404(Course, pk=course_id)
-
-    # Check the number of possible installments
-    if course.price3x:
-        installment = 3
-    elif course.price2x:
-        installment = 2
-    else:
-        installment = 1
-
-    context = {'course': course, 'installment': installment}
+    context = {'course': course}
     return render(request, template_name, context)
 
 
@@ -92,11 +83,8 @@ def payment_complete(request):
 
     # Check if the amount paid is correct
     payment_note = ''
-    possible_installment = [str(course.price2x), str(course.price3x)]
     if str(course.price) != body['price']:
         payment_note = 'Valor total incorreto'
-    elif body['installmentPrice'] not in possible_installment:
-        payment_note = 'Valor parcelado incorreto'
 
     # Create course/user object with payment information
     course_user = CourseUser(

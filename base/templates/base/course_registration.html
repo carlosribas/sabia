@@ -10,9 +10,6 @@
 {% block extra_css %}
     {{ course.price|json_script:"course-price" }}
     {{ course.id|json_script:"course-id" }}
-    {{ installment|json_script:"course-installment" }}
-    {{ course.price2x|json_script:"course-price2x" }}
-    {{ course.price3x|json_script:"course-price3x" }}
 
     <script src="https://www.paypal.com/sdk/js?client-id=Adncgqi0-vc3rPc8ACBco4rhfMvbwHqvONyu-jj3sneX4Ab-BMmzmrDKxdkL4f2b96CcidFnUyTe_moW&locale=pt_BR&currency=BRL"></script>
     <script>
@@ -36,18 +33,6 @@
       const csrftoken = getCookie('csrftoken');
       const price = JSON.parse(document.getElementById('course-price').textContent);
       const courseId = JSON.parse(document.getElementById('course-id').textContent);
-      const installment = JSON.parse(document.getElementById('course-installment').textContent);
-      const price2x = JSON.parse(document.getElementById('course-price2x').textContent);
-      const price3x = JSON.parse(document.getElementById('course-price3x').textContent);
-
-      let installmentPrice = ''
-      if (installment === 3){
-        installmentPrice = price3x
-      } else if (installment === 2) {
-        installmentPrice = price2x
-      } else {
-        installmentPrice = price
-      }
 
       // Submit payment information
       function completeOrder(paymentId, paymentStatus){
@@ -60,7 +45,6 @@
               {
                 'price': price,
                 'courseId': courseId,
-                'installmentPrice': installmentPrice,
                 'paymentId': paymentId,
                 'paymentStatus': paymentStatus
               }
@@ -94,15 +78,6 @@
             purchase_units: [{
               amount: {
                 value: price
-              },
-              installment_info: {
-                installment_options: {
-                  term: installment,
-                  monthly_payment: {
-                    currency: 'BRL',
-                    value: installmentPrice
-                  }
-                }
               }
             }]
           });
