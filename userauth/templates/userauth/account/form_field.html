@@ -1,6 +1,6 @@
 {% load widget_tweaks %}
 
-{{ field.label_tag }}
+{{ field.label_tag }} {% if field.field.required %}<span class="text-orange">*</span>{% endif %}
 
 {% if form.is_bound %}
     {% if field.errors or form.non_field_errors %}
