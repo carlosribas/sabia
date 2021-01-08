@@ -116,7 +116,10 @@ class CoursePage(ClusterableModel):
 class CoursePageItem(Orderable):
     course_page = ParentalKey('CoursePage', related_name='course_page_items')
     description = RichTextField(_("Description"), features=RICHTEXT_FEATURES, blank=True)
-    link_url = models.CharField(max_length=254, blank=True, null=True, help_text=_("URL to link to, e.g. /contato"))
+    form_01 = models.CharField(_("Form"), max_length=254, blank=True, null=True)
+    btn_form_01 = models.CharField(_("Button text"), max_length=50, blank=True, null=True)
+    form_02 = models.CharField(_("Form"), max_length=254, blank=True, null=True)
+    btn_form_02 = models.CharField(_("Button text"), max_length=50, blank=True, null=True)
     link_page = models.ForeignKey(
         TranslatablePage, blank=True, null=True, related_name='+', on_delete=models.CASCADE,
         help_text=_("Page to link to"),
@@ -124,7 +127,10 @@ class CoursePageItem(Orderable):
 
     panels = [
         FieldPanel('description'),
-        FieldPanel('link_url'),
+        FieldPanel('form_01'),
+        FieldPanel('btn_form_01'),
+        FieldPanel('form_02'),
+        FieldPanel('btn_form_02'),
         PageChooserPanel('link_page'),
     ]
 

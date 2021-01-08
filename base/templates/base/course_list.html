@@ -15,9 +15,15 @@
                 {% for item in course_text %}
                     <div class="mb-5">
                         {{ item.description|safe }}
-                        {% if item.link_url %}
-                            <a class="btn btn-course" href="{{ item.link_url }}">{% trans "Learn more" %}</a>
-                        {% elif item.link_page %}
+                        <div class="text-center">
+                            {% if item.form_01 %}
+                                <a class="btn btn-course" href="{{ item.link_url }}">{{ item.btn_form_01 }}</a>
+                            {% endif %}
+                            {% if item.form_02 %}
+                                <a class="btn btn-course" href="{{ item.link_url }}">{{ item.btn_form_02 }}</a>
+                            {% endif %}
+                        </div>
+                        {% if item.link_page %}
                             <a class="btn btn-course" href="{{ item.link_page.url }}">{% trans "Learn more" %}</a>
                         {% endif %}
                     </div>
