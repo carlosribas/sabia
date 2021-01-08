@@ -44,17 +44,17 @@
                 </div>
             </div>
         {% endif %}
-        <br>
-        <div class="form-row">
-            <div class="col-12 col-md-6">
-                <label for="phone">{% trans "Phone" %}</label>
-                <input type="text" class="form-control" id="phone" placeholder="{{ request.user.phone|default:'' }}" disabled>
-            </div>
+{#        <br>#}
+{#        <div class="form-row">#}
+{#            <div class="col-12 col-md-6">#}
+{#                <label for="phone">{% trans "Phone" %}</label>#}
+{#                <input type="text" class="form-control" id="phone" placeholder="{{ request.user.phone|default:'' }}" disabled>#}
+{#            </div>#}
 {#            <div class="col-12 col-md-6">#}
 {#                <label for="email">{% trans "Certificate" %}</label>#}
 {#                <input type="text" class="form-control" id="certificate" placeholder="{{ request.user.filename|default:'' }}" disabled>#}
 {#            </div>#}
-        </div>
+{#        </div>#}
     </div>
 {% endblock %}
 
