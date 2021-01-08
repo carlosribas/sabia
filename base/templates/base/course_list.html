@@ -17,10 +17,10 @@
                         {{ item.description|safe }}
                         <div class="text-center">
                             {% if item.form_01 %}
-                                <a class="btn btn-course" href="{{ item.link_url }}">{{ item.btn_form_01 }}</a>
+                                <a class="btn btn-course" href="{{ item.form_01 }}">{{ item.btn_form_01 }}</a>
                             {% endif %}
                             {% if item.form_02 %}
-                                <a class="btn btn-course" href="{{ item.link_url }}">{{ item.btn_form_02 }}</a>
+                                <a class="btn btn-course" href="{{ item.form_02 }}">{{ item.btn_form_02 }}</a>
                             {% endif %}
                         </div>
                         {% if item.link_page %}
