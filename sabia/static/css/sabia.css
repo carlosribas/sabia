@@ -574,3 +574,7 @@ p .link-icon:hover {
   list-style-type: none;
   padding-left: 0;
 }
+
+hr {
+  border-color: #ff6600;
+}
