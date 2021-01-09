@@ -640,7 +640,7 @@ msgstr "Perfil"
 
 #: userauth/templates/userauth/account/profile.html:8
 msgid "Account profile"
-msgstr "Perfil da conta"
+msgstr "Minha conta"
 
 #: userauth/templates/userauth/account/profile.html:26
 #: userauth/templates/userauth/account/update.html:25
