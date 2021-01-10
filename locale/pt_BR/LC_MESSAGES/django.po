@@ -543,7 +543,7 @@ msgstr "ou faça login com uma de suas redes sociais:"
 
 #: userauth/templates/userauth/account/login.html:32
 msgid "Don't have an account?"
-msgstr "Não tem conta?"
+msgstr "Você ainda não tem conta?"
 
 #: userauth/templates/userauth/account/login.html:32
 #: userauth/templates/userauth/account/signup.html:5

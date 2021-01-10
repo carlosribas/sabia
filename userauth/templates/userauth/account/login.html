@@ -10,6 +10,7 @@
 
 {% block card-body %}
     {% get_providers as socialaccount_providers %}
+    <p>{% trans "Don't have an account?" %} <a href="{{ signup_url }}">{% trans "Sign up" %}</a></p>
 
     <form method="POST" action="{% url 'account_login' %}?next={{ request.GET.next }}" class="needs-validation" novalidate>
         {% csrf_token %}
@@ -29,8 +30,5 @@
 {% endblock %}
 
 {% block card-footer %}
-    <p>{% trans "Don't have an account?" %} <a href="{{ signup_url }}">{% trans "Sign up" %}</a></p>
-    <small>
-        <a href="{% url 'account_reset_password' %}">{% trans "Forgot password?" %}</a>
-    </small>
+    <a href="{% url 'account_reset_password' %}">{% trans "Forgot password?" %}</a>
 {% endblock %}
