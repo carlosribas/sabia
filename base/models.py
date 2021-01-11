@@ -224,6 +224,7 @@ class CourseMaterial(index.Indexed, ClusterableModel):
         verbose_name_plural = _("Course materials")
 
 
+@register_snippet
 class CourseUser(models.Model):
     """A Django model to register the user in a course"""
     course = models.ForeignKey(Course, verbose_name=_('Course'), on_delete=models.CASCADE)

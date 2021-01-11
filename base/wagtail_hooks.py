@@ -3,7 +3,7 @@ from django.utils.translation import ugettext as _
 from wagtail.core import hooks
 from wagtail.contrib.modeladmin.options import (ModelAdmin, ModelAdminGroup, modeladmin_register)
 
-from base.models import Course, CourseMaterial, CoursePage, FooterText, Menu, TeamMember
+from base.models import Course, CourseUser, CourseMaterial, CoursePage, FooterText, Menu, TeamMember
 
 
 @hooks.register('construct_main_menu')
@@ -36,10 +36,18 @@ class MenuAdmin(ModelAdmin):
 class CourseAdmin(ModelAdmin):
     model = Course
     menu_label = _('Course')
-    menu_icon = 'fa-money'
+    menu_icon = 'fa-plus'
     search_fields = ('name',)
     list_filter = ('name',)
     list_display = ('name', 'start_date', 'end_date', 'vacancies', 'registered', 'pre_booking')
+
+
+class CourseUserAdmin(ModelAdmin):
+    model = CourseUser
+    menu_label = _('Enrolled')
+    menu_icon = 'fa-money'
+    search_fields = ('course', 'user')
+    list_display = ('course', 'user', 'payment_status', 'payment_id', 'date')
 
 
 class CoursePageAdmin(ModelAdmin):
@@ -62,7 +70,9 @@ class SabiaModelAdminGroup(ModelAdminGroup):
     menu_label = _('General')
     menu_icon = 'cog'
     menu_order = 300  # will put in 4th place (000 being 1st, 100 2nd)
-    items = (CourseAdmin, CourseMaterialAdmin, CoursePageAdmin, TeamMemberAdmin, FooterTextAdmin, MenuAdmin)
+    items = (
+        CourseAdmin, CourseUserAdmin, CourseMaterialAdmin, CoursePageAdmin, TeamMemberAdmin, FooterTextAdmin, MenuAdmin
+    )
 
 
 # When using a ModelAdminGroup class to group several ModelAdmin classes together,
