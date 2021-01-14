@@ -12,28 +12,12 @@
     <div class="container">
         <div class="row">
             <div class="col-12 mt-2">
-                {% for item in course_text %}
-                    <div class="mb-5">
-                        {{ item.description|safe }}
-                        <div class="text-center">
-                            {% if item.form_01 %}
-                                <a class="btn btn-course mb-2" href="{{ item.form_01 }}">{{ item.btn_form_01 }}</a>
-                            {% endif %}
-                            {% if item.form_02 %}
-                                <a class="btn btn-course mb-2" href="{{ item.form_02 }}">{{ item.btn_form_02 }}</a>
-                            {% endif %}
-                        </div>
-                        {% if item.link_page %}
-                            <a class="btn btn-course" href="{{ item.link_page.url }}">{% trans "Learn more" %}</a>
-                        {% endif %}
-                    </div>
-                {% endfor %}
                 {% for course in courses %}
                     <div class="mb-5">
                         <h6>
                             {{ course.name }}
                             {% if course.start_date and course.end_date and course.id not in enrolled_courses %}
-                                <span class="label label-as-badge ml-2">{% trans "Open for subscriptions" %}</span>
+                                <span class="text-uppercase" style="font-size: 90%"> - {% trans "Open for subscriptions" %}</span>
                             {% elif course.id in enrolled_courses %}
                                 <span class="label label-as-badge ml-2">{% trans "Enrolled" %}</span>
                             {% elif course.id in pre_booked_courses %}
@@ -78,6 +62,22 @@
                                 <a class="btn btn-course" href="{% url 'account_login' %}?next={% url 'cursos' %}">{% if course.start_date %}{% trans "Enroll" %}{% else %}{% trans "Make pre-booking" %}{% endif %}</a>
                             {% endif %}
                         </p>
+                    </div>
+                {% endfor %}
+                {% for item in course_text %}
+                    <div class="mb-5">
+                        {{ item.description|safe }}
+                        <div class="text-center">
+                            {% if item.form_01 %}
+                                <a class="btn btn-course mb-2" href="{{ item.form_01 }}">{{ item.btn_form_01 }}</a>
+                            {% endif %}
+                            {% if item.form_02 %}
+                                <a class="btn btn-course mb-2" href="{{ item.form_02 }}">{{ item.btn_form_02 }}</a>
+                            {% endif %}
+                        </div>
+                        {% if item.link_page %}
+                            <a class="btn btn-course" href="{{ item.link_page.url }}">{% trans "Learn more" %}</a>
+                        {% endif %}
                     </div>
                 {% endfor %}
             </div>
