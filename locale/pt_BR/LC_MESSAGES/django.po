@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-14 23:21+0000\n"
+"POT-Creation-Date: 2021-01-16 12:28+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -297,6 +297,18 @@ msgstr "Saiba mais"
 #: base/templates/base/course_registration.html:89
 msgid "Please wait. We are finalizing your registration."
 msgstr "Por favor, aguarde. Estamos concluindo a sua inscrição."
+
+#: base/templates/base/course_registration.html:122
+msgid "Can't pay via PayPal?"
+msgstr "Não consegue pagar via PayPal?"
+
+#: base/templates/base/course_registration.html:122
+msgid "Contact us"
+msgstr "Entre em contato"
+
+#: base/templates/base/course_registration.html:122
+msgid " and we will send you another form of payment"
+msgstr " que nós lhe enviaremos outra forma de pagamento"
 
 #: base/templates/base/members_page.html:17
 msgid "See more"
@@ -690,13 +702,15 @@ msgstr "Verifique seu endereço de e-mail"
 
 #: userauth/templates/userauth/account/verification_sent.html:12
 msgid ""
-"We have sent an e-mail to you for verification. Follow the link provided to "
-"finalize the signup process. Please contact us if you do not receive it "
-"within a few minutes."
+"We have sent an email to you. Access the link provided to complete the "
+"registration process on our website. If you can't find the email, check your "
+"spam folder. Please contact us if you don't receive the email within 10 "
+"minutes."
 msgstr ""
 "Enviamos um e-mail para você. Acesse o link fornecido para finalizar o "
-"processo de inscrição. Entre em contato conosco se não o receber dentro de "
-"alguns minutos."
+"processo de cadastro em nosso site. Caso não encontre o email, verifique sua "
+"pasta de spam. Entre em contato conosco se não receber o e-mail dentro de 10 "
+"minutos."
 
 #: userauth/templates/userauth/socialaccount/authentication_error.html:5
 #: userauth/templates/userauth/socialaccount/authentication_error.html:8
@@ -752,8 +766,8 @@ msgid ""
 "accounts. If this was a mistake, please proceed to <a href=\"%(login_url)s"
 "\">sign in</a>."
 msgstr ""
-"Você decidiu cancelar o login em nosso site usando uma de suas contas"
-"existentes. Se isso foi um erro, prossiga para <a href=\"%(login_url)s"
+"Você decidiu cancelar o login em nosso site usando uma de suas "
+"contasexistentes. Se isso foi um erro, prossiga para <a href=\"%(login_url)s"
 "\">página de login</a>. "
 
 #: userauth/templates/userauth/socialaccount/signup.html:12
