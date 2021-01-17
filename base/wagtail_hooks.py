@@ -61,8 +61,8 @@ class CourseMaterialAdmin(ModelAdmin):
     model = CourseMaterial
     menu_label = _('Course material')
     menu_icon = 'fa-book'
-    search_fields = ('title',)
-    list_filter = ('title',)
+    search_fields = ('course', 'title')
+    list_filter = ('date',)
     list_display = ('course', 'title', 'date')
 
 

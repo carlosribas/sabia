@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load i18n static document_tags %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12 mt-2">
+                <h2>{% trans "My courses" %}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            {% for course in my_courses %}
+                <div class="col-12">
+                    <h6 class="mb-3">{{ course.course }}</h6>
+                </div>
+
+                {% if course.content %}
+                    {% for title in course.content %}
+                        <div class="col-sm-6 col-12 mb-3">
+                            <div class="card userauth">
+                                <div class="card-header"><h5>{{ title.name }}</h5></div>
+                                <div class="card-body">
+                                    {% if title.date %}
+                                        <p><strong>{% trans "Date" %}</strong><br>{{ title.date }}</p>
+                                    {% endif %}
+                                    {% if title.link %}
+                                        <p><strong>{% trans "Broadcast link" %}</strong><br><a href="{{ title.link }}" target="_blank">{{ title.link }}</a></p>
+                                    {% endif %}
+                                    {% if title.description %}
+                                        <p><strong>{% trans "Description" %}</strong><br>{{ title.description|safe }}</p>
+                                    {% endif %}
+
+                                    {% if title.document %}
+                                        {% if title.document|length > 1 %}<strong>{% trans "Files" %}{% else %}{% trans "File" %}</strong>{% endif %}
+                                        <ul>
+                                        {% for item in title.document %}
+                                            <li><a href="{{ item.document.url }}" download>{{ item.document.name|filename }}</a></li>
+                                        {% endfor %}
+                                        </ul>
+                                    {% endif %}
+
+                                    {% if title.video %}
+                                        {% for item in title.video %}
+                                            <video controls controlsList="nodownload" playsinline>
+                                                <source src="{{ item.video.url }}" type="video/mp4"></source>
+                                                {% trans "It looks like your browser doesn't support the video tag. Please use another browser." %}
+                                            </video>
+                                        {% endfor %}
+                                        <small></small>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="col-12">
+                        <p>
+                            {% trans "Thank you for signing up for our course! Soon you will see here all the material used in the classes." %}
+                        </p>
+                    </div>
+                {% endif %}
+            {% endfor %}
+            {% if not my_courses %}
+                <div class="col-12">
+                    {% trans "Enroll in one of our courses and boost your career!" %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

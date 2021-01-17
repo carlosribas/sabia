@@ -8,7 +8,7 @@ from wagtail.core import urls as wagtail_urls
 from wagtail.documents import urls as wagtaildocs_urls
 
 from search import views as search_views
-from base.views import course_list, course_registration, payment_complete
+from base.views import course_list, course_registration, my_course, payment_complete
 
 urlpatterns = [
     path('django-admin/', admin.site.urls),
@@ -19,7 +19,8 @@ urlpatterns = [
     path('search/', search_views.search, name='search'),
     path('cursos', course_list, name='cursos'),
     path('cursos/<int:course_id>', course_registration, name='enroll'),
-    path('cursos/finalizado', payment_complete, name='course_paid')
+    path('cursos/finalizado', payment_complete, name='course_paid'),
+    path('cursos/meus-cursos', my_course, name='my_course')
 ]
 
 urlpatterns += i18n_patterns(

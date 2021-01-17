@@ -1,5 +1,7 @@
 from __future__ import unicode_literals
 
+import os
+
 from django.conf import settings
 from django.db import models
 from django_extensions.db.fields import AutoSlugField
@@ -43,7 +45,12 @@ STATUS = (
 
 def course_directory_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT/cursos/<course>/<course.start_date>/<title>/<filename>
-    return 'cursos/{0}/{1}/{2}/{3}'.format(instance.course.name, instance.course.start_date, instance.title, filename)
+    return 'cursos/{0}/{1}/{2}/{3}'.format(
+        instance.course_material.course,
+        instance.course_material.course.start_date,
+        instance.course_material.title,
+        filename
+    )
 
 
 @register_snippet
@@ -194,10 +201,9 @@ class CourseMaterial(index.Indexed, ClusterableModel):
     """A Django model to create content for courses."""
     course = models.ForeignKey(Course, verbose_name=_('Course'), on_delete=models.CASCADE)
     title = models.CharField(_("Title"), max_length=254)
-    date = models.DateField(_("Date"))
-    document = models.FileField(_("Document"),  upload_to=course_directory_path, blank=True, null=True)
-    video = EmbedVideoField(_('Video'), blank=True, null=True)
-    content = StreamField(BaseStreamBlock(required=False), verbose_name=_("Content"), blank=True)
+    date = models.DateField(_("Date"), blank=True, null=True)
+    description = RichTextField(_("Description"), features=RICHTEXT_FEATURES, blank=True)
+    link = models.URLField(_('Broadcast link'), blank=True, null=True)
 
     panels = [
         FieldPanel('course'),
@@ -205,15 +211,12 @@ class CourseMaterial(index.Indexed, ClusterableModel):
             FieldRowPanel([
                 FieldPanel('title', classname="col6"),
                 FieldPanel('date', classname="col6"),
+                FieldPanel('link', classname="col12"),
+                FieldPanel('description', classname="col12"),
             ])
-        ], heading=_("Info")),
-        FieldPanel('document'),
-        FieldPanel('video'),
-        StreamFieldPanel('content'),
-    ]
-
-    search_fields = [
-        index.SearchField('title'),
+        ], heading=_("Lesson information")),
+        InlinePanel('course_material_document', label=_("Documents")),
+        InlinePanel('course_material_video', label=_("Videos"))
     ]
 
     def __str__(self):
@@ -222,6 +225,16 @@ class CourseMaterial(index.Indexed, ClusterableModel):
     class Meta:
         verbose_name = _("Course material")
         verbose_name_plural = _("Course materials")
+
+
+class CourseMaterialDocument(Orderable):
+    course_material = ParentalKey('CourseMaterial', related_name='course_material_document')
+    document = models.FileField(_("Document"), upload_to=course_directory_path, max_length=254, blank=True, null=True)
+
+
+class CourseMaterialVideo(Orderable):
+    course_material = ParentalKey('CourseMaterial', related_name='course_material_video')
+    video = models.FileField(_('Video'), upload_to=course_directory_path, max_length=254, blank=True, null=True)
 
 
 @register_snippet

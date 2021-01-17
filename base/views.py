@@ -3,6 +3,7 @@ import json
 
 from django.conf import settings
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.db.models import Q
 from django.http import HttpResponseRedirect, JsonResponse
@@ -11,7 +12,8 @@ from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils.translation import ugettext as _
 
-from base.models import Course, CourseUser, CoursePage, ENROLL, PRE_BOOKING
+from base.models import Course, CourseUser, CoursePage, CourseMaterial, CourseMaterialDocument, CourseMaterialVideo, \
+    ENROLL, PRE_BOOKING
 
 
 def course_list(request, template_name="base/course_list.html"):
@@ -113,3 +115,38 @@ def payment_complete(request):
         response = {'message': _("Waiting for payment confirmation")}
 
     return JsonResponse(response)
+
+
+@login_required
+def my_course(request, template_name="base/my_course.html"):
+    # Check if the user is enrolled in any course
+    course_user = CourseUser.objects.filter(user=request.user.id).order_by('-course__start_date')
+
+    # Get course materials
+    my_courses = []
+    for course in course_user:
+        # Get material
+        course_material = CourseMaterial.objects.filter(course=course.course).order_by('date')
+
+        # Get items
+        material_items = []
+        for item in course_material:
+            course_material_document = CourseMaterialDocument.objects.filter(course_material=item)
+            course_material_video = CourseMaterialVideo.objects.filter(course_material=item)
+
+            material_items.append({
+                'name': item.title,
+                'date': item.date,
+                'link': item.link,
+                'description': item.description,
+                'document': course_material_document,
+                'video': course_material_video
+            })
+
+        my_courses.append({'course': course.course.name, 'content': material_items})
+
+    context = {
+        'my_courses': my_courses
+    }
+
+    return render(request, template_name, context)
