@@ -22,7 +22,7 @@ def course_list(request, template_name="base/course_list.html"):
 
     # List of available courses
     today = datetime.datetime.today()
-    courses = Course.objects.filter(Q(start_date__gte=today) | Q(start_date=None)).order_by('-start_date')
+    courses = Course.objects.filter(Q(end_date__gte=today) | Q(start_date=None)).order_by('-start_date')
 
     # Check if the user is enrolled in any course
     course_user = CourseUser.objects.filter(user=request.user.id)
