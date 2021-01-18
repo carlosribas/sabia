@@ -16,7 +16,9 @@
                     <div class="mb-5">
                         <h6>
                             {{ course.name }}
-                            {% if course.start_date and course.end_date and course.id not in enrolled_courses %}
+                            {% if course.vacancies == course.registered %}
+                                <span class="label label-as-badge ml-2">{% trans "Exhausted vacancies" %}</span>
+                            {% elif course.start_date and course.end_date and course.id not in enrolled_courses %}
                                 <span class="text-uppercase" style="font-size: 90%"> - {% trans "Open for subscriptions" %}</span>
                             {% elif course.id in enrolled_courses %}
                                 <span class="label label-as-badge ml-2">{% trans "Enrolled" %}</span>
