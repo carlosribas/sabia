@@ -18,7 +18,7 @@
 
                 {% if course.content %}
                     {% for title in course.content %}
-                        <div class="col-sm-6 col-12 mb-3">
+                        <div class="col-sm-4 col-12 mb-3">
                             <div class="card userauth">
                                 <div class="card-header"><h5>{{ title.name }}</h5></div>
                                 <div class="card-body">
@@ -33,7 +33,7 @@
                                     {% endif %}
 
                                     {% if title.document %}
-                                        {% if title.document|length > 1 %}<strong>{% trans "Files" %}{% else %}{% trans "File" %}</strong>{% endif %}
+                                        {% if title.document|length > 1 %}<strong>{% trans "Files" %}</strong>{% else %}<strong>{% trans "File" %}</strong>{% endif %}
                                         <ul>
                                         {% for item in title.document %}
                                             <li><a href="{{ item.document.url }}" download>{{ item.document.name|filename }}</a></li>
