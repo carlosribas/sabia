@@ -61,7 +61,11 @@
                                     {% endif %}
                                 </form>
                             {% else %}
-                                <a class="btn btn-course" href="{% url 'account_login' %}?next={% url 'cursos' %}">{% if course.start_date %}{% trans "Make registration" %}{% else %}{% trans "Make pre-booking" %}{% endif %}</a>
+                                {% if course.vacancies == course.registered %}
+                                    <a class="btn btn-course disabled" href="#" aria-disabled="true">{% trans "Exhausted vacancies" %}</a>
+                                {% else %}
+                                    <a class="btn btn-course" href="{% url 'account_login' %}?next={% url 'cursos' %}">{% if course.start_date %}{% trans "Make registration" %}{% else %}{% trans "Make pre-booking" %}{% endif %}</a>
+                                {% endif %}
                             {% endif %}
                         </p>
                     </div>
