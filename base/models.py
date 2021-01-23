@@ -61,6 +61,7 @@ class TeamMember(index.Indexed, ClusterableModel):
     linkedin = models.CharField(max_length=254, blank=True, help_text=_("Link to Linkedin"))
     introduction = models.TextField(help_text=_("Brief description"))
     body = RichTextField()
+    order = models.IntegerField(_('Position'), blank=True, default=10)
     image = models.ForeignKey(
         'wagtailimages.Image',
         null=True,
@@ -70,9 +71,14 @@ class TeamMember(index.Indexed, ClusterableModel):
     )
 
     panels = [
-        FieldPanel('name'),
-        FieldPanel('job_title'),
-        FieldPanel('linkedin'),
+        MultiFieldPanel([
+            FieldRowPanel([
+                FieldPanel('name', classname="col6"),
+                FieldPanel('job_title', classname="col6"),
+                FieldPanel('linkedin', classname="col6"),
+                FieldPanel('order', classname="col6"),
+            ])
+        ], heading=_("Personal information")),
         FieldPanel('introduction'),
         FieldPanel('body'),
         ImageChooserPanel('image')

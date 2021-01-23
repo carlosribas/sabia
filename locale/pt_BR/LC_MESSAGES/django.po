@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-17 16:24+0000\n"
+"POT-Creation-Date: 2021-01-23 21:45+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,11 +22,11 @@ msgstr ""
 msgid "Enroll"
 msgstr "Inscrição"
 
-#: base/models.py:42 base/models.py:158
+#: base/models.py:42 base/models.py:164
 msgid "Pre-booking"
 msgstr "Pré-reserva"
 
-#: base/models.py:59 base/models.py:148
+#: base/models.py:59 base/models.py:154
 msgid "Name"
 msgstr "Nome"
 
@@ -42,265 +42,275 @@ msgstr "Link para o Linkedin"
 msgid "Brief description"
 msgstr "Breve descrição"
 
-#: base/models.py:97
+#: base/models.py:64
+msgid "Position"
+msgstr "Posição"
+
+#: base/models.py:81
+msgid "Personal information"
+msgstr "Informações pessoais"
+
+#: base/models.py:103
 msgid "Person"
 msgstr "Pessoa"
 
-#: base/models.py:98 base/wagtail_hooks.py:16
+#: base/models.py:104 base/wagtail_hooks.py:16
 msgid "Team"
 msgstr "Equipe"
 
-#: base/models.py:111 base/models.py:119 base/models.py:120
+#: base/models.py:117 base/models.py:125 base/models.py:126
 msgid "Course page"
 msgstr "Página do curso"
 
-#: base/models.py:112 base/wagtail_hooks.py:55
+#: base/models.py:118 base/wagtail_hooks.py:55
 msgid "Course page text"
 msgstr "Texto da página do curso"
 
-#: base/models.py:125 base/models.py:159 base/models.py:205
+#: base/models.py:131 base/models.py:165 base/models.py:211
 #: base/templates/base/course_registration.html:109
 #: base/templates/base/my_course.html:32 home/models.py:18 home/models.py:42
 #: home/models.py:60
 msgid "Description"
 msgstr "Descrição"
 
-#: base/models.py:126 base/models.py:128
+#: base/models.py:132 base/models.py:134
 msgid "Form"
 msgstr "Formulário"
 
-#: base/models.py:127 base/models.py:129
+#: base/models.py:133 base/models.py:135
 msgid "Button text"
 msgstr "Texto do botão"
 
-#: base/models.py:132 base/models.py:378 home/models.py:77
+#: base/models.py:138 base/models.py:384 home/models.py:77
 msgid "Page to link to"
 msgstr "Adicionar link para uma página"
 
-#: base/models.py:149
+#: base/models.py:155
 msgid "Start date"
 msgstr "Início"
 
-#: base/models.py:150
+#: base/models.py:156
 msgid "End date"
 msgstr "Término"
 
-#: base/models.py:151
+#: base/models.py:157
 msgid "Start time"
 msgstr "Início"
 
-#: base/models.py:152
+#: base/models.py:158
 msgid "End time"
 msgstr "Término"
 
-#: base/models.py:153 base/models.py:181
-#: base/templates/base/course_list.html:35
+#: base/models.py:159 base/models.py:187
+#: base/templates/base/course_list.html:37
 #: base/templates/base/course_registration.html:113
 msgid "Price"
 msgstr "Valor"
 
-#: base/models.py:154
+#: base/models.py:160
 msgid "Price 2x"
 msgstr "Valor em 2x"
 
-#: base/models.py:155
+#: base/models.py:161
 msgid "Price 3x"
 msgstr "Valor em 3x"
 
-#: base/models.py:156
+#: base/models.py:162
 msgid "Vacancies"
 msgstr "Vagas"
 
-#: base/models.py:157
+#: base/models.py:163
 msgid "Registered"
 msgstr "Inscritos"
 
-#: base/models.py:168
+#: base/models.py:174
 msgid "Dates"
 msgstr "Datas"
 
-#: base/models.py:174
+#: base/models.py:180
 msgid "Schedule"
 msgstr "Horário"
 
-#: base/models.py:195 base/models.py:202 base/models.py:243
+#: base/models.py:201 base/models.py:208 base/models.py:249
 #: base/templates/base/course_registration.html:101 base/wagtail_hooks.py:38
 msgid "Course"
 msgstr "Curso"
 
-#: base/models.py:196 base/templates/base/course_list.html:8
+#: base/models.py:202 base/templates/base/course_list.html:8
 msgid "Courses"
 msgstr "Cursos"
 
-#: base/models.py:203 home/models.py:16 home/models.py:41 home/models.py:59
+#: base/models.py:209 home/models.py:16 home/models.py:41 home/models.py:59
 msgid "Title"
 msgstr "Título"
 
-#: base/models.py:204 base/models.py:246
+#: base/models.py:210 base/models.py:252
 #: base/templates/base/course_registration.html:105
 #: base/templates/base/my_course.html:26
 msgid "Date"
 msgstr "Data"
 
-#: base/models.py:206 base/templates/base/my_course.html:29
+#: base/models.py:212 base/templates/base/my_course.html:29
 msgid "Broadcast link"
 msgstr "Link da transmissão"
 
-#: base/models.py:217
+#: base/models.py:223
 msgid "Lesson information"
 msgstr "Informações da aula"
 
-#: base/models.py:218
+#: base/models.py:224
 msgid "Documents"
 msgstr "Documentos"
 
-#: base/models.py:219
+#: base/models.py:225
 msgid "Videos"
 msgstr "Vídeos"
 
-#: base/models.py:226 base/wagtail_hooks.py:62
+#: base/models.py:232 base/wagtail_hooks.py:62
 msgid "Course material"
 msgstr "Material do curso"
 
-#: base/models.py:227
+#: base/models.py:233
 msgid "Course materials"
 msgstr "Materiais do curso"
 
-#: base/models.py:232
+#: base/models.py:238
 msgid "Document"
 msgstr "Documento"
 
-#: base/models.py:237
+#: base/models.py:243
 msgid "Video"
 msgstr "Vídeo"
 
-#: base/models.py:244
+#: base/models.py:250
 msgid "User"
 msgstr "Usuário"
 
-#: base/models.py:245
+#: base/models.py:251
 msgid "Status"
 msgstr "Status"
 
-#: base/models.py:247
+#: base/models.py:253
 msgid "Payment Id"
 msgstr "Id do pagamento"
 
-#: base/models.py:248
+#: base/models.py:254
 msgid "Payment status"
 msgstr "Status do pagamento"
 
-#: base/models.py:249
+#: base/models.py:255
 msgid "Note"
 msgstr "Obs"
 
-#: base/models.py:266 base/models.py:269 base/wagtail_hooks.py:25
+#: base/models.py:272 base/models.py:275 base/wagtail_hooks.py:25
 msgid "Footer Text"
 msgstr "Texto do rodapé"
 
-#: base/models.py:278 base/models.py:302 blog/models.py:32
+#: base/models.py:284 base/models.py:308 blog/models.py:32
 msgid "Text to describe the page"
 msgstr "Texto para descrever a página"
 
-#: base/models.py:285 base/models.py:310 blog/models.py:39 blog/models.py:93
+#: base/models.py:291 base/models.py:316 blog/models.py:39 blog/models.py:93
 msgid "Landscape mode only; horizontal width between 1000px and 3000px."
 msgstr ""
 
-#: base/models.py:321
+#: base/models.py:327
 msgid "Select the image collection for this gallery."
 msgstr ""
 
-#: base/models.py:364 base/wagtail_hooks.py:31
+#: base/models.py:370 base/wagtail_hooks.py:31
 msgid "Menu"
 msgstr ""
 
-#: base/models.py:365
+#: base/models.py:371
 msgid "Menu Item"
 msgstr ""
 
-#: base/models.py:373
+#: base/models.py:379
 msgid "Menu to which this item belongs"
 msgstr ""
 
-#: base/models.py:374
+#: base/models.py:380
 msgid "Title of menu item that will be displayed"
 msgstr ""
 
-#: base/models.py:375 home/models.py:22 home/models.py:43
+#: base/models.py:381 home/models.py:22 home/models.py:43
 msgid "URL to link to, e.g. /contato"
 msgstr "Adicionar link para uma URL, por exemplo: /contato"
 
-#: base/models.py:382
+#: base/models.py:388
 msgid "Title of submenu (LEAVE BLANK if there is no custom submenu)"
 msgstr ""
 
-#: base/models.py:384 home/models.py:61
+#: base/models.py:390 home/models.py:61
 msgid "Fontawesome icon"
 msgstr ""
 
-#: base/models.py:387
+#: base/models.py:393
 msgid "Always"
 msgstr "Sempre"
 
-#: base/models.py:387
+#: base/models.py:393
 msgid "When logged in"
 msgstr "Quando logado"
 
-#: base/models.py:387
+#: base/models.py:393
 msgid "When not logged in"
 msgstr "Quando não estiver logado"
 
 #: base/templates/base/course_list.html:20
-msgid "Open for subscriptions"
-msgstr "Inscrições abertas"
-
-#: base/templates/base/course_list.html:22
-#: base/templates/base/course_list.html:45 base/wagtail_hooks.py:47
+#: base/templates/base/course_list.html:47 base/wagtail_hooks.py:47
 msgid "Enrolled"
 msgstr "Inscrito"
 
-#: base/templates/base/course_list.html:24
+#: base/templates/base/course_list.html:22
 msgid "Pre-booked"
 msgstr "Pré-reservado"
 
-#: base/templates/base/course_list.html:29
+#: base/templates/base/course_list.html:24
+#: base/templates/base/course_list.html:50
+#: base/templates/base/course_list.html:65
+msgid "Exhausted vacancies"
+msgstr "Vagas esgotadas"
+
+#: base/templates/base/course_list.html:26
+msgid "Open for subscriptions"
+msgstr "Inscrições abertas"
+
+#: base/templates/base/course_list.html:31
 msgid "Course date"
 msgstr "Data do curso"
 
-#: base/templates/base/course_list.html:35
+#: base/templates/base/course_list.html:37
 #: base/templates/base/course_registration.html:114
 msgid "one-time payment"
 msgstr "à vista"
 
-#: base/templates/base/course_list.html:36
+#: base/templates/base/course_list.html:38
 #: base/templates/base/course_registration.html:115
 msgid " or 2 monthly payments of "
 msgstr " ou 2x de "
 
-#: base/templates/base/course_list.html:37
+#: base/templates/base/course_list.html:39
 #: base/templates/base/course_registration.html:116
 msgid " or 3 monthly payments of "
 msgstr " ou 3x de "
 
-#: base/templates/base/course_list.html:48
-msgid "Exhausted vacancies"
-msgstr "Vagas esgotadas"
-
-#: base/templates/base/course_list.html:50
-#: base/templates/base/course_list.html:62
+#: base/templates/base/course_list.html:52
+#: base/templates/base/course_list.html:67
 msgid "Make registration"
 msgstr "Fazer inscrição"
 
-#: base/templates/base/course_list.html:55
+#: base/templates/base/course_list.html:57
 msgid "Cancel pre-booking"
 msgstr "Cancelar pré-reserva"
 
-#: base/templates/base/course_list.html:57
-#: base/templates/base/course_list.html:62
+#: base/templates/base/course_list.html:59
+#: base/templates/base/course_list.html:67
 msgid "Make pre-booking"
 msgstr "Fazer pré-reserva"
 
-#: base/templates/base/course_list.html:79
+#: base/templates/base/course_list.html:85
 msgid "Learn more"
 msgstr "Saiba mais"
 
