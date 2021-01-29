@@ -340,15 +340,28 @@ p .link-icon:hover {
 
 .btn-course {
   color: #fff;
-  background-color: #424248;
-  border-color: #424248;
+  background-color: #ff6600;
+  border-color: #ff6600;
 }
 .btn-course:focus,
 .btn-course:active,
 .btn-course:hover {
   color: #fff;
-  background-color: #ff6600;
-  border-color: #ff6600;
+  background-color: #e65c00;
+  border-color: #e65c00;
+}
+
+.btn-delete {
+  color: #fff;
+  background-color: #2c2d33;
+  border-color: #dc3545;
+}
+.btn-delete:focus,
+.btn-delete:active,
+.btn-delete:hover {
+  color: #fff;
+  background-color: #dc3545;
+  border-color: #dc3545;
 }
 
 @media screen and (max-width: 480px) {

@@ -56,6 +56,29 @@ def course_list(request, template_name="base/course_list.html"):
             course_user.delete()
             messages.success(request, _('Pre-booking canceled successfully'))
 
+        elif request.POST['action'] == "enroll":
+            if course.registered < course.vacancies:
+                # Increase the number of registered participants
+                course.registered = course.registered + 1
+                course.save()
+                # Create course/user object
+                course_user = CourseUser(course=course, user=user, status=ENROLL)
+                course_user.save()
+                # Redirect to the confirmation page
+                redirect_url = reverse("confirmation_page", args=(course.pk,))
+                return HttpResponseRedirect(redirect_url)
+            else:
+                messages.error(request, _('Sorry, there are no more vacancies for this course'))
+
+        elif request.POST['action'] == "unsubscribe":
+            # Decrease the number of registered participants
+            course.registered = course.registered - 1
+            course.save()
+            # Remove course/user object
+            course_user = CourseUser.objects.get(course=course, user=user, status=ENROLL)
+            course_user.delete()
+            messages.success(request, _('Unsubscribe successfully'))
+
         redirect_url = reverse("cursos")
         return HttpResponseRedirect(redirect_url)
 
@@ -66,6 +89,12 @@ def course_list(request, template_name="base/course_list.html"):
         'pre_booked_courses': pre_booked_courses
     }
 
+    return render(request, template_name, context)
+
+
+def confirmation_page(request, course_id, template_name="base/confirmation_page.html"):
+    course = get_object_or_404(Course, pk=course_id)
+    context = {'course': course}
     return render(request, template_name, context)
 
 
