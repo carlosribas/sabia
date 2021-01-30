@@ -6,3 +6,4 @@ local.py
 *.mo
 .coverage
 media/**
+sabia.sql
