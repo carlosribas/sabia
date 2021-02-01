@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-28 22:56+0000\n"
+"POT-Creation-Date: 2021-02-01 23:34+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -68,7 +68,7 @@ msgstr "Texto da página do curso"
 
 #: base/models.py:131 base/models.py:165 base/models.py:211
 #: base/templates/base/course_registration.html:109
-#: base/templates/base/my_course.html:32 home/models.py:18 home/models.py:42
+#: base/templates/base/my_course.html:35 home/models.py:18 home/models.py:42
 #: home/models.py:60
 msgid "Description"
 msgstr "Descrição"
@@ -146,11 +146,11 @@ msgstr "Título"
 
 #: base/models.py:210 base/models.py:252
 #: base/templates/base/course_registration.html:105
-#: base/templates/base/my_course.html:26
+#: base/templates/base/my_course.html:29
 msgid "Date"
 msgstr "Data"
 
-#: base/models.py:212 base/templates/base/my_course.html:29
+#: base/models.py:212 base/templates/base/my_course.html:32
 msgid "Broadcast link"
 msgstr "Link da transmissão"
 
@@ -278,13 +278,7 @@ msgstr "foi realizada com sucesso."
 msgid ""
 "All important information is available in your Sabiá account. To access "
 "click on"
-msgstr ""
-"Todas as informações importantes do curso estão disponíveis em "
-""
-
-#: base/templates/base/confirmation_page.html:16
-msgid "My Courses"
-msgstr "Meus cursos"
+msgstr "Todas as informações importantes do curso estão disponíveis em "
 
 #: base/templates/base/confirmation_page.html:17
 msgid ""
@@ -394,15 +388,15 @@ msgstr "Ver mais"
 msgid "My courses"
 msgstr "Meus cursos"
 
-#: base/templates/base/my_course.html:36
+#: base/templates/base/my_course.html:39
 msgid "Files"
 msgstr "Arquivos"
 
-#: base/templates/base/my_course.html:36
+#: base/templates/base/my_course.html:39
 msgid "File"
 msgstr "Arquivo"
 
-#: base/templates/base/my_course.html:48
+#: base/templates/base/my_course.html:53
 msgid ""
 "It looks like your browser doesn't support the video tag. Please use another "
 "browser."
@@ -410,7 +404,7 @@ msgstr ""
 "Parece que seu navegador não suporta a tag de vídeo. Por favor, acesse com "
 "outro navegador."
 
-#: base/templates/base/my_course.html:60
+#: base/templates/base/my_course.html:65
 msgid ""
 "Thank you for signing up for our course! Soon you will see here all the "
 "material used in the classes."
@@ -418,7 +412,7 @@ msgstr ""
 "Obrigado por se inscrever em nosso curso! Em breve você verá aqui todo o "
 "material utilizado nas aulas."
 
-#: base/templates/base/my_course.html:67
+#: base/templates/base/my_course.html:73
 msgid "Enroll in one of our courses and boost your career!"
 msgstr "Inscreva-se em um dos nossos cursos e impulsione sua carreira!"
 
@@ -521,6 +515,14 @@ msgstr ""
 #: home/models.py:95
 msgid "Why choose us"
 msgstr "Por que nos escolher"
+
+#: sabia/templates/404.html:10
+msgid "Page not found"
+msgstr "Página não encontrada"
+
+#: sabia/templates/404.html:17
+msgid "Sorry, this page could not be found."
+msgstr "Desculpe, a página que você está procurando não existe."
 
 #: sabia/templates/includes/main_menu.html:82
 #: userauth/templates/userauth/account/login.html:5
@@ -906,6 +908,9 @@ msgstr "Faça login"
 #: userauth/templates/userauth/socialaccount/signup.html:44
 msgid " and connect to your social account in your profile."
 msgstr " e conecte sua rede social ao seu perfil."
+
+#~ msgid "My Courses"
+#~ msgstr "Meus cursos"
 
 #~ msgid "Open for subscriptions"
 #~ msgstr "Inscrições abertas"
