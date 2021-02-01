@@ -10,18 +10,21 @@
         </div>
     </div>
     <div class="container">
-        <div class="row">
-            {% for course in my_courses %}
+        {% for course in my_courses %}
+            <div class="row">
                 <div class="col-12">
                     <h6 class="mb-3">{{ course.course }}</h6>
                 </div>
 
                 {% if course.content %}
                     {% for title in course.content %}
-                        <div class="col-sm-4 col-12 mb-3">
+                        <div class="col-12 mb-3">
                             <div class="card userauth">
-                                <div class="card-header"><h5>{{ title.name }}</h5></div>
+                                <div class="card-header">
+                                    <h5>{{ title.name }}</h5>
+                                </div>
                                 <div class="card-body">
+                                    {% if title.video %}<div class="row"><div class="col-sm-8 col-12">{% endif %}
                                     {% if title.date %}
                                         <p><strong>{% trans "Date" %}</strong><br>{{ title.date }}</p>
                                     {% endif %}
@@ -40,15 +43,17 @@
                                         {% endfor %}
                                         </ul>
                                     {% endif %}
+                                    {% if title.video %}</div>{% endif %}
 
                                     {% if title.video %}
+                                        <div class="col-sm-4 col-12">
                                         {% for item in title.video %}
                                             <video controls controlsList="nodownload" playsinline>
                                                 <source src="{{ item.video.url }}" type="video/mp4"></source>
                                                 {% trans "It looks like your browser doesn't support the video tag. Please use another browser." %}
                                             </video>
                                         {% endfor %}
-                                        <small></small>
+                                        </div></div>
                                     {% endif %}
                                 </div>
                             </div>
@@ -61,12 +66,12 @@
                         </p>
                     </div>
                 {% endif %}
-            {% endfor %}
-            {% if not my_courses %}
-                <div class="col-12">
-                    {% trans "Enroll in one of our courses and boost your career!" %}
-                </div>
-            {% endif %}
-        </div>
+            </div>
+        {% endfor %}
+        {% if not my_courses %}
+            <div class="col-12">
+                {% trans "Enroll in one of our courses and boost your career!" %}
+            </div>
+        {% endif %}
     </div>
 {% endblock %}
