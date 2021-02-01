@@ -25,9 +25,9 @@
                             {% endif %}
                         </h6>
                         <p>
-                            {% if course.start_date and course.end_date %}
+                            {% if course.start_date %}
                                 <strong>{% trans "Course date" %}:</strong>
-                                {{ course.start_date|date:'d/m/Y' }}{% if course.end_date %} a {{ course.end_date|date:'d/m/Y' }}{% endif %}{% if course.start_time and course.end_time %} das {{ course.start_time }} às {{ course.end_time }}{% endif %}
+                                {{ course.start_date|date:'d/m/Y' }}{% if course.end_date %} a {{ course.end_date|date:'d/m/Y' }}{% endif %}{% if course.start_time and course.end_time %} das {{ course.start_time }} às {{ course.end_time }} (Horário de Brasília){% endif %}
                             {% endif %}
                         </p>
                         <p>{{ course.description|safe }}</p>
