@@ -14,6 +14,17 @@ SECRET_KEY = '-sw(#_=0oy36fh3#ebxj@==67jn%cwtvx^60ya@!b7@2rkumk)'
 # SECURITY WARNING: define the correct hosts in production!
 ALLOWED_HOSTS = ['*']
 
+# Database used to run tests on github
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'sabia',
+        'USER': 'sabia',
+        'PASSWORD': 'sabia',
+        'HOST': 'localhost',
+    }
+}
+
 # reCaptcha settings
 RECAPTCHA_PUBLIC_KEY = 'dev_fake_public_key'
 RECAPTCHA_PRIVATE_KEY = 'dev_fake_private_key'
