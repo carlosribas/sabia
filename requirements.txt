@@ -11,3 +11,5 @@ django-recaptcha==2.0.6
 django-embed-video==1.4.0
 psycopg2-binary==2.8.6
 python-dotenv==0.15.0
+coverage==5.4
+factory-boy==3.2.0
