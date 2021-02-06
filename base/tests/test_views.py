@@ -6,7 +6,7 @@ from django.urls import reverse, resolve
 
 from userauth.models import CustomUser, VET
 from base.models import Course, CoursePage, CourseUser
-from base.views import course_list
+from base.views import course_list, my_course
 
 USER_USERNAME = 'user'
 USER_PWD = 'mypassword'
@@ -104,3 +104,37 @@ class CourseTestCase(TestCase):
         message = list(get_messages(response.wsgi_request))
         self.assertEqual(len(message), 1)
         self.assertEqual(str(message[0]), 'Unsubscribe successfully')
+
+
+class MyCourseTestCase(TestCase):
+    def setUp(self):
+        """Configure authentication and variables to start each test"""
+        self.user = CustomUser.objects.create_user(
+            username=USER_USERNAME,
+            email=USER_EMAIL,
+            password=USER_PWD,
+            academic_background=VET
+        )
+        self.user.is_staff = True
+        self.user.save()
+
+        logged = self.client.login(username=USER_USERNAME, password=USER_PWD)
+        self.assertEqual(logged, True)
+
+        CoursePage.objects.create(title="Cursos", slug="cursos")
+        self.course_1 = Course.objects.create(name="course 01", vacancies=0)
+        CourseUser.objects.create(course=self.course_1, user=self.user)
+
+    def test_my_course_status_code(self):
+        url = reverse('my_course')
+        response = self.client.get(url)
+        self.assertEquals(response.status_code, 200)
+
+    def test_my_course_template(self):
+        url = reverse('my_course')
+        response = self.client.get(url)
+        self.assertTemplateUsed(response, 'base/my_course.html')
+
+    def test_my_course_url_resolves_my_course_view(self):
+        view = resolve('/cursos/meus-cursos')
+        self.assertEquals(view.func, my_course)
