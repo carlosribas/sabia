@@ -7,3 +7,4 @@ local.py
 .coverage
 media/**
 sabia.sql
+htmlcov
