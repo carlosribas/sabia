@@ -63,7 +63,7 @@ class CourseTestCase(TestCase):
         response = self.client.post(reverse("cursos"), self.data)
         message = list(get_messages(response.wsgi_request))
         self.assertEqual(len(message), 1)
-        self.assertEqual(str(message[0]), 'Pré-reserva realizada com sucesso')
+        self.assertEqual(str(message[0]), 'Pre-booking successful')
 
     def test_course_pre_booking_unsubscribe(self):
         CourseUser.objects.create(course=self.course_1, user=self.user, status='pre-booking')
@@ -74,7 +74,7 @@ class CourseTestCase(TestCase):
         response = self.client.post(reverse("cursos"), self.data)
         message = list(get_messages(response.wsgi_request))
         self.assertEqual(len(message), 1)
-        self.assertEqual(str(message[0]), 'Pré-reserva cancelada com sucesso')
+        self.assertEqual(str(message[0]), 'Pre-booking canceled successfully')
 
     def test_course_enroll(self):
         self.data = {
@@ -92,7 +92,7 @@ class CourseTestCase(TestCase):
         response = self.client.post(reverse("cursos"), self.data)
         message = list(get_messages(response.wsgi_request))
         self.assertEqual(len(message), 1)
-        self.assertEqual(str(message[0]), 'Desculpe, não há mais vagas para este curso')
+        self.assertEqual(str(message[0]), 'Sorry, there are no more vacancies for this course')
 
     def test_course_unsubscribe(self):
         CourseUser.objects.create(course=self.course_1, user=self.user, status='enroll')
@@ -103,4 +103,4 @@ class CourseTestCase(TestCase):
         response = self.client.post(reverse("cursos"), self.data)
         message = list(get_messages(response.wsgi_request))
         self.assertEqual(len(message), 1)
-        self.assertEqual(str(message[0]), 'Inscrição cancelada com sucesso')
+        self.assertEqual(str(message[0]), 'Unsubscribe successfully')
