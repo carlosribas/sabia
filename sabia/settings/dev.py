@@ -17,17 +17,6 @@ ALLOWED_HOSTS = ['*']
 # Changed to run tests on github
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 
-# Database used to run tests on github
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'sabia',
-        'USER': 'sabia',
-        'PASSWORD': 'sabia',
-        'HOST': 'localhost',
-    }
-}
-
 # reCaptcha settings
 RECAPTCHA_PUBLIC_KEY = 'dev_fake_public_key'
 RECAPTCHA_PRIVATE_KEY = 'dev_fake_private_key'
@@ -48,4 +37,13 @@ INTERNAL_IPS = ["127.0.0.1", ip[:-1] + '1']
 try:
     from .local import *
 except ImportError:
-    pass
+    # Database used to run tests on github
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'sabia',
+            'USER': 'sabia',
+            'PASSWORD': 'sabia',
+            'HOST': 'localhost',
+        }
+    }
