@@ -1,14 +1,11 @@
 from __future__ import unicode_literals
 
-import os
-
 from django.conf import settings
 from django.db import models
 from django_extensions.db.fields import AutoSlugField
 from django.utils.text import slugify
 from django.utils.translation import ugettext as _
 
-from embed_video.fields import EmbedVideoField
 from modelcluster.fields import ParentalKey
 from modelcluster.models import ClusterableModel
 
