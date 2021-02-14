@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sabiá - Mensagem importante</title>
+</head>
+<body>
+    <p>Olá {{ name }},</p>
+    <br />
+    {% if end_date > start_date %}
+        <p>
+            Este email é para lembrá-lo que amanhã, {{ start_date|date:"l" }}, às {{ start_time }} (horário de Brasília), daremos início ao curso {{ course }}. {% if link %}As aulas serão transmitidas pelo Zoom através deste link: {{ link }}.{% endif %}
+        </p>
+        <br />
+        <p><strong>RECOMENDAÇÕES:</strong></p>
+        <br />
+        <p>
+            Entre no Zoom 10 minutos antes do início da primeira aula para nos apresentarmos.
+            <br />
+            Ao entrar no Zoom, coloque seu nome completo para que você possa ser identificado e ter acesso. Pessoas não identificadas não poderão entrar na sala de aula.
+            <br />
+            Você pode entrar no Zoom com câmera e microfone ligados, pois gostaríamos muito de conhecer todos nossos alunos. Quando a aula começar, então pediremos que desativem a câmera e o microfone para melhorar a transmissão da aula.
+            <br />
+            Nossos cursos são interativos, por isso, você pode fazer perguntas durante toda a aula. Para isso, basta escrever no chat sua dúvida que nosso moderador irá te passar a palavra ou ler sua pergunta para o professor.
+        </p>
+        <br />
+        <p><strong>ACESSO ÀS AULAS GRAVADAS:</strong></p>
+        <br />
+        <p>
+            Você terá acesso às aulas, que serão gravadas, por até 7 dias após o término do curso. Para isso basta acessar <a href="https://plataformasabia.com.br/cursos/meus-cursos" target="_blank">CONTA SABIÁ > MEUS CURSOS</a>. Lá você encontrará tanto as aulas gravadas, quanto o material extra, como artigos científicos, imagens, etc.
+        </p>
+        <br />
+        <p><strong>ENCONTROU ALGUM PROBLEMA?</strong></p>
+        <br />
+        <p>
+            Se no dia do curso você tiver qualquer dificuldade de entrar no Zoom, entre em contato pelo email contato@plataformasabia.com.br que iremos te ajudar.
+        </p>
+    {% else %}
+        <p>
+            Este email é para lembrá-lo que amanhã, {{ start_date|date:"l" }}, às {{ start_time }} (horário de Brasília), teremos a {{ course }}.
+        </p>
+        <br />
+        <p><strong>LINK DA TRANSMISSÃO:</strong></p>
+        <br />
+        <p>O link da transmissão e demais materiais como artigos científicos, vídeos e imagens podem ser encontrados no site da Plataforma Sabiá. Faça login em nosso site e acesse: <a href="https://plataformasabia.com.br/cursos/meus-cursos" target="_blank">CONTA SABIÁ > MEUS CURSOS</a>.</p>
+        <br />
+        <p><strong>RECOMENDAÇÕES:</strong></p>
+        <br />
+        <p>
+            Ao entrar no Zoom, coloque seu nome para que você possa ser identificado.
+            <br />
+            Quando a aula começar, pedimos que desativem a câmera e o microfone para melhorar a transmissão da aula.
+            <br />
+            Caso queira fazer alguma pergunta, basta escrever no chat a sua dúvida. Ao final da apresentação nosso moderador irá te passar a palavra ou ler sua pergunta para o professor.
+        </p>
+    {% endif %}
+    <br />
+    <p>Nos vemos em breve!!</p>
+    <br />
+    <p><i>Profa. Dra. Laila Massad Ribas e Profa. Dra. Carina Outi Baroni<br />Diretoras executivas</i></p>
+    <br />
+    <p>Plataforma Sabiá</p>
+</body>
+</html>
