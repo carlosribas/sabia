@@ -65,6 +65,7 @@ INSTALLED_APPS = [
     'captcha',
     'widget_tweaks',
     'embed_video',
+    'django_extensions',
 
     'base',
     'blog',
