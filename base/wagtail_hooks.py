@@ -3,7 +3,7 @@ from django.utils.translation import ugettext as _
 from wagtail.core import hooks
 from wagtail.contrib.modeladmin.options import (ModelAdmin, ModelAdminGroup, modeladmin_register)
 
-from base.models import Course, CourseUser, CourseMaterial, CoursePage, FooterText, Menu, TeamMember
+from base.models import Course, CourseUser, CourseUserInterview, CourseMaterial, FooterText, Menu, TeamMember
 
 
 @hooks.register('construct_main_menu')
@@ -38,8 +38,8 @@ class CourseAdmin(ModelAdmin):
     menu_label = _('Course')
     menu_icon = 'fa-plus'
     search_fields = ('name',)
-    list_filter = ('name',)
-    list_display = ('name', 'start_date', 'end_date', 'vacancies', 'registered', 'pre_booking')
+    list_filter = ('type',)
+    list_display = ('type', 'name', 'start_date', 'vacancies', 'registered')
 
 
 class CourseUserAdmin(ModelAdmin):
@@ -50,11 +50,11 @@ class CourseUserAdmin(ModelAdmin):
     list_display = ('course', 'user', 'payment_status', 'payment_id', 'date')
 
 
-class CoursePageAdmin(ModelAdmin):
-    model = CoursePage
-    menu_label = _('Course page text')
-    menu_icon = 'fa-file-text'
-    list_display = ('title',)
+class CourseUserInterviewAdmin(ModelAdmin):
+    model = CourseUserInterview
+    menu_label = _('Interview')
+    menu_icon = 'fa-phone'
+    list_display = ('course', 'user', 'show_button')
 
 
 class CourseMaterialAdmin(ModelAdmin):
@@ -71,7 +71,8 @@ class SabiaModelAdminGroup(ModelAdminGroup):
     menu_icon = 'cog'
     menu_order = 300  # will put in 4th place (000 being 1st, 100 2nd)
     items = (
-        CourseAdmin, CourseUserAdmin, CourseMaterialAdmin, CoursePageAdmin, TeamMemberAdmin, FooterTextAdmin, MenuAdmin
+        CourseAdmin, CourseUserAdmin, CourseUserInterviewAdmin, CourseMaterialAdmin, TeamMemberAdmin, FooterTextAdmin,
+        MenuAdmin
     )
 
 

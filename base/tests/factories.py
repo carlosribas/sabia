@@ -1,7 +1,7 @@
 import factory
 
 from wagtail.core.models import Page
-from base.models import Course, CourseMaterial, CoursePage, FooterText, Menu, MenuItem, StandardPage, TeamMember
+from base.models import Course, CourseMaterial, FooterText, Menu, MenuItem, StandardPage, TeamMember
 
 
 class TeamMemberFactory(factory.django.DjangoModelFactory):
@@ -11,14 +11,6 @@ class TeamMemberFactory(factory.django.DjangoModelFactory):
     name = factory.Sequence(lambda n: 'Member name {0}'.format(n))
     introduction = factory.Sequence(lambda n: 'Member introduction {0}'.format(n))
     body = factory.Sequence(lambda n: 'Member body {0}'.format(n))
-
-
-class CoursePageFactory(factory.django.DjangoModelFactory):
-    class Meta:
-        model = CoursePage
-
-    title = factory.Sequence(lambda n: 'Course title {0}'.format(n))
-    slug = factory.Sequence(lambda n: 'course{0}'.format(n))
 
 
 class CourseFactory(factory.django.DjangoModelFactory):

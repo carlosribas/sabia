@@ -6,8 +6,10 @@ from django_extensions.db.fields import AutoSlugField
 from django.utils.text import slugify
 from django.utils.translation import ugettext as _
 
+from modelcluster.contrib.taggit import ClusterTaggableManager
 from modelcluster.fields import ParentalKey
 from modelcluster.models import ClusterableModel
+from taggit.models import Tag, TaggedItemBase
 
 from wagtail.admin.edit_handlers import (
     FieldPanel,
@@ -37,6 +39,17 @@ PRE_BOOKING = 'pre-booking'
 STATUS = (
     (ENROLL, _('Enroll')),
     (PRE_BOOKING, _('Pre-booking')),
+)
+
+ADMIN = 'admin'
+INDIVIDUAL = 'individual'
+GROUP = 'group'
+RECORDED = 'recorded'
+COURSE = (
+    (ADMIN, _('Admin')),
+    (INDIVIDUAL, _('Individual')),
+    (GROUP, _('Group')),
+    (RECORDED, _('Recorded')),
 )
 
 
@@ -101,54 +114,17 @@ class TeamMember(index.Indexed, ClusterableModel):
         verbose_name_plural = _("Team")
 
 
-@register_snippet
-class CoursePage(ClusterableModel):
-    """Page to create the introduction text for the course page."""
-    title = models.CharField(max_length=50)
-    slug = AutoSlugField(populate_from='title', editable=True)
-
-    panels = [
-        MultiFieldPanel([
-            FieldPanel('title'),
-            FieldPanel('slug'),
-        ], heading=_("Course page")),
-        InlinePanel('course_page_items', label=_("Course page text"))
-    ]
-
-    def __str__(self):
-        return self.title
-
-    class Meta:
-        verbose_name = _("Course page")
-        verbose_name_plural = _("Course page")
-
-
-class CoursePageItem(Orderable):
-    course_page = ParentalKey('CoursePage', related_name='course_page_items')
-    description = RichTextField(_("Description"), features=RICHTEXT_FEATURES, blank=True)
-    form_01 = models.CharField(_("Form"), max_length=254, blank=True, null=True)
-    btn_form_01 = models.CharField(_("Button text"), max_length=50, blank=True, null=True)
-    form_02 = models.CharField(_("Form"), max_length=254, blank=True, null=True)
-    btn_form_02 = models.CharField(_("Button text"), max_length=50, blank=True, null=True)
-    link_page = models.ForeignKey(
-        TranslatablePage, blank=True, null=True, related_name='+', on_delete=models.CASCADE,
-        help_text=_("Page to link to"),
-    )
-
-    panels = [
-        FieldPanel('description'),
-        FieldPanel('form_01'),
-        FieldPanel('btn_form_01'),
-        FieldPanel('form_02'),
-        FieldPanel('btn_form_02'),
-        PageChooserPanel('link_page'),
-    ]
+class CourseTag(TaggedItemBase):
+    """This model allows us to create a many-to-many relationship between the Course object and tags."""
+    content_object = ParentalKey('Course', related_name='tagged_courses', on_delete=models.CASCADE)
 
 
 @register_snippet
 class Course(index.Indexed, ClusterableModel):
     """A Django model to create courses."""
+    type = models.CharField(_("Type"), max_length=15, choices=COURSE)
     name = models.CharField(_("Name"), max_length=254)
+    introduction = models.CharField(_("Introduction"), max_length=254)
     start_date = models.DateField(_("Start date"), blank=True, null=True)
     end_date = models.DateField(_("End date"), blank=True, null=True)
     start_time = models.TimeField(_("Start time"), blank=True, null=True)
@@ -156,13 +132,18 @@ class Course(index.Indexed, ClusterableModel):
     price = models.DecimalField(_("Price"), max_digits=10, decimal_places=2, blank=True, null=True)
     price2x = models.DecimalField(_("Price 2x"), max_digits=10, decimal_places=2, blank=True, null=True)
     price3x = models.DecimalField(_("Price 3x"), max_digits=10, decimal_places=2, blank=True, null=True)
+    price4x = models.DecimalField(_("Price 4x"), max_digits=10, decimal_places=2, blank=True, null=True)
     vacancies = models.IntegerField(_("Vacancies"), blank=True, null=True)
     registered = models.IntegerField(_("Registered"), blank=True, null=True, default=0)
     pre_booking = models.IntegerField(_("Pre-booking"), blank=True, null=True, default=0)
     description = RichTextField(_("Description"), features=RICHTEXT_FEATURES, blank=True)
+    image = models.ForeignKey('wagtailimages.Image', null=True, blank=True, on_delete=models.SET_NULL, related_name='+')
+    tags = ClusterTaggableManager(through=CourseTag, blank=True)
 
     panels = [
+        FieldPanel('type'),
         FieldPanel('name'),
+        FieldPanel('introduction'),
         MultiFieldPanel([
             FieldRowPanel([
                 FieldPanel('start_date', classname="col6"),
@@ -177,14 +158,17 @@ class Course(index.Indexed, ClusterableModel):
         ], heading=_("Schedule")),
         MultiFieldPanel([
             FieldRowPanel([
-                FieldPanel('price', classname="col4"),
-                FieldPanel('price2x', classname="col4"),
-                FieldPanel('price3x', classname="col4"),
+                FieldPanel('price', classname="col3"),
+                FieldPanel('price2x', classname="col3"),
+                FieldPanel('price3x', classname="col3"),
+                FieldPanel('price4x', classname="col3"),
             ])
         ], heading=_("Price")),
         FieldPanel('vacancies'),
         FieldPanel('registered'),
         FieldPanel('description'),
+        ImageChooserPanel('image'),
+        FieldPanel('tags'),
     ]
 
     search_fields = [
@@ -193,6 +177,21 @@ class Course(index.Indexed, ClusterableModel):
 
     def __str__(self):
         return '{}'.format(self.name)
+
+    @property
+    def get_tags(self):
+        """
+        Return all the tags that are related to the course into a list we can access on the template.
+        We're additionally adding a URL to access Course objects with that tag
+        """
+        tags = self.tags.all()
+        for tag in tags:
+            tag.url = '/' + '/'.join(s.strip('/') for s in [
+                self.get_parent().url,
+                'tags',
+                tag.slug
+            ])
+        return tags
 
     class Meta:
         verbose_name = _("Course")
@@ -250,6 +249,14 @@ class CourseUser(models.Model):
     payment_id = models.CharField(_("Payment Id"), max_length=254, blank=True)
     payment_status = models.CharField(_("Payment status"), max_length=254, blank=True)
     payment_note = models.CharField(_("Note"), max_length=254, blank=True)
+
+
+@register_snippet
+class CourseUserInterview(models.Model):
+    """A Django model to register the user interest in an individual course"""
+    course = models.ForeignKey(Course, verbose_name=_('Course'), on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, verbose_name=_('User'), on_delete=models.CASCADE)
+    show_button = models.BooleanField(_("Show payment button"), default=False)
 
 
 @register_snippet

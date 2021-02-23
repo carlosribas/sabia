@@ -12,27 +12,32 @@ from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils.translation import ugettext as _
 
-from base.models import Course, CourseUser, CoursePage, CourseMaterial, CourseMaterialDocument, CourseMaterialVideo, \
-    ENROLL, PRE_BOOKING
+from base.models import Course, CourseUser, CourseUserInterview, CourseMaterial, CourseMaterialDocument, \
+    CourseMaterialVideo, ENROLL, PRE_BOOKING
 
 
 def course_list(request, template_name="base/course_list.html"):
-    # Introductory text about courses
-    course_text = CoursePage.objects.get(slug="cursos").course_page_items.all()
-
     # List of available courses
     today = datetime.datetime.today()
-    courses = Course.objects.filter(Q(end_date__gte=today) | Q(start_date=None) | Q(end_date=None)).order_by('-start_date')
+    courses = Course.objects.filter(
+        Q(end_date__gte=today) | Q(start_date=None) | Q(end_date=None)
+    ).order_by('type', '-start_date')
 
-    # Check if the user is enrolled in any course
-    course_user = CourseUser.objects.filter(user=request.user.id)
-    enrolled_courses = []
-    pre_booked_courses = []
-    for item in course_user:
-        if item.status == "enroll":
-            enrolled_courses.append(item.course.id)
-        elif item.status == "pre-booking":
-            pre_booked_courses.append(item.course.id)
+    context = {'courses': courses}
+    return render(request, template_name, context)
+
+
+def course_registration(request, course_id, template_name="base/course_registration.html"):
+    course = get_object_or_404(Course, pk=course_id)
+
+    # Check if the user is enrolled in the course
+    enrolled = CourseUser.objects.filter(course=course.id, user=request.user.id).first()
+
+    # If it is an individual course, check if the user has already done the interview
+    if course.type == 'individual':
+        interview = CourseUserInterview.objects.filter(course=course.id, user=request.user.id).first()
+    else:
+        interview = None
 
     if request.method == "POST":
         course = get_object_or_404(Course, pk=request.POST['content'])
@@ -64,9 +69,7 @@ def course_list(request, template_name="base/course_list.html"):
                 # Create course/user object
                 course_user = CourseUser(course=course, user=user, status=ENROLL)
                 course_user.save()
-                # Redirect to the confirmation page
-                redirect_url = reverse("confirmation_page", args=(course.pk,))
-                return HttpResponseRedirect(redirect_url)
+                messages.success(request, _('Registration successful!'))
             else:
                 messages.error(request, _('Sorry, there are no more vacancies for this course'))
 
@@ -79,28 +82,29 @@ def course_list(request, template_name="base/course_list.html"):
             course_user.delete()
             messages.success(request, _('Unsubscribe successfully'))
 
-        redirect_url = reverse("cursos")
+        elif request.POST['action'] == "interview":
+            # Create interview object
+            user_interview = CourseUserInterview(course=course, user=user)
+            user_interview.save()
+            # Send email to the admin
+            msg_plain = render_to_string('course_interview', {'course': course.name, 'user': request.user})
+            send_mail(
+                '[Plataforma Sabiá] Entrevista para curso individual',
+                msg_plain,
+                settings.EMAIL_HOST_USER,
+                [settings.EMAIL_HOST_USER],
+                fail_silently=False,
+            )
+            messages.success(request, _('Interest registered successfully'))
+
+        redirect_url = reverse("enroll", args=(course_id,))
         return HttpResponseRedirect(redirect_url)
 
     context = {
-        'course_text': course_text,
-        'courses': courses,
-        'enrolled_courses': enrolled_courses,
-        'pre_booked_courses': pre_booked_courses
+        'course': course,
+        'enrolled': enrolled,
+        'interview': interview
     }
-
-    return render(request, template_name, context)
-
-
-def confirmation_page(request, course_id, template_name="base/confirmation_page.html"):
-    course = get_object_or_404(Course, pk=course_id)
-    context = {'course': course}
-    return render(request, template_name, context)
-
-
-def course_registration(request, course_id, template_name="base/course_registration.html"):
-    course = get_object_or_404(Course, pk=course_id)
-    context = {'course': course}
     return render(request, template_name, context)
 
 
@@ -109,7 +113,7 @@ def payment_complete(request):
     course = get_object_or_404(Course, pk=body['courseId'])
 
     # Increase the number of registered students
-    course.registered = course.registered + 1
+    course.registered = course.registered + 1 if course.registered else 1
     course.save()
 
     # Check if the amount paid is correct
@@ -127,16 +131,6 @@ def payment_complete(request):
         payment_note=payment_note
     )
     course_user.save()
-
-    # Send email to the user
-    msg_plain = render_to_string('course_registration_email', {'course': course.name})
-    send_mail(
-        '[Plataforma Sabiá] Confirmação de inscrição',
-        msg_plain,
-        settings.EMAIL_HOST_USER,
-        [request.user.email],
-        fail_silently=False,
-    )
 
     if body['paymentStatus'] == 'COMPLETED':
         response = {'message': _("Payment successful")}

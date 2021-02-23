@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load i18n static %}
+{% load i18n static wagtailimages_tags %}
 
 {% block content %}
     <div class="container">
@@ -11,85 +11,19 @@
     </div>
     <div class="container">
         <div class="row">
-            <div class="col-12 mt-2">
-                {% for course in courses %}
-                    <div class="mb-5">
-                        <h6>
-                            {{ course.name }}
-                            {% if course.id in enrolled_courses %}
-                                <span class="label label-as-badge ml-2">{% trans "Enrolled" %}</span>
-                            {% elif course.id in pre_booked_courses %}
-                                <span class="label label-as-badge ml-2">{% trans "Pre-booked" %}</span>
-                            {% elif course.id not in enrolled_courses and course.vacancies == course.registered %}
-                                <span class="label label-as-badge ml-2">{% trans "Exhausted vacancies" %}</span>
-                            {% endif %}
-                        </h6>
-                        <p>
-                            {% if course.start_date %}
-                                <strong>{% trans "Course date" %}:</strong>
-                                {{ course.start_date|date:'d/m/Y' }}{% if course.end_date %} a {{ course.end_date|date:'d/m/Y' }}{% endif %}{% if course.start_time and course.end_time %} das {{ course.start_time }} às {{ course.end_time }} (Horário de Brasília){% endif %}
-                            {% endif %}
-                        </p>
-                        <p>{{ course.description|safe }}</p>
-                        <p>
-                            {% if course.price %}<strong>{% trans "Price" %}:</strong> R${{ course.price }} {% trans "one-time payment" %}{% endif %}
-                            {% if course.price2x %}{% trans " or 2 monthly payments of " %}R${{ course.price2x }}{% endif %}
-                            {% if course.price23 %}{% trans " or 3 monthly payments of " %}R${{ course.price3x }}{% endif %}
-                        </p>
-                        <p>
-                            {% if user.is_authenticated %}
-                                <form role="form" method="post">{% csrf_token %}
-                                    <input type="hidden" name="content" value="{{course.id}}">
-                                    {% if course.start_date %}
-                                        {% if course.id in enrolled_courses %}
-                                            <a href="{% url 'my_course' %}" class="btn btn-course mr-2 mb-2">{% trans "View course information" %}</a>
-                                            {% if not course.price %}<button type="submit" name="action" value="unsubscribe" class="btn btn-delete mb-2">{% trans "Cancel registration" %}</button>{% endif %}
-                                        {% else %}
-                                            {% if course.registered >= course.vacancies %}
-                                                <button type="submit" name="action" value="enroll" class="btn btn-course" disabled>{% trans "Exhausted vacancies" %}</button>
-                                            {% else %}
-                                                {% if course.price %}
-                                                    <a href="{% url 'enroll' course.id %}" class="btn btn-course">{% trans "Make registration" %}</a>
-                                                {% else %}
-                                                    <button type="submit" name="action" value="enroll" class="btn btn-course">{% trans "Make registration" %}</button>
-                                                {% endif %}
-                                            {% endif %}
-                                        {% endif %}
-                                    {% else %}
-                                        {% if course.id in pre_booked_courses %}
-                                            <button type="submit" name="action" value="pre-booking-unsubscribe" class="btn btn-danger">{% trans "Cancel pre-booking" %}</button>
-                                        {% else %}
-                                            <button type="submit" name="action" value="pre-booking" class="btn btn-course">{% trans "Make pre-booking" %}</button>
-                                        {% endif %}
-                                    {% endif %}
-                                </form>
-                            {% else %}
-                                {% if course.vacancies == course.registered %}
-                                    <a class="btn btn-course disabled" href="#" aria-disabled="true">{% trans "Exhausted vacancies" %}</a>
-                                {% else %}
-                                    <a class="btn btn-course" href="{% url 'account_login' %}?next={% url 'cursos' %}">{% if course.start_date %}{% trans "Make registration" %}{% else %}{% trans "Make pre-booking" %}{% endif %}</a>
-                                {% endif %}
-                            {% endif %}
-                        </p>
-                    </div>
-                {% endfor %}
-                {% for item in course_text %}
-                    <div class="mb-5">
-                        {{ item.description|safe }}
-                        <div class="text-center">
-                            {% if item.form_01 %}
-                                <a class="btn btn-course mb-2 mr-2" href="{{ item.form_01 }}">{{ item.btn_form_01 }}</a>
-                            {% endif %}
-                            {% if item.form_02 %}
-                                <a class="btn btn-course mb-2" href="{{ item.form_02 }}">{{ item.btn_form_02 }}</a>
-                            {% endif %}
+            {% for course in courses %}
+                <div class="col-sm-4 col-12 mt-3">
+                    <div class="card card-course">
+                        {% image course.image fill-400x200 as image %}
+                        <img class="img-fluid" src="{{ image.url }}" width="{{ image.width }}" height="{{ image.height }}" alt="{{ image.alt }}" />
+                        <div class="card-body card-body-course no-border">
+                            <h5 class="card-title"><strong>{{ course.name }}</strong></h5>
+                            <p class="card-text">{{ course.introduction }}</p>
+                            <a href="{% url 'enroll' course.id %}" class="btn btn-course" style="position:absolute;bottom:10px;">{% trans "Learn more" %}</a>
                         </div>
-                        {% if item.link_page %}
-                            <a class="btn btn-course" href="{{ item.link_page.url }}">{% trans "Learn more" %}</a>
-                        {% endif %}
                     </div>
-                {% endfor %}
-            </div>
+                </div>
+            {% endfor %}
         </div>
     </div>
 {% endblock %}

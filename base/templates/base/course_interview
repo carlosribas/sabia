@@ -1,0 +1,8 @@
+{% load i18n %}{% autoescape off %}{% blocktrans %}Olá,{% endblocktrans %}
+{% blocktrans %}
+Este é um email automático para informar que o usuário {{user}} tem interesse no {{course}}.
+{% endblocktrans %}
+{% blocktrans %}Atenciosamente,{% endblocktrans %}
+
+Plataforma Sabiá.
+{% endautoescape %}

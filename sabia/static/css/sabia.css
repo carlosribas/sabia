@@ -330,12 +330,35 @@ p .link-icon:hover {
 }
 
 /* Cursos */
+.card-course {
+  background-color: #fff;
+  color: #3e3e3e;
+  border: none;
+}
+
+.card-body-course{
+  min-height: 400px;
+}
+
 .label-as-badge {
   border-radius: 1em;
   padding: 5px;
   font-size: 16px;
-  color: #ff6600;
-  background-color: #ffffff;
+  color: #ffffff;
+  background-color: #ff6600;
+}
+
+.alert-custom{
+  background-color: #ff6600;
+  color:#fff;
+}
+.alert-custom a{
+  color: #fff;
+  text-decoration: underline;
+}
+.alert-custom a:hover{
+  color: #fff;
+  font-weight: bold;
 }
 
 .btn-course {
@@ -351,10 +374,25 @@ p .link-icon:hover {
   border-color: #e65c00;
 }
 
+.userauth form a,
+.userauth span a {
+  color: #fff;
+  background-color: #ff6600;
+  border-color: #ff6600;
+}
+
+.userauth form a:hover,
+.userauth span a:hover {
+  color: #fff;
+  text-decoration: none;
+  background-color: #e65c00;
+  border-color: #e65c00;
+}
+
 .btn-delete {
   color: #fff;
   background-color: #2c2d33;
-  border-color: #dc3545;
+  border-color: #2c2d33;
 }
 .btn-delete:focus,
 .btn-delete:active,
@@ -367,6 +405,9 @@ p .link-icon:hover {
 @media screen and (max-width: 480px) {
   .btn-course {
     padding: 15px 25px 15px;
+  }
+  .card-body-course {
+    min-height: 310px;
   }
 }
 
