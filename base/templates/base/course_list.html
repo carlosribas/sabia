@@ -16,7 +16,7 @@
                     <div class="card card-course">
                         {% image course.image fill-400x200 as image %}
                         <img class="img-fluid" src="{{ image.url }}" width="{{ image.width }}" height="{{ image.height }}" alt="{{ image.alt }}" />
-                        <div class="card-body card-body-course no-border">
+                        <div class="card-body card-body-course no-border" onclick="location.href='{% url 'enroll' course.id %}';" style="cursor: pointer;">
                             <h5 class="card-title"><strong>{{ course.name }}</strong></h5>
                             <p class="card-text">{{ course.introduction }}</p>
                             <a href="{% url 'enroll' course.id %}" class="btn btn-course" style="position:absolute;bottom:10px;">{% trans "Learn more" %}</a>

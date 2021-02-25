@@ -407,7 +407,7 @@ p .link-icon:hover {
     padding: 15px 25px 15px;
   }
   .card-body-course {
-    min-height: 310px;
+    min-height: 350px;
   }
 }
 
@@ -591,6 +591,10 @@ video {
 
   .card-img-overlay h4 {
     font-size: 1.3em;
+  }
+
+  .card-body-course {
+    min-height: 450px;
   }
 }
 

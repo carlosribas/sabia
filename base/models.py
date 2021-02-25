@@ -130,6 +130,7 @@ class Course(index.Indexed, ClusterableModel):
     start_time = models.TimeField(_("Start time"), blank=True, null=True)
     end_time = models.TimeField(_("End time"), blank=True, null=True)
     price = models.DecimalField(_("Price"), max_digits=10, decimal_places=2, blank=True, null=True)
+    price1x = models.DecimalField(_("Price 1x"), max_digits=10, decimal_places=2, blank=True, null=True)
     price2x = models.DecimalField(_("Price 2x"), max_digits=10, decimal_places=2, blank=True, null=True)
     price3x = models.DecimalField(_("Price 3x"), max_digits=10, decimal_places=2, blank=True, null=True)
     price4x = models.DecimalField(_("Price 4x"), max_digits=10, decimal_places=2, blank=True, null=True)
@@ -158,10 +159,11 @@ class Course(index.Indexed, ClusterableModel):
         ], heading=_("Schedule")),
         MultiFieldPanel([
             FieldRowPanel([
-                FieldPanel('price', classname="col3"),
-                FieldPanel('price2x', classname="col3"),
-                FieldPanel('price3x', classname="col3"),
-                FieldPanel('price4x', classname="col3"),
+                FieldPanel('price', classname="col4"),
+                FieldPanel('price1x', classname="col4"),
+                FieldPanel('price2x', classname="col4"),
+                FieldPanel('price3x', classname="col4"),
+                FieldPanel('price4x', classname="col4"),
             ])
         ], heading=_("Price")),
         FieldPanel('vacancies'),

@@ -134,10 +134,10 @@
         <strong>{% trans "Price" %}</strong>:
         <br>
         {% if course.price %}
-            R$ {{ course.price }} {% trans "one-time payment" %}
-            {% if course.price2x %}{% trans " or 2 monthly payments of " %}R${{ course.price2x }}{% endif %}
-            {% if course.price3x %}{% trans " or 3 monthly payments of " %}R${{ course.price3x }}{% endif %}
-            {% if course.price4x %}{% trans " or 4 monthly payments of " %}R${{ course.price4x }}{% endif %}
+            {% if course.price1x %}R$ {{ course.price1x }} {% trans "one-time payment" %}{% endif %}<br/>
+            {% if course.price2x %}{% trans " or 2 monthly payments of " %}R$ {{ course.price2x }}{% endif %}<br/>
+            {% if course.price3x %}{% trans " or 3 monthly payments of " %}R$ {{ course.price3x }}{% endif %} <br/>
+            {% if course.price4x %}{% trans " or 4 monthly payments of " %}R$ {{ course.price4x }}{% endif %}
         {% elif not course.price and not course.start_date %}
             {% trans "Not available" %}
         {% else %}
