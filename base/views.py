@@ -5,12 +5,12 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
-from django.db.models import Q
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils.translation import ugettext as _
+from itertools import chain
 
 from base.models import Course, CourseUser, CourseUserInterview, CourseMaterial, CourseMaterialDocument, \
     CourseMaterialVideo, ENROLL, PRE_BOOKING
@@ -19,9 +19,9 @@ from base.models import Course, CourseUser, CourseUserInterview, CourseMaterial,
 def course_list(request, template_name="base/course_list.html"):
     # List of available courses
     today = datetime.datetime.today()
-    courses = Course.objects.filter(
-        Q(end_date__gte=today) | Q(start_date=None) | Q(end_date=None)
-    ).order_by('type', '-start_date')
+    next_courses = Course.objects.filter(start_date__gte=today).order_by('-start_date')
+    other_courses = Course.objects.exclude(start_date__gte=today).order_by('-start_date')
+    courses = list(chain(next_courses, other_courses))
 
     context = {'courses': courses}
     return render(request, template_name, context)
