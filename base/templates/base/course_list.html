@@ -16,14 +16,33 @@
                     <div class="card card-course">
                         {% image course.image fill-400x200 as image %}
                         <img class="img-fluid" src="{{ image.url }}" width="{{ image.width }}" height="{{ image.height }}" alt="{{ image.alt }}" />
-                        <div class="card-body card-body-course no-border" onclick="location.href='{% url 'enroll' course.id %}';" style="cursor: pointer;">
+                        <div class="card-body card-body-course no-border" {% if course.show_course or course.type == 'individual' %}onclick="location.href='{% url 'enroll' course.id %}';" style="cursor: pointer;"{% endif %}>
                             <h5 class="card-title"><strong>{{ course.name }}</strong></h5>
                             <p class="card-text">{{ course.introduction }}</p>
-                            <a href="{% url 'enroll' course.id %}" class="btn btn-course" style="position:absolute;bottom:10px;">{% trans "Learn more" %}</a>
+                            {% if course.show_course or course.type == 'individual' %}
+                                <a href="{% url 'enroll' course.id %}" class="btn btn-course" style="position:absolute;bottom:10px;">{% trans "Learn more" %}</a>
+                            {% else %}
+                                <a href="#" class="btn btn-course disabled" aria-disabled="true" style="position:absolute;bottom:10px;">{% trans "Subscriptions closed" %}</a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
             {% endfor %}
+            {% if hidden_courses and request.user.is_superuser %}
+                {% for course in hidden_courses %}
+                    <div class="col-sm-4 col-12 mt-3">
+                        <div class="card card-course">
+                            {% image course.image fill-400x200 as image %}
+                            <img class="img-fluid" src="{{ image.url }}" width="{{ image.width }}" height="{{ image.height }}" alt="{{ image.alt }}" />
+                            <div class="card-body card-body-course no-border" onclick="location.href='{% url 'enroll' course.id %}';" style="cursor: pointer;">
+                                <h5 class="card-title"><strong>{{ course.name }}</strong></h5>
+                                <p class="card-text">{{ course.introduction }}</p>
+                                <a href="{% url 'enroll' course.id %}" class="btn btn-course" style="position:absolute;bottom:10px;">{% trans "Learn more" %}</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
         </div>
     </div>
 {% endblock %}

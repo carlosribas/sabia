@@ -1,5 +1,6 @@
 from __future__ import unicode_literals
 
+import datetime
 from django.conf import settings
 from django.db import models
 from django_extensions.db.fields import AutoSlugField
@@ -194,6 +195,9 @@ class Course(index.Indexed, ClusterableModel):
                 tag.slug
             ])
         return tags
+
+    def show_course(self):
+        return self.start_date >= datetime.datetime.now().date() if self.start_date else False
 
     class Meta:
         verbose_name = _("Course")
