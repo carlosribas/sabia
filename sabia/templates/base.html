@@ -15,6 +15,11 @@
                 {% endwith %}
             {% endblock %}
         </title>
+
+        {% block description %}
+            {# Override this in templates to add a metatag "description" #}
+        {% endblock %}
+
         <meta name="viewport" content="width=device-width, initial-scale=1" />
 
         {# Global stylesheets #}

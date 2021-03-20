@@ -2,6 +2,7 @@
 {% load i18n %}
 
 {% block title %}{{ course.name }} - Plataforma Sabiá{% endblock %}
+{% block description %}<meta name="description" content="{{ course.introduction }}">{% endblock %}
 
 {% block card-header %}
     {% if course.type == 'admin' and request.user.is_superuser or course.show_course or course.type == 'individual' %}
