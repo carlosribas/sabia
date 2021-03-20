@@ -1,7 +1,7 @@
 {% extends 'account/base_card.html' %}
 {% load i18n %}
 
-{% block title %}{% trans "Enroll" %}{% endblock %}
+{% block title %}{{ course.name }} - Plataforma Sabiá{% endblock %}
 
 {% block card-header %}
     {% if course.type == 'admin' and request.user.is_superuser or course.show_course or course.type == 'individual' %}
