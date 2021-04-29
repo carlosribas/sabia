@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 
 import datetime
 from django.conf import settings
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django_extensions.db.fields import AutoSlugField
 from django.utils.text import slugify
@@ -263,6 +264,34 @@ class CourseUserInterview(models.Model):
     course = models.ForeignKey(Course, verbose_name=_('Course'), on_delete=models.CASCADE)
     user = models.ForeignKey(CustomUser, verbose_name=_('User'), on_delete=models.CASCADE)
     show_button = models.BooleanField(_("Show payment button"), default=False)
+
+
+@register_snippet
+class CourseUserCoupon(models.Model):
+    """A Django model to create discount coupons"""
+    course = models.ForeignKey(Course, verbose_name=_('Course'), on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, verbose_name=_('User'), on_delete=models.CASCADE, blank=True, null=True)
+    code = models.CharField(_("Code"), max_length=50, unique=True)
+    discount = models.IntegerField(_("Discount"), default=5, validators=[MinValueValidator(0), MaxValueValidator(100)])
+    valid_from = models.DateTimeField(_("Valid from"))
+    valid_to = models.DateTimeField(_("Valid to"))
+
+    panels = [
+        FieldPanel('course'),
+        FieldPanel('user'),
+        FieldPanel('code'),
+        FieldPanel('discount'),
+        MultiFieldPanel([
+            FieldRowPanel([
+                FieldPanel('valid_from', classname="col6"),
+                FieldPanel('valid_to', classname="col6"),
+            ])
+        ], heading=_("Dates")),
+    ]
+
+    class Meta:
+        verbose_name = _("Coupon")
+        verbose_name_plural = _("Coupons")
 
 
 @register_snippet

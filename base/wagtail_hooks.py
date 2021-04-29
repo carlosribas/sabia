@@ -3,7 +3,8 @@ from django.utils.translation import ugettext as _
 from wagtail.core import hooks
 from wagtail.contrib.modeladmin.options import (ModelAdmin, ModelAdminGroup, modeladmin_register)
 
-from base.models import Course, CourseUser, CourseUserInterview, CourseMaterial, FooterText, Menu, TeamMember
+from base.models import Course, CourseUser, CourseUserCoupon, CourseUserInterview, CourseMaterial, FooterText, Menu, \
+    TeamMember
 
 
 @hooks.register('construct_main_menu')
@@ -57,6 +58,13 @@ class CourseUserInterviewAdmin(ModelAdmin):
     list_display = ('course', 'user', 'show_button')
 
 
+class CourseUserCouponAdmin(ModelAdmin):
+    model = CourseUserCoupon
+    menu_label = _('Coupon')
+    menu_icon = 'fa-percent'
+    list_display = ('course', 'code', 'valid_from', 'valid_to')
+
+
 class CourseMaterialAdmin(ModelAdmin):
     model = CourseMaterial
     menu_label = _('Course material')
@@ -71,8 +79,8 @@ class SabiaModelAdminGroup(ModelAdminGroup):
     menu_icon = 'cog'
     menu_order = 300  # will put in 4th place (000 being 1st, 100 2nd)
     items = (
-        CourseAdmin, CourseUserAdmin, CourseUserInterviewAdmin, CourseMaterialAdmin, TeamMemberAdmin, FooterTextAdmin,
-        MenuAdmin
+        CourseAdmin, CourseUserAdmin, CourseUserCouponAdmin, CourseUserInterviewAdmin, CourseMaterialAdmin,
+        TeamMemberAdmin, FooterTextAdmin, MenuAdmin
     )
 
 

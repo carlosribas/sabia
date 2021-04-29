@@ -22,8 +22,8 @@
 {% endblock %}
 
 {% block extra_css %}
-    {% if course.price %}
-        {{ course.price|json_script:"course-price" }}
+    {% if price %}
+        {{ price|json_script:"course-price" }}
         {{ course.id|json_script:"course-id" }}
 
         <script src="https://www.paypal.com/sdk/js?client-id=Adncgqi0-vc3rPc8ACBco4rhfMvbwHqvONyu-jj3sneX4Ab-BMmzmrDKxdkL4f2b96CcidFnUyTe_moW&locale=pt_BR&currency=BRL"></script>
@@ -141,12 +141,15 @@
         <p>
             <strong>{% trans "Price" %}</strong>:
             <br>
-            {% if course.price %}
-                {% if course.price1x %}R$ {{ course.price1x }} {% trans "one-time payment" %}{% endif %}<br/>
-                {% if course.price2x %}{% trans " or 2 monthly payments of " %}R$ {{ course.price2x }}{% endif %}<br/>
-                {% if course.price3x %}{% trans " or 3 monthly payments of " %}R$ {{ course.price3x }}{% endif %} <br/>
-                {% if course.price4x %}{% trans " or 4 monthly payments of " %}R$ {{ course.price4x }}{% endif %}
-            {% elif not course.price and not course.start_date %}
+            {% if price %}
+                {% if price1x %}R$ {{ price1x }} {% trans "one-time payment" %}{% endif %}<br/>
+                {% if price2x %}{% trans " or 2 monthly payments of " %}R$ {{ price2x }}{% endif %}<br/>
+                {% if price3x %}{% trans " or 3 monthly payments of " %}R$ {{ price3x }}{% endif %} <br/>
+                {% if price4x %}{% trans " or 4 monthly payments of " %}R$ {{ price4x }}{% endif %} <br/>
+                {% if user.is_authenticated and course.type != 'individual' and not enrolled.status or user.is_authenticated and course.type == 'individual' and interview %}
+                    <a data-toggle="collapse" href="#collapseCoupon" role="button" aria-expanded="false" aria-controls="collapseCoupon">{% trans "Apply coupon" %}</a>
+                {% endif %}
+            {% elif not price and not course.start_date %}
                 {% trans "Not available" %}
             {% else %}
                 {% trans "Free registration!" %}
@@ -155,6 +158,16 @@
         {% if user.is_authenticated %}
             <form role="form" method="post">{% csrf_token %}
                 <input type="hidden" name="content" value="{{course.id}}">
+                {% if price %}
+                    <div class="collapse" id="collapseCoupon">
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" name="code" placeholder="{% trans "Enter coupon" %}">
+                            <div class="input-group-append">
+                                <button type="submit" name="action" value="code" class="btn btn-outline-secondary">{% trans "Apply" %}</button>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
                 {% if course.type == 'individual' %}
                     {% if enrolled.status == 'enroll' %}
                         <br />
@@ -168,12 +181,12 @@
                 {% elif course.type == 'group' %}
                     {% if course.start_date %}
                         {% if enrolled.status == 'enroll' %}
-                            {% if not course.price %}<button type="submit" name="action" value="unsubscribe" class="btn btn-delete mb-2">{% trans "Cancel registration" %}</button>{% endif %}
+                            {% if not price %}<button type="submit" name="action" value="unsubscribe" class="btn btn-delete mb-2">{% trans "Cancel registration" %}</button>{% endif %}
                         {% else %}
                             {% if course.registered >= course.vacancies %}
                                 <button type="submit" name="action" value="enroll" class="btn btn-course" disabled>{% trans "Exhausted vacancies" %}</button>
                             {% else %}
-                                {% if course.price %}
+                                {% if price %}
                                     <div id="paypal-button-container"></div>
                                 {% else %}
                                     <button type="submit" name="action" value="enroll" class="btn btn-course">{% trans "Make registration" %}</button>
@@ -202,7 +215,7 @@
 {% endblock %}
 
 {% block card-footer %}
-    {% if course.price and course.show_course and not enrolled and course.vacancies > course.registered %}
+    {% if user.is_authenticated and price and course.show_course and not enrolled and course.vacancies > course.registered %}
         <p>{% trans "Can't pay via PayPal?" %} <a href="https://plataformasabia.com.br/pt-br/contato/">{% trans "Contact us" %}</a>{% trans " and we will send you another form of payment" %}</p>
     {% endif %}
 {% endblock %}

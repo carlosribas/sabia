@@ -5,7 +5,7 @@ from django.test import TestCase
 from django.urls import reverse, resolve
 
 from userauth.models import CustomUser, VET
-from base.models import Course, CourseUser
+from base.models import Course, CourseUser, CourseUserCoupon
 from base.views import course_list, course_registration, my_course
 
 USER_USERNAME = 'user'
@@ -35,6 +35,17 @@ class CourseTestCase(TestCase):
             end_date=datetime.date.today() + datetime.timedelta(days=17),
             vacancies=5
         )
+        self.course_3 = Course.objects.create(
+            name="course 03",
+            start_date=datetime.date.today() + datetime.timedelta(days=15),
+            end_date=datetime.date.today() + datetime.timedelta(days=17),
+            vacancies=5,
+            price=100,
+            price1x=95,
+            price2x=50,
+            price3x=33.33,
+            price4x=25
+        )
 
     ######################
     # course_list
@@ -55,7 +66,7 @@ class CourseTestCase(TestCase):
 
     def test_course_exists(self):
         courses = Course.objects.all()
-        self.assertEqual(courses.count(), 2)
+        self.assertEqual(courses.count(), 3)
 
     ######################
     # my_course
@@ -140,3 +151,74 @@ class CourseTestCase(TestCase):
         message = list(get_messages(response.wsgi_request))
         self.assertEqual(len(message), 1)
         self.assertEqual(str(message[0]), 'Unsubscribe successfully')
+
+    def test_course_user_coupon_not_found(self):
+        self.data = {'content': self.course_3.pk, 'action': 'code', 'code': 'foo'}
+        response = self.client.post(reverse("enroll", args=(self.course_3.pk,)), self.data)
+        message = list(get_messages(response.wsgi_request))
+        self.assertEqual(str(message[0]), 'Coupon not found')
+
+    def test_course_user_coupon_invalid_user(self):
+        new_user = CustomUser.objects.create_user(
+            username='John',
+            email='john@example.com',
+            password='pass',
+            academic_background=VET
+        )
+        CourseUserCoupon.objects.create(
+            course=self.course_3,
+            user=new_user,
+            code='test',
+            discount=10,
+            valid_from=datetime.datetime.now(),
+            valid_to=datetime.datetime.now() + datetime.timedelta(days=1)
+        )
+        self.data = {'content': self.course_3.pk, 'action': 'code', 'code': 'test'}
+        response = self.client.post(reverse("enroll", args=(self.course_3.pk,)), self.data)
+        message = list(get_messages(response.wsgi_request))
+        self.assertEqual(str(message[0]), 'Coupon not found')
+
+    def test_course_user_coupon_ok(self):
+        CourseUserCoupon.objects.create(
+            course=self.course_3,
+            user=self.user,
+            code='test',
+            discount=10,
+            valid_from=datetime.datetime.now(),
+            valid_to=datetime.datetime.now() + datetime.timedelta(days=1)
+        )
+        self.data = {'content': self.course_3.pk, 'action': 'code', 'code': 'test'}
+        response = self.client.post(reverse("enroll", args=(self.course_3.pk,)), self.data)
+        self.assertEqual(response.context[0]['price'], 90.00)
+        self.assertEqual(response.context[0]['price1x'], 85.00)
+        self.assertEqual(response.context[0]['price2x'], 45.00)
+        self.assertEqual(response.context[0]['price3x'], 30.00)
+        self.assertEqual(response.context[0]['price4x'], 22.50)
+
+    def test_course_user_coupon_free_registration(self):
+        CourseUserCoupon.objects.create(
+            course=self.course_3,
+            user=self.user,
+            code='test',
+            discount=100,
+            valid_from=datetime.datetime.now(),
+            valid_to=datetime.datetime.now() + datetime.timedelta(days=1)
+        )
+        self.data = {'content': self.course_3.pk, 'action': 'code', 'code': 'test'}
+        response = self.client.post(reverse("enroll", args=(self.course_3.pk,)), self.data)
+        message = list(get_messages(response.wsgi_request))
+        self.assertEqual(str(message[0]), 'Coupon applied successfully. This course is now free!')
+
+    def test_course_user_coupon_invalid_date(self):
+        CourseUserCoupon.objects.create(
+            course=self.course_3,
+            user=self.user,
+            code='test',
+            discount=10,
+            valid_from=datetime.datetime.now() - datetime.timedelta(days=5),
+            valid_to=datetime.datetime.now() - datetime.timedelta(days=1)
+        )
+        self.data = {'content': self.course_3.pk, 'action': 'code', 'code': 'test'}
+        response = self.client.post(reverse("enroll", args=(self.course_3.pk,)), self.data)
+        message = list(get_messages(response.wsgi_request))
+        self.assertEqual(str(message[0]), 'Coupon not found')

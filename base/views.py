@@ -1,6 +1,7 @@
 import datetime
 import json
 
+from decimal import Decimal as Dec, ROUND_HALF_UP
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -10,11 +11,12 @@ from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.template.loader import render_to_string
 from django.urls import reverse
+from django.utils import timezone
 from django.utils.translation import ugettext as _
 from itertools import chain
 
-from base.models import Course, CourseUser, CourseUserInterview, CourseMaterial, CourseMaterialDocument, \
-    CourseMaterialVideo, ENROLL, PRE_BOOKING
+from base.models import Course, CourseUser, CourseUserCoupon, CourseUserInterview, CourseMaterial, \
+    CourseMaterialDocument, CourseMaterialVideo, ENROLL, PRE_BOOKING
 
 
 def course_list(request, template_name="base/course_list.html"):
@@ -33,6 +35,13 @@ def course_list(request, template_name="base/course_list.html"):
 
 def course_registration(request, course_id, template_name="base/course_registration.html"):
     course = get_object_or_404(Course, pk=course_id)
+
+    # Get the course fee
+    price = course.price  # paypal value
+    price1x = course.price1x
+    price2x = course.price2x
+    price3x = course.price3x
+    price4x = course.price4x
 
     # Check if the user is enrolled in the course
     enrolled = CourseUser.objects.filter(course=course.id, user=request.user.id).first()
@@ -101,13 +110,59 @@ def course_registration(request, course_id, template_name="base/course_registrat
             )
             messages.success(request, _('Interest registered successfully'))
 
+        elif request.POST['action'] == "code":
+            code = request.POST['code']
+            coupon = None
+
+            try:
+                coupon = CourseUserCoupon.objects.get(
+                    course=course,
+                    code=code,
+                    valid_from__lte=timezone.now(),
+                    valid_to__gte=timezone.now()
+                )
+            except CourseUserCoupon.DoesNotExist:
+                messages.warning(request, _('Coupon not found'))
+
+            if coupon and coupon.user and coupon.user != request.user:
+                messages.warning(request, _('Coupon not found'))
+            elif coupon and coupon.discount != 100:
+                discount = Dec(coupon.discount / 100).quantize(Dec('.01'), rounding=ROUND_HALF_UP)
+                discount1x = Dec((coupon.discount + 5.0) / 100).quantize(Dec('.01'), rounding=ROUND_HALF_UP)
+                price = course.price - (course.price * discount).quantize(Dec('.01'), rounding=ROUND_HALF_UP)
+                price1x = course.price - (course.price * discount1x).quantize(Dec('.01'), rounding=ROUND_HALF_UP)
+                price2x = (price / 2).quantize(Dec('.01'))
+                price3x = (price / 3).quantize(Dec('.01'))
+                price4x = (price / 4).quantize(Dec('.01'))
+                context = {
+                    'course': course,
+                    'enrolled': enrolled,
+                    'interview': interview,
+                    'price': price,
+                    'price1x': price1x,
+                    'price2x': price2x,
+                    'price3x': price3x,
+                    'price4x': price4x,
+                }
+                messages.success(request, _('Coupon applied successfully'))
+                return render(request, template_name, context)
+            elif coupon and coupon.discount == 100:
+                context = {'course': course, 'enrolled': enrolled, 'interview': interview}
+                messages.success(request, _('Coupon applied successfully. This course is now free!'))
+                return render(request, template_name, context)
+
         redirect_url = reverse("enroll", args=(course_id,))
         return HttpResponseRedirect(redirect_url)
 
     context = {
         'course': course,
         'enrolled': enrolled,
-        'interview': interview
+        'interview': interview,
+        'price': price,
+        'price1x': price1x,
+        'price2x': price2x,
+        'price3x': price3x,
+        'price4x': price4x,
     }
     return render(request, template_name, context)
 
