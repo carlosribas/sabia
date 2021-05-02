@@ -41,10 +41,6 @@ class CourseTestCase(TestCase):
             end_date=datetime.date.today() + datetime.timedelta(days=17),
             vacancies=5,
             price=100,
-            price1x=95,
-            price2x=50,
-            price3x=33.33,
-            price4x=25
         )
 
     ######################

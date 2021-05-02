@@ -25,6 +25,7 @@
     {% if price %}
         {{ price|json_script:"course-price" }}
         {{ course.id|json_script:"course-id" }}
+        {{ coupon|json_script:"coupon-used" }}
 
         <script src="https://www.paypal.com/sdk/js?client-id=Adncgqi0-vc3rPc8ACBco4rhfMvbwHqvONyu-jj3sneX4Ab-BMmzmrDKxdkL4f2b96CcidFnUyTe_moW&locale=pt_BR&currency=BRL"></script>
         <script>
@@ -48,6 +49,7 @@
           const csrftoken = getCookie('csrftoken');
           const price = JSON.parse(document.getElementById('course-price').textContent);
           const courseId = JSON.parse(document.getElementById('course-id').textContent);
+          const couponUsed = JSON.parse(document.getElementById('coupon-used').textContent);
 
           // Submit payment information
           function completeOrder(paymentId, paymentStatus){
@@ -60,6 +62,7 @@
                   {
                     'price': price,
                     'courseId': courseId,
+                    'couponUsed': couponUsed,
                     'paymentId': paymentId,
                     'paymentStatus': paymentStatus
                   }
@@ -143,9 +146,10 @@
             <br>
             {% if price %}
                 {% if price1x %}R$ {{ price1x }} {% trans "one-time payment" %}{% endif %}<br/>
-                {% if price2x %}{% trans " or 2 monthly payments of " %}R$ {{ price2x }}{% endif %}<br/>
-                {% if price3x %}{% trans " or 3 monthly payments of " %}R$ {{ price3x }}{% endif %} <br/>
-                {% if price4x %}{% trans " or 4 monthly payments of " %}R$ {{ price4x }}{% endif %} <br/>
+                {% if price2x %}{% trans " or 2 monthly payments of " %}R$ {{ price2x }} *{% endif %}<br/>
+                {% if price3x %}{% trans " or 3 monthly payments of " %}R$ {{ price3x }} *{% endif %} <br/>
+                {% if price4x %}{% trans " or 4 monthly payments of " %}R$ {{ price4x }} *{% endif %} <br/>
+                {% if price2x or price3x or price4x %}<i><small>{% trans "* The total amount of the installments is " %}R$ {{ price }}</small></i>{% endif %} <br/>
                 {% if user.is_authenticated and course.type != 'individual' and not enrolled.status or user.is_authenticated and course.type == 'individual' and interview %}
                     <a data-toggle="collapse" href="#collapseCoupon" role="button" aria-expanded="false" aria-controls="collapseCoupon">{% trans "Apply coupon" %}</a>
                 {% endif %}

@@ -38,10 +38,10 @@ def course_registration(request, course_id, template_name="base/course_registrat
 
     # Get the course fee
     price = course.price  # paypal value
-    price1x = course.price1x
-    price2x = course.price2x
-    price3x = course.price3x
-    price4x = course.price4x
+    price1x = course.price - (course.price * Dec('.05')).quantize(Dec('.01'), rounding=ROUND_HALF_UP) if price else None
+    price2x = (price / 2).quantize(Dec('.01')) if price else None
+    price3x = (price / 3).quantize(Dec('.01')) if price else None
+    price4x = (price / 4).quantize(Dec('.01')) if price else None
 
     # Check if the user is enrolled in the course
     enrolled = CourseUser.objects.filter(course=course.id, user=request.user.id).first()
@@ -143,11 +143,12 @@ def course_registration(request, course_id, template_name="base/course_registrat
                     'price2x': price2x,
                     'price3x': price3x,
                     'price4x': price4x,
+                    'coupon': code
                 }
                 messages.success(request, _('Coupon applied successfully'))
                 return render(request, template_name, context)
             elif coupon and coupon.discount == 100:
-                context = {'course': course, 'enrolled': enrolled, 'interview': interview}
+                context = {'course': course, 'enrolled': enrolled, 'interview': interview, 'coupon': code}
                 messages.success(request, _('Coupon applied successfully. This course is now free!'))
                 return render(request, template_name, context)
 
@@ -167,6 +168,7 @@ def course_registration(request, course_id, template_name="base/course_registrat
     return render(request, template_name, context)
 
 
+@login_required
 def payment_complete(request):
     body = json.loads(request.body)
     course = get_object_or_404(Course, pk=body['courseId'])
@@ -187,7 +189,8 @@ def payment_complete(request):
         status=ENROLL,
         payment_id=body['paymentId'],
         payment_status=body['paymentStatus'],
-        payment_note=payment_note
+        payment_note=payment_note,
+        coupon_used=body['couponUsed']
     )
     course_user.save()
 

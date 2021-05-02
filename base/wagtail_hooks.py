@@ -48,7 +48,7 @@ class CourseUserAdmin(ModelAdmin):
     menu_label = _('Enrolled')
     menu_icon = 'fa-money'
     search_fields = ('course', 'user')
-    list_display = ('course', 'user', 'payment_status', 'payment_id', 'date')
+    list_display = ('course', 'user', 'payment_status', 'payment_id', 'coupon_used', 'date')
 
 
 class CourseUserInterviewAdmin(ModelAdmin):

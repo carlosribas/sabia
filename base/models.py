@@ -132,10 +132,6 @@ class Course(index.Indexed, ClusterableModel):
     start_time = models.TimeField(_("Start time"), blank=True, null=True)
     end_time = models.TimeField(_("End time"), blank=True, null=True)
     price = models.DecimalField(_("Price"), max_digits=10, decimal_places=2, blank=True, null=True)
-    price1x = models.DecimalField(_("Price 1x"), max_digits=10, decimal_places=2, blank=True, null=True)
-    price2x = models.DecimalField(_("Price 2x"), max_digits=10, decimal_places=2, blank=True, null=True)
-    price3x = models.DecimalField(_("Price 3x"), max_digits=10, decimal_places=2, blank=True, null=True)
-    price4x = models.DecimalField(_("Price 4x"), max_digits=10, decimal_places=2, blank=True, null=True)
     vacancies = models.IntegerField(_("Vacancies"), blank=True, null=True)
     registered = models.IntegerField(_("Registered"), blank=True, null=True, default=0)
     pre_booking = models.IntegerField(_("Pre-booking"), blank=True, null=True, default=0)
@@ -159,15 +155,7 @@ class Course(index.Indexed, ClusterableModel):
                 FieldPanel('end_time', classname="col6"),
             ])
         ], heading=_("Schedule")),
-        MultiFieldPanel([
-            FieldRowPanel([
-                FieldPanel('price', classname="col4"),
-                FieldPanel('price1x', classname="col4"),
-                FieldPanel('price2x', classname="col4"),
-                FieldPanel('price3x', classname="col4"),
-                FieldPanel('price4x', classname="col4"),
-            ])
-        ], heading=_("Price")),
+        FieldPanel('price'),
         FieldPanel('vacancies'),
         FieldPanel('registered'),
         FieldPanel('description'),
@@ -256,6 +244,7 @@ class CourseUser(models.Model):
     payment_id = models.CharField(_("Payment Id"), max_length=254, blank=True)
     payment_status = models.CharField(_("Payment status"), max_length=254, blank=True)
     payment_note = models.CharField(_("Note"), max_length=254, blank=True)
+    coupon_used = models.CharField(_("Coupon"), max_length=254, blank=True)
 
 
 @register_snippet
