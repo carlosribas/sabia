@@ -56,13 +56,8 @@ COURSE = (
 
 
 def course_directory_path(instance, filename):
-    # file will be uploaded to MEDIA_ROOT/cursos/<course>/<course.start_date>/<title>/<filename>
-    return 'cursos/{0}/{1}/{2}/{3}'.format(
-        instance.course_material.course,
-        instance.course_material.course.start_date,
-        instance.course_material.title,
-        filename
-    )
+    # file will be uploaded to MEDIA_ROOT/cursos/<course_id>/<filename>
+    return 'cursos/{0}/{1}'.format(instance.course_material.course.pk, filename)
 
 
 @register_snippet

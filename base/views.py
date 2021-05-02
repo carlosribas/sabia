@@ -5,13 +5,15 @@ from decimal import Decimal as Dec, ROUND_HALF_UP
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import PermissionDenied
 from django.core.mail import send_mail
 from django.db.models import Q
-from django.http import HttpResponseRedirect, JsonResponse
+from django.http import HttpResponseRedirect, JsonResponse, HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils import timezone
+from django.utils.encoding import smart_str
 from django.utils.translation import ugettext as _
 from itertools import chain
 
@@ -235,3 +237,18 @@ def my_course(request, template_name="base/my_course.html"):
     }
 
     return render(request, template_name, context)
+
+
+@login_required
+def cursos_xsendfile(request):
+    path = request.get_full_path()
+    course_id = path.split("/")[3]
+    course = get_object_or_404(Course, pk=course_id)
+    try:
+        CourseUser.objects.get(course=course, user=request.user)
+        response = HttpResponse()
+        response['Content-Type'] = ''
+        response['X-Sendfile'] = smart_str(path)
+        return response
+    except CourseUser.DoesNotExist:
+        raise PermissionDenied

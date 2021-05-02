@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.conf.urls.i18n import i18n_patterns
-from django.urls import include, path
+from django.urls import include, path, re_path
 from django.contrib import admin
 
 from wagtail.admin import urls as wagtailadmin_urls
@@ -8,7 +8,7 @@ from wagtail.core import urls as wagtail_urls
 from wagtail.documents import urls as wagtaildocs_urls
 
 from search import views as search_views
-from base.views import course_list, course_registration, my_course, payment_complete
+from base.views import course_list, course_registration, cursos_xsendfile, my_course, payment_complete
 
 urlpatterns = [
     path('django-admin/', admin.site.urls),
@@ -21,6 +21,7 @@ urlpatterns = [
     path('cursos/<int:course_id>', course_registration, name='enroll'),
     path('cursos/finalizado', payment_complete, name='course_paid'),
     path('cursos/meus-cursos', my_course, name='my_course'),
+    re_path(r'^media/cursos', cursos_xsendfile, name='cursos_xsendfile'),
 ]
 
 urlpatterns += i18n_patterns(

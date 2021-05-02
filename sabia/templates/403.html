@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load i18n static %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12 mt-2">
+                <h2>{% trans "Access denied" %}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-12 mt-2">
+                <p>{% trans "You don't have authorisation to view this page." %}</p>
+            </div>
+        </div>
+    </div>
+{% endblock %}
