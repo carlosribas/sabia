@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-02 11:20+0000\n"
+"POT-Creation-Date: 2021-05-10 20:15+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,7 +21,7 @@ msgstr ""
 msgid "Enroll"
 msgstr "Inscrição"
 
-#: base/models.py:43 base/models.py:137
+#: base/models.py:43 base/models.py:132
 msgid "Pre-booking"
 msgstr "Pré-reserva"
 
@@ -41,246 +41,246 @@ msgstr "Grupo"
 msgid "Recorded"
 msgstr "Gravado"
 
-#: base/models.py:71 base/models.py:128
+#: base/models.py:66 base/models.py:123
 msgid "Name"
 msgstr "Nome"
 
-#: base/models.py:72
+#: base/models.py:67
 msgid "Job title"
 msgstr "Cargo"
 
-#: base/models.py:73
+#: base/models.py:68
 msgid "Link to Linkedin"
 msgstr "Link para o Linkedin"
 
-#: base/models.py:74
+#: base/models.py:69
 msgid "Brief description"
 msgstr "Breve descrição"
 
-#: base/models.py:76
+#: base/models.py:71
 msgid "Position"
 msgstr "Posição"
 
-#: base/models.py:93
+#: base/models.py:88
 msgid "Personal information"
 msgstr "Informações pessoais"
 
-#: base/models.py:115
+#: base/models.py:110
 msgid "Person"
 msgstr "Pessoa"
 
-#: base/models.py:116 base/wagtail_hooks.py:17
+#: base/models.py:111 base/wagtail_hooks.py:17
 msgid "Team"
 msgstr "Equipe"
 
-#: base/models.py:127
+#: base/models.py:122
 msgid "Type"
 msgstr "Tipo"
 
-#: base/models.py:129 blog/models.py:32 blog/models.py:86
+#: base/models.py:124 blog/models.py:32 blog/models.py:86
 msgid "Introduction"
 msgstr "Introdução"
 
-#: base/models.py:130
+#: base/models.py:125
 msgid "Start date"
 msgstr "Início"
 
-#: base/models.py:131
+#: base/models.py:126
 msgid "End date"
 msgstr "Término"
 
-#: base/models.py:132
+#: base/models.py:127
 msgid "Start time"
 msgstr "Início"
 
-#: base/models.py:133
+#: base/models.py:128
 msgid "End time"
 msgstr "Término"
 
-#: base/models.py:134 base/templates/base/course_registration.html:145
+#: base/models.py:129 base/templates/base/course_registration.html:145
 msgid "Price"
 msgstr "Valor"
 
-#: base/models.py:135
+#: base/models.py:130
 msgid "Vacancies"
 msgstr "Vagas"
 
-#: base/models.py:136
+#: base/models.py:131
 msgid "Registered"
 msgstr "Inscritos"
 
-#: base/models.py:138 base/models.py:202
+#: base/models.py:133 base/models.py:197
 #: base/templates/base/course_registration.html:141
 #: base/templates/base/my_course.html:40 home/models.py:18 home/models.py:42
 #: home/models.py:60
 msgid "Description"
 msgstr "Descrição"
 
-#: base/models.py:151 base/models.py:278
+#: base/models.py:146 base/models.py:273
 msgid "Dates"
 msgstr "Datas"
 
-#: base/models.py:157
+#: base/models.py:152
 msgid "Schedule"
 msgstr "Horário"
 
-#: base/models.py:192 base/models.py:199 base/models.py:240 base/models.py:253
-#: base/models.py:261 base/wagtail_hooks.py:39
+#: base/models.py:187 base/models.py:194 base/models.py:235 base/models.py:248
+#: base/models.py:256 base/wagtail_hooks.py:39
 msgid "Course"
 msgstr "Curso"
 
-#: base/models.py:193 base/templates/base/course_list.html:4
+#: base/models.py:188 base/templates/base/course_list.html:4
 #: base/templates/base/course_list.html:11
 msgid "Courses"
 msgstr "Cursos"
 
-#: base/models.py:200 home/models.py:16 home/models.py:41 home/models.py:59
+#: base/models.py:195 home/models.py:16 home/models.py:41 home/models.py:59
 msgid "Title"
 msgstr "Título"
 
-#: base/models.py:201 base/models.py:243
+#: base/models.py:196 base/models.py:238
 #: base/templates/base/course_registration.html:130
 #: base/templates/base/my_course.html:29
 msgid "Date"
 msgstr "Data"
 
-#: base/models.py:203 base/templates/base/my_course.html:32
+#: base/models.py:198 base/templates/base/my_course.html:32
 msgid "Broadcast link"
 msgstr "Link da transmissão"
 
-#: base/models.py:214
+#: base/models.py:209
 msgid "Lesson information"
 msgstr "Informações da aula"
 
-#: base/models.py:215
+#: base/models.py:210
 msgid "Documents"
 msgstr "Documentos"
 
-#: base/models.py:216
+#: base/models.py:211
 msgid "Videos"
 msgstr "Vídeos"
 
-#: base/models.py:223 base/wagtail_hooks.py:70
+#: base/models.py:218 base/wagtail_hooks.py:70
 msgid "Course material"
 msgstr "Material do curso"
 
-#: base/models.py:224
+#: base/models.py:219
 msgid "Course materials"
 msgstr "Materiais do curso"
 
-#: base/models.py:229
+#: base/models.py:224
 msgid "Document"
 msgstr "Documento"
 
-#: base/models.py:234
+#: base/models.py:229
 msgid "Video"
 msgstr "Vídeo"
 
-#: base/models.py:241 base/models.py:254 base/models.py:262
+#: base/models.py:236 base/models.py:249 base/models.py:257
 msgid "User"
 msgstr "Usuário"
 
-#: base/models.py:242
+#: base/models.py:237
 msgid "Status"
 msgstr "Status"
 
-#: base/models.py:244
+#: base/models.py:239
 msgid "Payment Id"
 msgstr "Id do pagamento"
 
-#: base/models.py:245
+#: base/models.py:240
 msgid "Payment status"
 msgstr "Status do pagamento"
 
-#: base/models.py:246
+#: base/models.py:241
 msgid "Note"
 msgstr "Obs"
 
-#: base/models.py:247 base/models.py:282 base/wagtail_hooks.py:63
+#: base/models.py:242 base/models.py:277 base/wagtail_hooks.py:63
 msgid "Coupon"
 msgstr "Cupom"
 
-#: base/models.py:255
+#: base/models.py:250
 msgid "Show payment button"
 msgstr "Mostrar botão de pagamento"
 
-#: base/models.py:263
+#: base/models.py:258
 msgid "Code"
 msgstr "Código"
 
-#: base/models.py:264
+#: base/models.py:259
 msgid "Discount"
 msgstr "Desconto"
 
-#: base/models.py:265
+#: base/models.py:260
 msgid "Valid from"
 msgstr "Válido a partir de"
 
-#: base/models.py:266
+#: base/models.py:261
 msgid "Valid to"
 msgstr "Válido até"
 
-#: base/models.py:283
+#: base/models.py:278
 msgid "Coupons"
 msgstr "Cupons"
 
-#: base/models.py:300 base/models.py:303 base/wagtail_hooks.py:26
+#: base/models.py:295 base/models.py:298 base/wagtail_hooks.py:26
 msgid "Footer Text"
 msgstr "Texto do rodapé"
 
-#: base/models.py:312 base/models.py:336 blog/models.py:32
+#: base/models.py:307 base/models.py:331 blog/models.py:32
 msgid "Text to describe the page"
 msgstr "Texto para descrever a página"
 
-#: base/models.py:319 base/models.py:344 blog/models.py:39 blog/models.py:93
+#: base/models.py:314 base/models.py:339 blog/models.py:39 blog/models.py:93
 msgid "Landscape mode only; horizontal width between 1000px and 3000px."
 msgstr ""
 
-#: base/models.py:355
+#: base/models.py:350
 msgid "Select the image collection for this gallery."
 msgstr ""
 
-#: base/models.py:398 base/wagtail_hooks.py:32
+#: base/models.py:393 base/wagtail_hooks.py:32
 msgid "Menu"
 msgstr ""
 
-#: base/models.py:399
+#: base/models.py:394
 msgid "Menu Item"
 msgstr ""
 
-#: base/models.py:407
+#: base/models.py:402
 msgid "Menu to which this item belongs"
 msgstr ""
 
-#: base/models.py:408
+#: base/models.py:403
 msgid "Title of menu item that will be displayed"
 msgstr ""
 
-#: base/models.py:409 home/models.py:22 home/models.py:43
+#: base/models.py:404 home/models.py:22 home/models.py:43
 msgid "URL to link to, e.g. /contato"
 msgstr "Adicionar link para uma URL, por exemplo: /contato"
 
-#: base/models.py:412 home/models.py:77
+#: base/models.py:407 home/models.py:77
 msgid "Page to link to"
 msgstr "Adicionar link para uma página"
 
-#: base/models.py:416
+#: base/models.py:411
 msgid "Title of submenu (LEAVE BLANK if there is no custom submenu)"
 msgstr ""
 
-#: base/models.py:418 home/models.py:61
+#: base/models.py:413 home/models.py:61
 msgid "Fontawesome icon"
 msgstr ""
 
-#: base/models.py:421
+#: base/models.py:416
 msgid "Always"
 msgstr "Sempre"
 
-#: base/models.py:421
+#: base/models.py:416
 msgid "When logged in"
 msgstr "Quando logado"
 
-#: base/models.py:421
+#: base/models.py:416
 msgid "When not logged in"
 msgstr "Quando não estiver logado"
 
@@ -418,6 +418,10 @@ msgstr "Entre em contato"
 msgid " and we will send you another form of payment"
 msgstr " que nós lhe enviaremos outra forma de pagamento"
 
+#: base/templates/base/material.html:8
+msgid "Material of the Sabiá"
+msgstr "Material do Sabiá"
+
 #: base/templates/base/members_page.html:17
 msgid "See more"
 msgstr "Ver mais"
@@ -454,47 +458,47 @@ msgstr ""
 msgid "Enroll in one of our courses and boost your career!"
 msgstr "Inscreva-se em um dos nossos cursos e impulsione sua carreira!"
 
-#: base/views.py:66
+#: base/views.py:68
 msgid "Pre-booking successful"
 msgstr "Pré-reserva realizada com sucesso"
 
-#: base/views.py:75
+#: base/views.py:77
 msgid "Pre-booking canceled successfully"
 msgstr "Pré-reserva cancelada com sucesso"
 
-#: base/views.py:85
+#: base/views.py:87
 msgid "Registration successful!"
 msgstr "Inscrição realizada com sucesso!"
 
-#: base/views.py:87
+#: base/views.py:89
 msgid "Sorry, there are no more vacancies for this course"
 msgstr "Desculpe, não há mais vagas para este curso"
 
-#: base/views.py:96
+#: base/views.py:98
 msgid "Unsubscribe successfully"
 msgstr "Inscrição cancelada com sucesso"
 
-#: base/views.py:111
+#: base/views.py:113
 msgid "Interest registered successfully"
 msgstr "Interesse registrado com sucesso"
 
-#: base/views.py:125 base/views.py:128
+#: base/views.py:127 base/views.py:130
 msgid "Coupon not found"
 msgstr "Cupom não encontrado"
 
-#: base/views.py:148
+#: base/views.py:150
 msgid "Coupon applied successfully"
 msgstr "Cupom aplicado com sucesso"
 
-#: base/views.py:152
+#: base/views.py:154
 msgid "Coupon applied successfully. This course is now free!"
 msgstr "Cupom aplicado com sucesso. Este curso agora é gratuito!"
 
-#: base/views.py:198
+#: base/views.py:200
 msgid "Payment successful"
 msgstr "Pagamento realizado com sucesso"
 
-#: base/views.py:200
+#: base/views.py:202
 msgid "Waiting for payment confirmation"
 msgstr "Aguardando a confirmação do pagamento"
 
@@ -573,6 +577,14 @@ msgstr ""
 #: home/models.py:95
 msgid "Why choose us"
 msgstr "Por que nos escolher"
+
+#: sabia/templates/403.html:8
+msgid "Access denied"
+msgstr "Acesso negado"
+
+#: sabia/templates/403.html:15
+msgid "You don't have authorisation to view this page."
+msgstr "Você não tem autorização para visualizar esta página."
 
 #: sabia/templates/includes/main_menu.html:82
 #: userauth/templates/userauth/account/login.html:5
