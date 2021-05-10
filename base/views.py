@@ -240,6 +240,11 @@ def my_course(request, template_name="base/my_course.html"):
 
 
 @login_required
+def material(request, template_name="base/material.html"):
+    return render(request, template_name)
+
+
+@login_required
 def cursos_xsendfile(request):
     path = request.get_full_path()
     course_id = path.split("/")[3]

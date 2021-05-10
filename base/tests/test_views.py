@@ -6,7 +6,7 @@ from django.urls import reverse, resolve
 
 from userauth.models import CustomUser, VET
 from base.models import Course, CourseUser, CourseUserCoupon
-from base.views import course_list, course_registration, my_course
+from base.views import course_list, course_registration, material, my_course
 
 USER_USERNAME = 'user'
 USER_PWD = 'mypassword'
@@ -218,3 +218,20 @@ class CourseTestCase(TestCase):
         response = self.client.post(reverse("enroll", args=(self.course_3.pk,)), self.data)
         message = list(get_messages(response.wsgi_request))
         self.assertEqual(str(message[0]), 'Coupon not found')
+
+    ######################
+    # material
+    ######################
+    def test_material_status_code(self):
+        url = reverse('material')
+        response = self.client.get(url)
+        self.assertEquals(response.status_code, 200)
+
+    def test_material_template(self):
+        url = reverse('material')
+        response = self.client.get(url)
+        self.assertTemplateUsed(response, 'base/material.html')
+
+    def test_material_url_resolves_my_course_view(self):
+        view = resolve('/material')
+        self.assertEquals(view.func, material)

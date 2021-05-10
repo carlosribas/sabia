@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load i18n static %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12 mt-2">
+                <h2>{% trans "Material of the Sabiá" %}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-12 mt-2">
+                <div class="embed-responsive embed-responsive-1by1">
+                    <iframe src="{% static 'guia-pratico-de-relatorios-de-padroes-pulmonares.pdf' %}" style="border: none;"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
