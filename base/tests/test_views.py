@@ -186,7 +186,7 @@ class CourseTestCase(TestCase):
         self.data = {'content': self.course_3.pk, 'action': 'code', 'code': 'test'}
         response = self.client.post(reverse("enroll", args=(self.course_3.pk,)), self.data)
         self.assertEqual(response.context[0]['price'], 90.00)
-        self.assertEqual(response.context[0]['price1x'], 85.00)
+        self.assertEqual(response.context[0]['price1x'], 85.50)
         self.assertEqual(response.context[0]['price2x'], 45.00)
         self.assertEqual(response.context[0]['price3x'], 30.00)
         self.assertEqual(response.context[0]['price4x'], 22.50)

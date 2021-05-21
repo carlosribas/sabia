@@ -130,9 +130,8 @@ def course_registration(request, course_id, template_name="base/course_registrat
                 messages.warning(request, _('Coupon not found'))
             elif coupon and coupon.discount != 100:
                 discount = Dec(coupon.discount / 100).quantize(Dec('.01'), rounding=ROUND_HALF_UP)
-                discount1x = Dec((coupon.discount + 5.0) / 100).quantize(Dec('.01'), rounding=ROUND_HALF_UP)
                 price = course.price - (course.price * discount).quantize(Dec('.01'), rounding=ROUND_HALF_UP)
-                price1x = course.price - (course.price * discount1x).quantize(Dec('.01'), rounding=ROUND_HALF_UP)
+                price1x = (price - price * 5 / 100).quantize(Dec('.01'), rounding=ROUND_HALF_UP)
                 price2x = (price / 2).quantize(Dec('.01'))
                 price3x = (price / 3).quantize(Dec('.01'))
                 price4x = (price / 4).quantize(Dec('.01'))
