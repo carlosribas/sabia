@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-10 20:15+0000\n"
+"POT-Creation-Date: 2021-05-24 08:54+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -458,49 +458,77 @@ msgstr ""
 msgid "Enroll in one of our courses and boost your career!"
 msgstr "Inscreva-se em um dos nossos cursos e impulsione sua carreira!"
 
-#: base/views.py:68
+#: base/templates/base/send_email.html:8
+msgid "Send email"
+msgstr "Enviar email"
+
+#: base/templates/base/send_email.html:17
+msgid "Subject"
+msgstr "Assunto"
+
+#: base/templates/base/send_email.html:21
+msgid "Message"
+msgstr "Mensagem"
+
+#: base/templates/base/send_email.html:25
+msgid "Attachment"
+msgstr "Anexo"
+
+#: base/templates/base/send_email.html:29
+msgid "Send"
+msgstr "Enviar"
+
+#: base/views.py:70
 msgid "Pre-booking successful"
 msgstr "Pré-reserva realizada com sucesso"
 
-#: base/views.py:77
+#: base/views.py:79
 msgid "Pre-booking canceled successfully"
 msgstr "Pré-reserva cancelada com sucesso"
 
-#: base/views.py:87
+#: base/views.py:89
 msgid "Registration successful!"
 msgstr "Inscrição realizada com sucesso!"
 
-#: base/views.py:89
+#: base/views.py:91
 msgid "Sorry, there are no more vacancies for this course"
 msgstr "Desculpe, não há mais vagas para este curso"
 
-#: base/views.py:98
+#: base/views.py:100
 msgid "Unsubscribe successfully"
 msgstr "Inscrição cancelada com sucesso"
 
-#: base/views.py:113
+#: base/views.py:115
 msgid "Interest registered successfully"
 msgstr "Interesse registrado com sucesso"
 
-#: base/views.py:127 base/views.py:130
+#: base/views.py:129 base/views.py:132
 msgid "Coupon not found"
 msgstr "Cupom não encontrado"
 
-#: base/views.py:150
+#: base/views.py:151
 msgid "Coupon applied successfully"
 msgstr "Cupom aplicado com sucesso"
 
-#: base/views.py:154
+#: base/views.py:155
 msgid "Coupon applied successfully. This course is now free!"
 msgstr "Cupom aplicado com sucesso. Este curso agora é gratuito!"
 
-#: base/views.py:200
+#: base/views.py:201
 msgid "Payment successful"
 msgstr "Pagamento realizado com sucesso"
 
-#: base/views.py:202
+#: base/views.py:203
 msgid "Waiting for payment confirmation"
 msgstr "Aguardando a confirmação do pagamento"
+
+#: base/views.py:296
+msgid "Email successfully sent!"
+msgstr "Email realizado com sucesso."
+
+#: base/views.py:298
+msgid "You must fill in the subject and message fields"
+msgstr "Você precisa preencher os campos assunto e mensagem"
 
 #: base/wagtail_hooks.py:56
 msgid "Interview"

@@ -5,10 +5,11 @@ from decimal import Decimal as Dec, ROUND_HALF_UP
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core import mail
 from django.core.exceptions import PermissionDenied
-from django.core.mail import send_mail
+from django.core.mail import send_mail, EmailMultiAlternatives
 from django.db.models import Q
-from django.http import HttpResponseRedirect, JsonResponse, HttpResponse
+from django.http import HttpResponseRedirect, JsonResponse, HttpResponse, BadHeaderError
 from django.shortcuts import render, get_object_or_404
 from django.template.loader import render_to_string
 from django.urls import reverse
@@ -19,6 +20,7 @@ from itertools import chain
 
 from base.models import Course, CourseUser, CourseUserCoupon, CourseUserInterview, CourseMaterial, \
     CourseMaterialDocument, CourseMaterialVideo, ENROLL, PRE_BOOKING
+from userauth.models import CustomUser
 
 
 def course_list(request, template_name="base/course_list.html"):
@@ -255,4 +257,46 @@ def cursos_xsendfile(request):
         response['X-Sendfile'] = smart_str(path)
         return response
     except CourseUser.DoesNotExist:
+        raise PermissionDenied
+
+
+@login_required
+def send_email(request):
+    if request.user.is_superuser:
+        if request.method == 'POST':
+            subject_typed = request.POST['subject']
+            message_typed = request.POST['message']
+            users = CustomUser.objects.all()
+            list_of_emails = []
+            text_content = message_typed
+            html_content = message_typed
+
+            for user in users:
+                if user.email:
+                    list_of_emails.append(user.email)
+
+            if subject_typed and message_typed and list_of_emails:
+                subject, from_email, to = subject_typed, settings.EMAIL_HOST_USER, list_of_emails
+
+                if subject and from_email and to:
+                    connection = mail.get_connection()
+                    connection.open()
+
+                    try:
+                        msg = EmailMultiAlternatives(subject, text_content, from_email, bcc=to)
+                        msg.attach_alternative(html_content, "text/html")
+                        if request.FILES:
+                            file_uploaded = request.FILES['attachment']
+                            msg.attach(file_uploaded.name, file_uploaded.read(), file_uploaded.content_type)
+                        msg.send()
+                    except BadHeaderError:
+                        return HttpResponse('Invalid header found.')
+
+                    connection.close()
+                    messages.success(request, _('Email successfully sent!'))
+            else:
+                messages.error(request, _('You must fill in the subject and message fields'))
+
+        return render(request, 'base/send_email.html')
+    else:
         raise PermissionDenied
