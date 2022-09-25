@@ -4,103 +4,34 @@
 
 {% block body_class %}template-homepage{% endblock %}
 
-{% block title %}Cursos, Telerradiologia e Consultoria em Imagem{% endblock %}
-{% block description %}<meta name="description" content="O Sabiá é uma plataforma de serviços veterinários online que oferece ensino à distância, telerradiologia e consultoria em imagem">{% endblock %}
-
-{% block extra_js %}
-    <script type="text/javascript" src="{% static 'js/carousel.js' %}"></script>
-{% endblock %}
+{% block title %}Baroni-Massad: cursos veterinários{% endblock %}
+{% block description %}<meta name="description" content="Baroni-Massad cursos veterinários">{% endblock %}
 
 {% block content %}
-    {# Slider #}
-    <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-        <div class="carousel-inner">
-            {% for item in self.carousel_images.all %}
-                {% image item.image fill-900x400 as img %}
-                <div class="carousel-item{% if forloop.counter == 1 %} active{% endif %}">
-                    <img src="{{ img.url }}" class="d-block w-100" alt="{{ img.alt }}">
-                    <div class="carousel-caption">
-                        <h1 {% if item.title_color %}style="color: {{ item.title_color }}" {% endif %}>{{ item.title }}</h1>
-                        <h5 {% if item.description_color %}style="color: {{ item.description_color }}" {% endif %}>{{ item.description }}</h5>
-                        <a class="btn btn-sabia mt-sm-2" href="{{item.link}}">Saiba mais</a>
-                    </div>
-                </div>
-            {% endfor %}
-        </div>
-        <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
-        </a>
-        <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
-        </a>
-    </div>
+    <img src="{% static 'images/baroni-massad-banner.png' %}" class="img-fluid" alt="Logo da Baroni-Massad cursos veterinários">
 
-    {# Nossos serviços #}
     <div class="container">
         <div class="row">
             <div class="col-12">
                 <div class="text-center mt-5">
-                    <h1>{{ page.service_title }}</h1>
-                    <p>{{ page.service_body|richtext }}</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="container-fluid">
-        <div class="row">
-            {% for service in self.services.all %}
-                <div class="col-md-4 mt-3">
-                    <div class="card border-0">
-                        <a href="{{service.link}}">
-                            {% image service.image fill-574x286 class="card-img img-fluid" %}
-                            <div class="card-img-overlay">
-                                <h4>{{ service.title }}</h4>
-                                <p>{{ service.description }}</p>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-            {% endfor %}
-        </div>
-    </div>
-
-    {# Equipe #}
-    {% get_members %}
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <div class="text-center mt-3">
-                    <h4>Colega veterinário, você gostaria de ser membro da nossa equipe?</h4>
-                </div>
-                <div class="text-center mt-3">
-                    <a class="btn btn-sabia" href="{{ page.member_link.url }}">Saiba mais</a>
+                    <h1>Cursos</h1>
                 </div>
             </div>
         </div>
     </div>
 
-    {# Por que nos escolher #}
+    {% get_courses %}
+
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <div class="text-center mt-5">
-                    <h1>Por que nos escolher</h1>
+                <div class="text-center mt-3">
+                    <h4>Confira todos os nossos cursos e palestras!</h4>
+                </div>
+                <div class="text-center mt-3">
+                    <a class="btn btn-sabia" href="{% url 'cursos' %}">Ver mais</a>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            {% for item in self.why_choose_us.all %}
-                <div class="col-md-4 mt-3">
-                    <div class="card border-0">
-                        <h5 class="card-title text-orange font-weight-bold">
-                            <i class="{{ item.icon }}"></i> {{ item.title }}
-                        </h5>
-                        <p class="card-text">{{ item.description }}</p>
-                    </div>
-                </div>
-            {% endfor %}
         </div>
     </div>
 
