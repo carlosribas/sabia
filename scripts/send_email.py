@@ -22,7 +22,7 @@ def run():
         for item in CourseUser.objects.filter(course=course):
 
             # Send email to the user
-            subject = '[Plataforma Sabiá] - É amanhã! {}'.format(course.name)
+            subject = '[Baroni-Massad] - É amanhã! {}'.format(course.name)
             html_message = render_to_string(
                 'mail_template.html',
                 {

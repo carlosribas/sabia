@@ -106,7 +106,7 @@ def course_registration(request, course_id, template_name="base/course_registrat
             # Send email to the admin
             msg_plain = render_to_string('course_interview', {'course': course.name, 'user': request.user})
             send_mail(
-                '[Plataforma Sabiá] Entrevista para curso individual',
+                '[Baroni-Massad] Entrevista para curso individual',
                 msg_plain,
                 settings.EMAIL_HOST_USER,
                 [settings.EMAIL_HOST_USER],

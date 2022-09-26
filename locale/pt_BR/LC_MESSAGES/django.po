@@ -711,7 +711,7 @@ msgstr ""
 "\n"
 "Para ativar a sua conta, acesse este endereço %(activate_url)s\n"
 "\n"
-"Se você não se cadastrou na Plataforma Sabiá recentemente, por favor ignore "
+"Se você não se cadastrou na Baroni-Massad recentemente, por favor ignore "
 "este email."
 
 #: userauth/templates/userauth/account/email/email_confirmation_subject.txt:3
@@ -741,7 +741,7 @@ msgid ""
 "Your account is almost ready. To activate it, please confirm your email "
 "address (%(email)s) by clicking the button below."
 msgstr ""
-"Sua conta na Plataforma Sabiá está quase pronta. Para ativá-la, por favor "
+"Sua conta na Baroni-Massad está quase pronta. Para ativá-la, por favor "
 "confirme o seu endereço de email (%(email)s) clicando no botão abaixo."
 
 #: userauth/templates/userauth/account/email_confirm.html:19
