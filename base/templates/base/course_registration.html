@@ -145,7 +145,7 @@
             <strong>{% trans "Price" %}</strong>:
             <br>
             {% if price %}
-                {% if price <= 50 %}
+                {% if price <= 100 %}
                     {% if price1x %}R$ {{ price1x }} {% trans "one-time payment" %}{% endif %}<br/>
                 {% else %}
                     {% if price1x %}R$ {{ price1x }} {% trans "one-time payment" %}{% endif %}<br/>
