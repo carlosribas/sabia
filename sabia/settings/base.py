@@ -197,7 +197,7 @@ WAGTAIL_SITE_NAME = "sabia"
 
 # Base URL to use when referring to full URLs within the Wagtail admin backend -
 # e.g. in notification emails. Don't include '/admin' or a trailing slash
-BASE_URL = 'https://plataformasabia.com.br'
+BASE_URL = 'https://baronimassad.com.br'
 
 # custom user model
 AUTH_USER_MODEL = 'userauth.CustomUser'
