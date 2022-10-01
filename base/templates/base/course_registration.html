@@ -1,7 +1,7 @@
 {% extends 'account/base_card.html' %}
 {% load i18n %}
 
-{% block title %}{{ course.name }} - Plataforma Sabiá{% endblock %}
+{% block title %}{{ course.name }} - Baroni-Massad{% endblock %}
 {% block description %}<meta name="description" content="{{ course.introduction }}">{% endblock %}
 
 {% block card-header %}
@@ -27,7 +27,7 @@
         {{ course.id|json_script:"course-id" }}
         {{ coupon|json_script:"coupon-used" }}
 
-        <script src="https://www.paypal.com/sdk/js?client-id=Adncgqi0-vc3rPc8ACBco4rhfMvbwHqvONyu-jj3sneX4Ab-BMmzmrDKxdkL4f2b96CcidFnUyTe_moW&locale=pt_BR&currency=BRL"></script>
+        <script src="https://www.paypal.com/sdk/js?client-id=AazUvXFqB2T8p7aqnhlmCn5BVwUSIx1LD9v7nmqUBPlIgaFsKSzeptzizgo5vYblyW3nJk9_dLrJY7WE&locale=pt_BR&currency=BRL"></script>
         <script>
           // Acquire the token
           function getCookie(name) {
@@ -145,11 +145,15 @@
             <strong>{% trans "Price" %}</strong>:
             <br>
             {% if price %}
-                {% if price1x %}R$ {{ price1x }} {% trans "one-time payment" %}{% endif %}<br/>
-                {% if price2x %}{% trans " or 2 monthly payments of " %}R$ {{ price2x }} *{% endif %}<br/>
-                {% if price3x %}{% trans " or 3 monthly payments of " %}R$ {{ price3x }} *{% endif %} <br/>
-                {% if price4x %}{% trans " or 4 monthly payments of " %}R$ {{ price4x }} *{% endif %} <br/>
-                {% if price2x or price3x or price4x %}<i><small>{% trans "* The total amount of the installments is " %}R$ {{ price }}</small></i>{% endif %} <br/>
+                {% if price <= 50 %}
+                    {% if price1x %}R$ {{ price1x }} {% trans "one-time payment" %}{% endif %}<br/>
+                {% else %}
+                    {% if price1x %}R$ {{ price1x }} {% trans "one-time payment" %}{% endif %}<br/>
+                    {% if price2x %}{% trans " or 2 monthly payments of " %}R$ {{ price2x }} *{% endif %}<br/>
+                    {% if price3x %}{% trans " or 3 monthly payments of " %}R$ {{ price3x }} *{% endif %} <br/>
+                    {% if price4x %}{% trans " or 4 monthly payments of " %}R$ {{ price4x }} *{% endif %} <br/>
+                    {% if price2x or price3x or price4x %}<i><small>{% trans "* The total amount of the installments is " %}R$ {{ price }}</small></i>{% endif %} <br/>
+                {% endif %}
                 {% if user.is_authenticated and course.type != 'individual' and not enrolled.status or user.is_authenticated and course.type == 'individual' and interview %}
                     <a data-toggle="collapse" href="#collapseCoupon" role="button" aria-expanded="false" aria-controls="collapseCoupon">{% trans "Apply coupon" %}</a>
                 {% endif %}
@@ -220,6 +224,6 @@
 
 {% block card-footer %}
     {% if user.is_authenticated and price and course.show_course and not enrolled and course.vacancies > course.registered %}
-        <p>{% trans "Can't pay via PayPal?" %} <a href="https://plataformasabia.com.br/pt-br/contato/">{% trans "Contact us" %}</a>{% trans " and we will send you another form of payment" %}</p>
+        <p>{% trans "Can't pay via PayPal?" %} <a href="https://baronimassad.com.br/pt-br/contato/">{% trans "Contact us" %}</a>{% trans " and we will send you another form of payment" %}</p>
     {% endif %}
 {% endblock %}
