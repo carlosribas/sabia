@@ -6,4 +6,4 @@
 
 To confirm this is correct, go to {{ activate_url }}
 
-If you have not registered with the Plataforma Sabia recently, please ignore this email.{% endblocktrans %}{% endautoescape %}{% endblock %}
+If you have not registered with the Baroni-Massad recently, please ignore this email.{% endblocktrans %}{% endautoescape %}{% endblock %}

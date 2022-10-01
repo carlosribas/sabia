@@ -4,5 +4,5 @@ Este é um email automático para informar que o usuário {{user}} tem interesse
 {% endblocktrans %}
 {% blocktrans %}Atenciosamente,{% endblocktrans %}
 
-Plataforma Sabiá.
+Baroni-Massad.
 {% endautoescape %}
