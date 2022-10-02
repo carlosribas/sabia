@@ -1,5 +1,5 @@
 {% extends 'account/base_card.html' %}
-{% load i18n %}
+{% load i18n wagtailcore_tags %}
 
 {% block title %}{{ course.name }} - Baroni-Massad{% endblock %}
 {% block description %}<meta name="description" content="{{ course.introduction }}">{% endblock %}
@@ -139,7 +139,7 @@
         </p>
         <p>
             <strong>{% trans "Description" %}</strong>:
-            {{ course.description|safe }}
+            {{ course.description|richtext }}
         </p>
         <p>
             <strong>{% trans "Price" %}</strong>:
