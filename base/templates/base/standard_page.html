@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load members_tags wagtailcore_tags %}
+{% load members_tags %}
 
 {% block content %}
     {% include "base/include/header.html" %}
@@ -8,7 +8,7 @@
         <div class="row">
             <div class="col-12 mt-2">
                 {% if page.slug != "equipe" %}
-                    {{ page.body|richtext }}
+                    {{ page.body }}
                 {% endif %}
             </div>
         </div>
