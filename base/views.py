@@ -42,10 +42,21 @@ def course_registration(request, course_id, template_name="base/course_registrat
 
     # Get the course fee
     price = course.price  # paypal value
-    price1x = course.price - (course.price * Dec('.05')).quantize(Dec('.01'), rounding=ROUND_HALF_UP) if price else None
-    price2x = (price / 2).quantize(Dec('.01')) if price else None
-    price3x = (price / 3).quantize(Dec('.01')) if price else None
-    price4x = (price / 4).quantize(Dec('.01')) if price else None
+    if price and price <= 100:
+        price1x = course.price
+        price2x = None
+        price3x = None
+        price4x = None
+    elif price and price > 100:
+        price1x = course.price - (course.price * Dec('.05')).quantize(Dec('.01'), rounding=ROUND_HALF_UP)
+        price2x = (price / 2).quantize(Dec('.01'))
+        price3x = (price / 3).quantize(Dec('.01'))
+        price4x = (price / 4).quantize(Dec('.01'))
+    else:
+        price1x = None
+        price2x = None
+        price3x = None
+        price4x = None
 
     # Check if the user is enrolled in the course
     enrolled = CourseUser.objects.filter(course=course.id, user=request.user.id).first()

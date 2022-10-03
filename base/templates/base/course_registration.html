@@ -145,10 +145,8 @@
             <strong>{% trans "Price" %}</strong>:
             <br>
             {% if price %}
-                {% if price <= 100 %}
-                    {% if price1x %}R$ {{ price1x }} {% trans "one-time payment" %}{% endif %}<br/>
-                {% else %}
-                    {% if price1x %}R$ {{ price1x }} {% trans "one-time payment" %}{% endif %}<br/>
+                {% if price1x %}R$ {{ price1x }} {% trans "one-time payment" %}{% endif %}<br/>
+                {% if price > 100 %}
                     {% if price2x %}{% trans " or 2 monthly payments of " %}R$ {{ price2x }} *{% endif %}<br/>
                     {% if price3x %}{% trans " or 3 monthly payments of " %}R$ {{ price3x }} *{% endif %} <br/>
                     {% if price4x %}{% trans " or 4 monthly payments of " %}R$ {{ price4x }} *{% endif %} <br/>
