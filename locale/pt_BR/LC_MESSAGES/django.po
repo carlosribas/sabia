@@ -418,10 +418,6 @@ msgstr "Entre em contato"
 msgid " and we will send you another form of payment"
 msgstr " que nós lhe enviaremos outra forma de pagamento"
 
-#: base/templates/base/material.html:8
-msgid "Material of the Sabiá"
-msgstr "Material do Sabiá"
-
 #: base/templates/base/members_page.html:17
 msgid "See more"
 msgstr "Ver mais"
