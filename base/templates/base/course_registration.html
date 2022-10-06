@@ -162,6 +162,10 @@
             {% endif %}
         </p>
         {% if user.is_authenticated %}
+            <p>
+                <strong>{% trans "Info for authenticated users" %}</strong>:
+                {{ course.info|richtext }}
+            </p>
             <form role="form" method="post">{% csrf_token %}
                 <input type="hidden" name="content" value="{{course.id}}">
                 {% if price %}

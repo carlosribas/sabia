@@ -131,6 +131,7 @@ class Course(index.Indexed, ClusterableModel):
     registered = models.IntegerField(_("Registered"), blank=True, default=0)
     pre_booking = models.IntegerField(_("Pre-booking"), blank=True, default=0)
     description = RichTextField(_("Description"), features=RICHTEXT_FEATURES, blank=True)
+    info = RichTextField(_("Info for authenticated users"), features=RICHTEXT_FEATURES, blank=True)
     image = models.ForeignKey('wagtailimages.Image', null=True, blank=True, on_delete=models.SET_NULL, related_name='+')
     tags = ClusterTaggableManager(through=CourseTag, blank=True)
 
@@ -154,6 +155,7 @@ class Course(index.Indexed, ClusterableModel):
         FieldPanel('vacancies'),
         FieldPanel('registered'),
         FieldPanel('description'),
+        FieldPanel('info'),
         ImageChooserPanel('image'),
         FieldPanel('tags'),
     ]
