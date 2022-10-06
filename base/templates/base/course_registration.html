@@ -162,10 +162,6 @@
             {% endif %}
         </p>
         {% if user.is_authenticated %}
-            <p>
-                <strong>{% trans "Info for authenticated users" %}</strong>:
-                {{ course.info|richtext }}
-            </p>
             <form role="form" method="post">{% csrf_token %}
                 <input type="hidden" name="content" value="{{course.id}}">
                 {% if price %}
@@ -198,6 +194,7 @@
                             {% else %}
                                 {% if price %}
                                     <div id="paypal-button-container"></div>
+                                    <p>{{ course.info|richtext }}</p>
                                 {% else %}
                                     <button type="submit" name="action" value="enroll" class="btn btn-course">{% trans "Make registration" %}</button>
                                 {% endif %}
