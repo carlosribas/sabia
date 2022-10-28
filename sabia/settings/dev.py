@@ -24,13 +24,13 @@ RECAPTCHA_PRIVATE_KEY = 'dev_fake_private_key'
 # enable no captcha
 NOCAPTCHA = True
 
-INSTALLED_APPS = INSTALLED_APPS + [
-    'debug_toolbar',
-]
-
-MIDDLEWARE = MIDDLEWARE + [
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
-]
+# INSTALLED_APPS = INSTALLED_APPS + [
+#     'debug_toolbar',
+# ]
+#
+# MIDDLEWARE = MIDDLEWARE + [
+#     'debug_toolbar.middleware.DebugToolbarMiddleware',
+# ]
 
 INTERNAL_IPS = ["127.0.0.1", ip[:-1] + '1']
 
