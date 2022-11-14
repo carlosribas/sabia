@@ -18,6 +18,7 @@ from django.utils.encoding import smart_str
 from django.utils.translation import ugettext as _
 from itertools import chain
 
+from base.mercado_pago import MercadoPago
 from base.models import Course, CourseUser, CourseUserCoupon, CourseUserInterview, CourseMaterial, \
     CourseMaterialDocument, CourseMaterialVideo, ENROLL, PRE_BOOKING
 from userauth.models import CustomUser
@@ -47,16 +48,19 @@ def course_registration(request, course_id, template_name="base/course_registrat
         price2x = None
         price3x = None
         price4x = None
+        installments = 1
     elif price and price > 100:
         price1x = course.price - (course.price * Dec('.05')).quantize(Dec('.01'), rounding=ROUND_HALF_UP)
         price2x = (price / 2).quantize(Dec('.01'))
         price3x = (price / 3).quantize(Dec('.01'))
         price4x = (price / 4).quantize(Dec('.01'))
+        installments = 4
     else:
         price1x = None
         price2x = None
         price3x = None
         price4x = None
+        installments = None
 
     # Check if the user is enrolled in the course
     enrolled = CourseUser.objects.filter(course=course.id, user=request.user.id).first()
@@ -66,6 +70,16 @@ def course_registration(request, course_id, template_name="base/course_registrat
         interview = CourseUserInterview.objects.filter(course=course.id, user=request.user.id).first()
     else:
         interview = None
+
+    if price:
+        mercadopago = MercadoPago()
+        config = {'title': str(course), 'unit_price': float(price1x), 'installments': installments}
+        preference = mercadopago.get_preference(config)
+        preference_response = preference['response']
+        public_key = settings.MERCADO_PAGO_PUBLIC_KEY
+    else:
+        preference_response = None
+        public_key = None
 
     if request.method == "POST":
         course = get_object_or_404(Course, pk=request.POST['content'])
@@ -178,7 +192,10 @@ def course_registration(request, course_id, template_name="base/course_registrat
         'price2x': price2x,
         'price3x': price3x,
         'price4x': price4x,
+        'preference': preference_response,
+        'public_key': public_key
     }
+
     return render(request, template_name, context)
 
 

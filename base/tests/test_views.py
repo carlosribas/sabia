@@ -1,5 +1,6 @@
 import datetime
 
+from django.conf import settings
 from django.contrib.messages import get_messages
 from django.test import TestCase
 from django.urls import reverse, resolve
@@ -97,6 +98,43 @@ class CourseTestCase(TestCase):
     def test_course_registration_url_resolves_course_registration_view(self):
         view = resolve('/cursos/1')
         self.assertEquals(view.func, course_registration)
+
+    def test_course_registration_generates_mercadopago_preference(self):
+        url = reverse('enroll', args=(self.course_3.pk,))
+        response = self.client.get(url)
+        preference = response.context.get('preference')
+        self.assertEqual(preference['items'][0]['title'], 'course 03')
+        self.assertEqual(preference['items'][0]['unit_price'], 100)
+        self.assertEqual(preference['payment_methods']['installments'], 1)
+
+    def test_course_registration_sends_mercadopago_public_key(self):
+        url = reverse('enroll', args=(self.course_3.pk,))
+        response = self.client.get(url)
+        public_key = response.context.get('public_key')
+        self.assertEqual(public_key, settings.MERCADO_PAGO_PUBLIC_KEY)
+
+    def test_course_registration_generates_mercadopago_preference_price_gt_100(self):
+        self.course_3.price = 101
+        self.course_3.save()
+
+        url = reverse('enroll', args=(self.course_3.pk,))
+        response = self.client.get(url)
+        preference = response.context.get('preference')
+        self.assertEqual(preference['items'][0]['title'], 'course 03')
+        self.assertEqual(preference['items'][0]['unit_price'], 95.95)
+        self.assertEqual(preference['payment_methods']['installments'], 4)
+
+    def test_course_registration_does_not_generate_mercado_preference_if_not_price(self):
+        url = reverse('enroll', args=(self.course_2.pk,))
+        response = self.client.get(url)
+        preference = response.context.get('preference')
+        self.assertIsNone(preference)
+
+    def test_course_registration_does_not_send_mercadopago_public_key_if_not_price(self):
+        url = reverse('enroll', args=(self.course_2.pk,))
+        response = self.client.get(url)
+        public_key = response.context.get('public_key')
+        self.assertIsNone(public_key)
 
     def test_course_registration_pre_booking(self):
         self.data = {

@@ -19,6 +19,25 @@
     src="https://www.facebook.com/tr?id=1243571323145313&ev=PageView&noscript=1"
     /></noscript>
     <!-- End Meta Pixel Code -->
+
+    <!-- SDK MercadoPago.js V2 -->
+    <script src="https://sdk.mercadopago.com/js/v2"></script>
+
+    <script>
+        const mp = new MercadoPago('{{ public_key }}', {
+            locale: 'pt-BR'
+        });
+
+        mp.checkout({
+            preference: {
+                id: '{{ preference.id }}'
+            },
+            render: {
+                container: '.cho-container',
+                label: 'Pagar',
+            }
+        });
+    </script>
 {% endblock %}
 
 {% block title %}{{ course.name }} - Baroni-Massad{% endblock %}
@@ -38,99 +57,6 @@
         </h3>
     {% else %}
         <h3>{% trans "Page not found" %}</h3>
-    {% endif %}
-{% endblock %}
-
-{% block extra_css %}
-    {% if price %}
-        {{ price|json_script:"course-price" }}
-        {{ course.id|json_script:"course-id" }}
-        {{ coupon|json_script:"coupon-used" }}
-
-        <script src="https://www.paypal.com/sdk/js?client-id=Adncgqi0-vc3rPc8ACBco4rhfMvbwHqvONyu-jj3sneX4Ab-BMmzmrDKxdkL4f2b96CcidFnUyTe_moW&locale=pt_BR&currency=BRL"></script>
-        <script>
-          // Acquire the token
-          function getCookie(name) {
-            let cookieValue = null;
-            if (document.cookie && document.cookie !== '') {
-              const cookies = document.cookie.split(';');
-              for (let i = 0; i < cookies.length; i++) {
-                const cookie = cookies[i].trim();
-                // Does this cookie string begin with the name we want?
-                if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                  break;
-                }
-              }
-            }
-            return cookieValue;
-          }
-
-          const csrftoken = getCookie('csrftoken');
-          const price = JSON.parse(document.getElementById('course-price').textContent);
-          const courseId = JSON.parse(document.getElementById('course-id').textContent);
-          const couponUsed = JSON.parse(document.getElementById('coupon-used').textContent);
-
-          // Submit payment information
-          function completeOrder(paymentId, paymentStatus){
-            let url = "{% url 'course_paid' %}"
-
-            fetch(url, {
-                method: 'POST',
-                headers: {'Content-type': 'application/json', 'X-CSRFToken': csrftoken},
-                body: JSON.stringify(
-                  {
-                    'price': price,
-                    'courseId': courseId,
-                    'couponUsed': couponUsed,
-                    'paymentId': paymentId,
-                    'paymentStatus': paymentStatus
-                  }
-                )
-              }
-            )
-            .then(function (response) {
-              if (response.ok) { return response.json() }
-              else { throw response }
-            })
-            .then(data => {
-              $("#cover").fadeOut(100);
-              window.location.href = "{% url 'enroll' 54321 %}".replace(/54321/, courseId.toString());
-              new Toast({message: data.message, type: 'success'});
-            })
-          }
-
-          // Render the PayPal button into #paypal-button-container
-          paypal.Buttons({
-            // Button style
-            style: {
-                color:  'blue',
-                shape:  'pill',
-                label:  'pay',
-                height: 40
-            },
-
-            // Set up transaction
-            createOrder: function(data, actions) {
-              return actions.order.create({
-                purchase_units: [{
-                  amount: {
-                    value: price
-                  }
-                }]
-              });
-            },
-
-            // Finalize the transaction
-            onApprove: function (data, actions) {
-              $("#cover").fadeIn(100);
-              new Toast({message: "{% trans "Please wait. We are finalizing your registration." %}", type: 'success'});
-              return actions.order.capture().then(function (details) {
-                completeOrder(details['id'], details['status']);
-              })
-            }
-          }).render('#paypal-button-container');
-        </script>
     {% endif %}
 {% endblock %}
 
@@ -198,7 +124,7 @@
                     {% if enrolled.status == 'enroll' %}
                         <br />
                     {% elif interview.show_button == True %}
-                        <div id="paypal-button-container"></div>
+                        <div id="mp_button" class="cho-container"></div>
                     {% elif interview.show_button == False %}
                         <button type="submit" name="action" value="interview" class="btn btn-course" disabled>{% trans "I'm interested" %}</button>
                     {% else %}
@@ -213,8 +139,8 @@
                                 <button type="submit" name="action" value="enroll" class="btn btn-course" disabled>{% trans "Exhausted vacancies" %}</button>
                             {% else %}
                                 {% if price %}
-                                    <div id="paypal-button-container"></div>
-                                    <p>{{ course.info|richtext }}</p>
+                                    <div id="mp_button" class="cho-container"></div>
+{#                                    <p>{{ course.info|richtext }}</p>#}
                                 {% else %}
                                     <button type="submit" name="action" value="enroll" class="btn btn-course">{% trans "Make registration" %}</button>
                                 {% endif %}
