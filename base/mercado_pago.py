@@ -1,5 +1,6 @@
 import mercadopago
 from django.conf import settings
+from django.urls import reverse
 
 
 class MercadoPago:
@@ -27,4 +28,9 @@ class MercadoPago:
             'payment_methods': {
                 'installments': config['installments']
             },
+            'back_urls': {
+                'success': settings.BASE_URL + reverse('course_paid'),
+                'failure': settings.BASE_URL + reverse('course_paid'),
+                'pending': settings.BASE_URL + reverse('course_paid'),
+            }
         }
