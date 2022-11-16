@@ -1,4 +1,5 @@
 {% extends 'account/base_card.html' %}
+{% load static %}
 {% load i18n wagtailcore_tags %}
 
 {% block extra_js %}
@@ -20,28 +21,10 @@
     /></noscript>
     <!-- End Meta Pixel Code -->
 
-    <!-- SDK MercadoPago.js V2 -->
     <script src="https://sdk.mercadopago.com/js/v2"></script>
-
+    <script src="{% static 'js/mercadopago.js' %}"></script>
     <script>
-        const mp = new MercadoPago('{{ public_key }}', {
-            locale: 'pt-BR'
-        });
-
-        mp.checkout({
-            preference: {
-                id: '{{ preference.id }}'
-            },
-            render: {
-                container: '.cho-container',
-                label: 'Pagar',
-            }
-        });
-
-        // TODO: why $('#mp_button button').click doesn't work?
-        $("#mp_button").click(function (e) {
-            e.preventDefault();
-        })
+        initMercadoPagoButton('{{ public_key }}', '{{ preference.id }}')
     </script>
 {% endblock %}
 
