@@ -73,7 +73,10 @@ def course_registration(request, course_id, template_name="base/course_registrat
 
     if price:
         mercadopago = MercadoPago()
-        config = {'title': str(course), 'unit_price': float(price1x), 'installments': installments}
+        config = {
+            'id': course_id, 'title': str(course), 'unit_price': float(price1x),
+            'installments': installments
+        }
         preference = mercadopago.get_preference(config)
         preference_response = preference['response']
         public_key = settings.MERCADO_PAGO_PUBLIC_KEY

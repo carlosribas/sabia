@@ -20,9 +20,10 @@ class MercadoPago:
         return {
             'items': [
                 {
+                    'id': config['id'],
                     'title': config['title'],
                     'quantity': 1,
-                    'unit_price': config['unit_price']
+                    'unit_price': config['unit_price'],
                 },
             ],
             'payment_methods': {
@@ -32,5 +33,5 @@ class MercadoPago:
                 'success': settings.BASE_URL + reverse('course_paid'),
                 'failure': settings.BASE_URL + reverse('course_paid'),
                 'pending': settings.BASE_URL + reverse('course_paid'),
-            }
+            },
         }

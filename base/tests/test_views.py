@@ -120,6 +120,7 @@ class CourseTestCase(TestCase):
         url = reverse('enroll', args=(self.course_3.pk,))
         response = self.client.get(url)
         preference = response.context.get('preference')
+        self.assertEqual(preference['items'][0]['id'], str(self.course_3.pk))
         self.assertEqual(preference['items'][0]['title'], 'course 03')
         self.assertEqual(preference['items'][0]['unit_price'], 95.95)
         self.assertEqual(preference['payment_methods']['installments'], 4)
