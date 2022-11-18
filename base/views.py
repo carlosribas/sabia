@@ -1,5 +1,4 @@
 import datetime
-import json
 
 from decimal import Decimal as Dec, ROUND_HALF_UP
 from django.conf import settings
@@ -9,8 +8,8 @@ from django.core import mail
 from django.core.exceptions import PermissionDenied
 from django.core.mail import send_mail, EmailMultiAlternatives
 from django.db.models import Q
-from django.http import HttpResponseRedirect, JsonResponse, HttpResponse, BadHeaderError
-from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponseRedirect, HttpResponse, BadHeaderError
+from django.shortcuts import render, get_object_or_404, redirect
 from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils import timezone
@@ -21,6 +20,7 @@ from itertools import chain
 from base.mercado_pago import MercadoPago
 from base.models import Course, CourseUser, CourseUserCoupon, CourseUserInterview, CourseMaterial, \
     CourseMaterialDocument, CourseMaterialVideo, ENROLL, PRE_BOOKING
+from base.mercado_pago_api import MercadoPagoAPI
 from userauth.models import CustomUser
 
 
@@ -204,36 +204,46 @@ def course_registration(request, course_id, template_name="base/course_registrat
 
 @login_required
 def payment_complete(request):
-    body = json.loads(request.body)
-    course = get_object_or_404(Course, pk=body['courseId'])
+    # TODO: guarantee that requests is only from mercadopago
 
-    # Increase the number of registered students
-    course.registered = course.registered + 1 if course.registered else 1
-    course.save()
+    # TODO: treat errors
+    mercadopago_api = MercadoPagoAPI(request.GET.get('payment_id'))
+    course_id = mercadopago_api.get_course_id()
 
-    # Check if the amount paid is correct
-    payment_note = ''
-    if str(course.price) != body['price']:
-        payment_note = 'Valor total incorreto'
+    if request.GET.get('status') == 'failure':
+        messages.error(request, _('There was an error with the payment'))
+        return redirect('enroll', course_id)
 
-    # Create course/user object with payment information
-    course_user = CourseUser(
-        course=course,
-        user=request.user,
-        status=ENROLL,
-        payment_id=body['paymentId'],
-        payment_status=body['paymentStatus'],
-        payment_note=payment_note,
-        coupon_used=body['couponUsed']
-    )
-    course_user.save()
-
-    if body['paymentStatus'] == 'COMPLETED':
-        response = {'message': _("Payment successful")}
-    else:
-        response = {'message': _("Waiting for payment confirmation")}
-
-    return JsonResponse(response)
+    # body = json.loads(request.body)
+    # course = get_object_or_404(Course, pk=body['courseId'])
+    #
+    # # Increase the number of registered students
+    # course.registered = course.registered + 1 if course.registered else 1
+    # course.save()
+    #
+    # # Check if the amount paid is correct
+    # payment_note = ''
+    # if str(course.price) != body['price']:
+    #     payment_note = 'Valor total incorreto'
+    #
+    # # Create course/user object with payment information
+    # course_user = CourseUser(
+    #     course=course,
+    #     user=request.user,
+    #     status=ENROLL,
+    #     payment_id=body['paymentId'],
+    #     payment_status=body['paymentStatus'],
+    #     payment_note=payment_note,
+    #     coupon_used=body['couponUsed']
+    # )
+    # course_user.save()
+    #
+    # if body['paymentStatus'] == 'COMPLETED':
+    #     response = {'message': _("Payment successful")}
+    # else:
+    #     response = {'message': _("Waiting for payment confirmation")}
+    #
+    # return JsonResponse(response)
 
 
 @login_required

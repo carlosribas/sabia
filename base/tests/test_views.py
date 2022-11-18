@@ -1,4 +1,5 @@
 import datetime
+from unittest.mock import patch
 
 from django.conf import settings
 from django.contrib.messages import get_messages
@@ -274,3 +275,72 @@ class CourseTestCase(TestCase):
     def test_material_url_resolves_my_course_view(self):
         view = resolve('/material')
         self.assertEquals(view.func, material)
+
+
+class CoursePaymentTestCase(TestCase):
+    def setUp(self):
+        self.user = CustomUser.objects.create_user(
+            username=USER_USERNAME,
+            email=USER_EMAIL,
+            password=USER_PWD,
+            academic_background=VET
+        )
+        # self.user.is_staff = True
+        # self.user.save()
+
+        logged = self.client.login(username=USER_USERNAME, password=USER_PWD)
+        self.assertEqual(logged, True)
+
+        self.course = Course.objects.create(
+            name="awesome course",
+            start_date=datetime.date.today() + datetime.timedelta(days=15),
+            end_date=datetime.date.today() + datetime.timedelta(days=17),
+            vacancies=5,
+            price=100,
+        )
+
+    @patch('base.mercado_pago_api.requests.get')
+    def test_mercadopago_payment_failure_status_redirects_to_course_page(
+            self, mock_requests_get):
+        mock_requests_get.return_value.json.return_value = \
+            self.mercadopago_api_get_payment_mock()
+        # Other parameters can be ommited
+        url = reverse('course_paid') + '?payment_id=123&status=failure'
+        response = self.client.get(url)
+
+        self.assertRedirects(response, reverse('enroll', args=(self.course.pk,)))
+
+    @patch('base.mercado_pago_api.requests.get')
+    def test_mercadopago_payment_failure_status_redirects_to_course_page_with_message(
+            self, mock_requests_get):
+        mock_requests_get.return_value.json.return_value = \
+            self.mercadopago_api_get_payment_mock()
+        # Other parameters can be ommited
+        url = reverse('course_paid') + '?payment_id=123&status=failure'
+        response = self.client.get(url, follow=True)
+
+        message = list(get_messages(response.wsgi_request))
+        self.assertEqual(len(message), 1)
+        self.assertEqual(str(message[0]), 'There was an error with the payment')
+
+    def mercadopago_api_get_payment_mock(self):
+        # Real mercadopago response have several other fields that are ommited here
+        return {
+            "additional_info": {
+                "authentication_code": None,
+                "available_balance": None,
+                "ip_address": "189.121.200.222",
+                "items": [
+                    {
+                        "category_id": None,
+                        "description": None,
+                        "id": str(self.course.id),
+                        "picture_url": None,
+                        "quantity": "1",
+                        "title": "Radiologia pra clínicos: Doenças respiratórias",
+                        "unit_price": "464.54998779296875"
+                    }
+                ],
+            },
+            "status": "approved",
+        }
