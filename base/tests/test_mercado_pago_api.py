@@ -147,14 +147,14 @@ def api_get_payment_mock():
 class TestMercadoPagoAPI(TestCase):
 
     @patch('base.mercado_pago_api.requests.get')
-    def test_get_payment_data(self, api_get_payment_data):
+    def test_get_payment_data(self, mock_api_get_payment_data):
         mercadopago_api = MercadoPagoAPI(payment_id='123')
-        api_get_payment_data.return_value.json.return_value = api_get_payment_mock()
+        mock_api_get_payment_data.return_value.json.return_value = api_get_payment_mock()
         self.assertEqual(mercadopago_api.get_payment_data(),
                          api_get_payment_mock())
 
     @patch('base.mercado_pago_api.requests.get')
-    def test_get_course_id_data(self, api_get_payment_data):
+    def test_get_course_id_data(self, mock_api_get_payment_data):
         mercadopago_api = MercadoPagoAPI(payment_id='123')
-        api_get_payment_data.return_value.json.return_value = api_get_payment_mock()
+        mock_api_get_payment_data.return_value.json.return_value = api_get_payment_mock()
         self.assertEqual(mercadopago_api.get_course_id(), '123')

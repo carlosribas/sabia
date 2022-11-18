@@ -20,7 +20,7 @@ from itertools import chain
 from base.mercado_pago import MercadoPago
 from base.models import Course, CourseUser, CourseUserCoupon, CourseUserInterview, CourseMaterial, \
     CourseMaterialDocument, CourseMaterialVideo, ENROLL, PRE_BOOKING
-from base.mercado_pago_api import MercadoPagoAPI
+from base.mercado_pago_api import MercadoPagoAPI, FAILURE_STATUS, SUCCESS_STATUS
 from userauth.models import CustomUser
 
 
@@ -209,9 +209,23 @@ def payment_complete(request):
     # TODO: treat errors
     mercadopago_api = MercadoPagoAPI(request.GET.get('payment_id'))
     course_id = mercadopago_api.get_course_id()
+    course = get_object_or_404(Course, pk=int(course_id))
 
-    if request.GET.get('status') == 'failure':
+    if request.GET.get('status') == FAILURE_STATUS:
         messages.error(request, _('There was an error with the payment'))
+        return redirect('enroll', course_id)
+
+    if request.GET.get('status') == SUCCESS_STATUS:
+        course.registered += 1
+        course.save()
+        CourseUser.objects.create(
+            course=course,
+            user=request.user,
+            status=ENROLL,
+            payment_id=request.GET.get('payment_id'),
+            payment_status=SUCCESS_STATUS,
+        )
+        messages.success(request, _('Payment Successful'))
         return redirect('enroll', course_id)
 
     # body = json.loads(request.body)
