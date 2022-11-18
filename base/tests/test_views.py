@@ -6,7 +6,7 @@ from django.contrib.messages import get_messages
 from django.test import TestCase
 from django.urls import reverse, resolve
 
-from base.mercado_pago_api import FAILURE_STATUS, SUCCESS_STATUS
+from base.mercado_pago_api import FAILURE_STATUS, SUCCESS_STATUS, PENDING_STATUS
 from userauth.models import CustomUser, VET
 from base.models import Course, CourseUser, CourseUserCoupon
 from base.views import course_list, course_registration, material, my_course
@@ -360,6 +360,18 @@ class CoursePaymentTestCase(TestCase):
         self.assertEqual(course_user.payment_id, '123')
         self.assertEqual(course_user.payment_status, SUCCESS_STATUS)
         self.assertEqual(course_user.user, self.user)
+    
+    def test_mercadopago_payment_pending_status_redirects_to_course_page_with_message(
+            self, mock_api_get_payment_data):
+        mock_api_get_payment_data.return_value.json.return_value = \
+            self.mercadopago_api_get_payment_mock(PENDING_STATUS)
+        # Other parameters can be ommited
+        url = reverse('course_paid') + '?payment_id=123&status=' + PENDING_STATUS
+        response = self.client.get(url, follow=True)
+
+        message = list(get_messages(response.wsgi_request))
+        self.assertEqual(len(message), 1)
+        self.assertEqual(str(message[0]), 'Waiting for payment confirmation')
 
     def mercadopago_api_get_payment_mock(self, status):
         # Real mercadopago response have several other fields that are ommited here
