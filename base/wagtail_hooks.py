@@ -40,7 +40,7 @@ class CourseAdmin(ModelAdmin):
     menu_icon = 'fa-plus'
     search_fields = ('name',)
     list_filter = ('type',)
-    list_display = ('type', 'name', 'start_date', 'vacancies', 'registered')
+    list_display = ('type', 'name', 'start_date', 'vacancies', 'registered', 'csv')
 
 
 class CourseUserAdmin(ModelAdmin):
