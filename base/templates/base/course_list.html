@@ -7,8 +7,9 @@
 {% block content %}
     <div class="container">
         <div class="row">
-            <div class="col-12 mt-2">
+            <div class="col-12 mt-2 d-flex justify-content-between">
                 <h2>{% trans "Courses" %}</h2>
+                <a href="{% url 'my_course' %}" class="btn btn-course">{% trans "My courses" %}</a>
             </div>
         </div>
     </div>
