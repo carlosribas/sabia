@@ -5,7 +5,7 @@ END_POINT = 'https://api.mercadopago.com/v1/payments/'
 # TODO: see Bidx1 for defining constants
 FAILURE_STATUS = 'failure'
 PENDING_STATUS = 'pending'
-SUCCESS_STATUS = 'success'
+SUCCESS_STATUS = 'approved'
 
 
 class MercadoPagoAPI:

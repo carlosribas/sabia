@@ -129,19 +129,22 @@ class CourseTestCase(TestCase):
         self.assertEqual(preference['payment_methods']['installments'], 4)
 
     # TODO: for this and others mock mercadopago SDK to get preference
-    def test_course_registration_does_not_generate_mercado_preference_if_not_price(self):
+    def test_course_registration_does_not_generate_mercado_preference_if_not_price(
+            self):
         url = reverse('enroll', args=(self.course_2.pk,))
         response = self.client.get(url)
         preference = response.context.get('preference')
         self.assertIsNone(preference)
 
-    def test_course_registration_does_not_send_mercadopago_public_key_if_not_price(self):
+    def test_course_registration_does_not_send_mercadopago_public_key_if_not_price(
+            self):
         url = reverse('enroll', args=(self.course_2.pk,))
         response = self.client.get(url)
         public_key = response.context.get('public_key')
         self.assertIsNone(public_key)
 
-    def test_course_registration_applies_coupon_generates_preference_with_coupon_back_urls(self):
+    def test_course_registration_applies_coupon_generates_preference_with_coupon_back_urls(
+            self):
         self.course_3.price = 101
         self.course_3.save()
 
@@ -160,31 +163,37 @@ class CourseTestCase(TestCase):
         preference = response.context.get('preference')
         self.assertEqual(
             preference['back_urls']['success'],
-            settings.BASE_URL + reverse('course_paid_coupon_applied', args=(coupon_code.code,)))
+            settings.BASE_URL + reverse('course_paid_coupon_applied',
+                                        args=(coupon_code.code,)))
         self.assertEqual(
             preference['back_urls']['failure'],
-            settings.BASE_URL + reverse('course_paid_coupon_applied', args=(coupon_code.code,)))
+            settings.BASE_URL + reverse('course_paid_coupon_applied',
+                                        args=(coupon_code.code,)))
         self.assertEqual(
             preference['back_urls']['pending'],
-            settings.BASE_URL + reverse('course_paid_coupon_applied', args=(coupon_code.code,)))
+            settings.BASE_URL + reverse('course_paid_coupon_applied',
+                                        args=(coupon_code.code,)))
 
     def test_course_registration_pre_booking(self):
         self.data = {
             'content': self.course_1.pk,
             'action': 'pre-booking',
         }
-        response = self.client.post(reverse("enroll", args=(self.course_1.pk,)), self.data)
+        response = self.client.post(reverse("enroll", args=(self.course_1.pk,)),
+                                    self.data)
         message = list(get_messages(response.wsgi_request))
         self.assertEqual(len(message), 1)
         self.assertEqual(str(message[0]), 'Pre-booking successful')
 
     def test_course_registration_pre_booking_unsubscribe(self):
-        CourseUser.objects.create(course=self.course_1, user=self.user, status='pre-booking')
+        CourseUser.objects.create(course=self.course_1, user=self.user,
+                                  status='pre-booking')
         self.data = {
             'content': self.course_1.pk,
             'action': 'pre-booking-unsubscribe',
         }
-        response = self.client.post(reverse("enroll", args=(self.course_1.pk,)), self.data)
+        response = self.client.post(reverse("enroll", args=(self.course_1.pk,)),
+                                    self.data)
         message = list(get_messages(response.wsgi_request))
         self.assertEqual(len(message), 1)
         self.assertEqual(str(message[0]), 'Pre-booking canceled successfully')
@@ -194,7 +203,8 @@ class CourseTestCase(TestCase):
             'content': self.course_2.pk,
             'action': 'enroll',
         }
-        response = self.client.post(reverse("enroll", args=(self.course_1.pk,)), self.data)
+        response = self.client.post(reverse("enroll", args=(self.course_1.pk,)),
+                                    self.data)
         self.assertEqual(response.status_code, 302)
 
     def test_course_registration_enroll_failed(self):
@@ -202,10 +212,12 @@ class CourseTestCase(TestCase):
             'content': self.course_1.pk,
             'action': 'enroll',
         }
-        response = self.client.post(reverse("enroll", args=(self.course_1.pk,)), self.data)
+        response = self.client.post(reverse("enroll", args=(self.course_1.pk,)),
+                                    self.data)
         message = list(get_messages(response.wsgi_request))
         self.assertEqual(len(message), 1)
-        self.assertEqual(str(message[0]), 'Sorry, there are no more vacancies for this course')
+        self.assertEqual(str(message[0]),
+                         'Sorry, there are no more vacancies for this course')
 
     def test_course_registration_unsubscribe(self):
         CourseUser.objects.create(course=self.course_1, user=self.user, status='enroll')
@@ -213,14 +225,16 @@ class CourseTestCase(TestCase):
             'content': self.course_1.pk,
             'action': 'unsubscribe',
         }
-        response = self.client.post(reverse("enroll", args=(self.course_1.pk,)), self.data)
+        response = self.client.post(reverse("enroll", args=(self.course_1.pk,)),
+                                    self.data)
         message = list(get_messages(response.wsgi_request))
         self.assertEqual(len(message), 1)
         self.assertEqual(str(message[0]), 'Unsubscribe successfully')
 
     def test_course_user_coupon_not_found(self):
         self.data = {'content': self.course_3.pk, 'action': 'code', 'code': 'foo'}
-        response = self.client.post(reverse("enroll", args=(self.course_3.pk,)), self.data)
+        response = self.client.post(reverse("enroll", args=(self.course_3.pk,)),
+                                    self.data)
         message = list(get_messages(response.wsgi_request))
         self.assertEqual(str(message[0]), 'Coupon not found')
 
@@ -240,7 +254,8 @@ class CourseTestCase(TestCase):
             valid_to=datetime.datetime.now() + datetime.timedelta(days=1)
         )
         self.data = {'content': self.course_3.pk, 'action': 'code', 'code': 'test'}
-        response = self.client.post(reverse("enroll", args=(self.course_3.pk,)), self.data)
+        response = self.client.post(reverse("enroll", args=(self.course_3.pk,)),
+                                    self.data)
         message = list(get_messages(response.wsgi_request))
         self.assertEqual(str(message[0]), 'Coupon not found')
 
@@ -254,7 +269,8 @@ class CourseTestCase(TestCase):
             valid_to=datetime.datetime.now() + datetime.timedelta(days=1)
         )
         self.data = {'content': self.course_3.pk, 'action': 'code', 'code': 'test'}
-        response = self.client.post(reverse("enroll", args=(self.course_3.pk,)), self.data)
+        response = self.client.post(reverse("enroll", args=(self.course_3.pk,)),
+                                    self.data)
         self.assertEqual(response.context[0]['price'], 90.00)
         self.assertEqual(response.context[0]['price1x'], 85.50)
         self.assertEqual(response.context[0]['price2x'], 45.00)
@@ -271,9 +287,11 @@ class CourseTestCase(TestCase):
             valid_to=datetime.datetime.now() + datetime.timedelta(days=1)
         )
         self.data = {'content': self.course_3.pk, 'action': 'code', 'code': 'test'}
-        response = self.client.post(reverse("enroll", args=(self.course_3.pk,)), self.data)
+        response = self.client.post(reverse("enroll", args=(self.course_3.pk,)),
+                                    self.data)
         message = list(get_messages(response.wsgi_request))
-        self.assertEqual(str(message[0]), 'Coupon applied successfully. This course is now free!')
+        self.assertEqual(str(message[0]),
+                         'Coupon applied successfully. This course is now free!')
 
     def test_course_user_coupon_invalid_date(self):
         CourseUserCoupon.objects.create(
@@ -285,7 +303,8 @@ class CourseTestCase(TestCase):
             valid_to=datetime.datetime.now() - datetime.timedelta(days=1)
         )
         self.data = {'content': self.course_3.pk, 'action': 'code', 'code': 'test'}
-        response = self.client.post(reverse("enroll", args=(self.course_3.pk,)), self.data)
+        response = self.client.post(reverse("enroll", args=(self.course_3.pk,)),
+                                    self.data)
         message = list(get_messages(response.wsgi_request))
         self.assertEqual(str(message[0]), 'Coupon not found')
 
@@ -316,8 +335,6 @@ class CoursePaymentTestCase(TestCase):
             password=USER_PWD,
             academic_background=VET
         )
-        # self.user.is_staff = True
-        # self.user.save()
 
         logged = self.client.login(username=USER_USERNAME, password=USER_PWD)
         self.assertEqual(logged, True)
@@ -330,11 +347,6 @@ class CoursePaymentTestCase(TestCase):
             vacancies=5,
             price=100,
         )
-
-    def test_payment_complete_with_cupon_url_resolves_payment_complete_view(
-            self, mock_api_get_payment_data):
-        view = resolve('/cursos/finalizado/coupon/A123')
-        self.assertEqual(view.func, payment_complete)
 
     def test_finish_mercadopago_payment_redirects_to_course_page(
             self, mock_api_get_payment_data):
@@ -394,7 +406,7 @@ class CoursePaymentTestCase(TestCase):
         self.assertEqual(course_user.payment_id, '123')
         self.assertEqual(course_user.payment_status, SUCCESS_STATUS)
         self.assertEqual(course_user.user, self.user)
-    
+
     def test_mercadopago_payment_pending_status_redirects_to_course_page_with_message(
             self, mock_api_get_payment_data):
         mock_api_get_payment_data.return_value.json.return_value = \
@@ -406,6 +418,32 @@ class CoursePaymentTestCase(TestCase):
         message = list(get_messages(response.wsgi_request))
         self.assertEqual(len(message), 1)
         self.assertEqual(str(message[0]), 'Waiting for payment confirmation')
+
+    def test_payment_complete_with_coupon_url_resolves_payment_complete_view(
+            self, mock_api_get_payment_data):
+        view = resolve('/cursos/finalizado/coupon/A123')
+        self.assertEqual(view.func, payment_complete)
+
+    def test_mercadopago_payment_success_with_coupon_url_creates_course_object_with_coupon_code(
+            self, mock_api_get_payment_data):
+        mock_api_get_payment_data.return_value.json.return_value = \
+            self.mercadopago_api_get_payment_mock(SUCCESS_STATUS)
+        coupon_code = CourseUserCoupon.objects.create(
+            course=self.course,
+            user=self.user,
+            code='A123',
+            discount=10,
+            valid_from=datetime.datetime.now(),
+            valid_to=datetime.datetime.now() + datetime.timedelta(days=1)
+        )
+
+        # Other parameters can be ommited
+        url = reverse('course_paid_coupon_applied', args=(coupon_code.code,)) \
+            + '?payment_id=123&status=' + SUCCESS_STATUS
+        self.client.get(url, follow=True)
+
+        course_user = CourseUser.objects.first()
+        self.assertEqual(course_user.coupon_used, coupon_code.code)
 
     def mercadopago_api_get_payment_mock(self, status):
         # Real mercadopago response have several other fields that are ommited here

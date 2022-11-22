@@ -215,7 +215,7 @@ def course_registration(request, course_id, template_name="base/course_registrat
 
 
 @login_required
-def payment_complete(request):
+def payment_complete(request, coupon_code=''):
     # TODO: guarantee that requests is only from mercadopago
 
     payment_status = request.GET.get('status')
@@ -234,6 +234,7 @@ def payment_complete(request):
             status=ENROLL,
             payment_id=payment_id,
             payment_status=SUCCESS_STATUS,
+            coupon_used=coupon_code
         )
         messages.success(request, _('Payment Successful'))
     if payment_status == PENDING_STATUS:
@@ -243,6 +244,7 @@ def payment_complete(request):
             status=ENROLL,
             payment_id=payment_id,
             payment_status=PENDING_STATUS,
+            coupon_used=coupon_code
         )
         messages.warning(request, _('Waiting for payment confirmation'))
 
