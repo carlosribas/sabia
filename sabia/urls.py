@@ -21,6 +21,8 @@ urlpatterns = [
     path('cursos', course_list, name='cursos'),
     path('cursos/<int:course_id>', course_registration, name='enroll'),
     path('cursos/finalizado', payment_complete, name='course_paid'),
+    path('cursos/finalizado/coupon/<str:coupon_code>', payment_complete,
+         name='course_paid_coupon_applied'),
     path('cursos/meus-cursos', my_course, name='my_course'),
     re_path(r'^media/cursos', cursos_xsendfile, name='cursos_xsendfile'),
     path('material', material, name='material'),

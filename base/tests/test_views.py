@@ -9,7 +9,8 @@ from django.urls import reverse, resolve
 from base.mercado_pago_api import FAILURE_STATUS, SUCCESS_STATUS, PENDING_STATUS
 from userauth.models import CustomUser, VET
 from base.models import Course, CourseUser, CourseUserCoupon
-from base.views import course_list, course_registration, material, my_course
+from base.views import course_list, course_registration, material, my_course, \
+    payment_complete
 
 USER_USERNAME = 'user'
 USER_PWD = 'mypassword'
@@ -127,6 +128,7 @@ class CourseTestCase(TestCase):
         self.assertEqual(preference['items'][0]['unit_price'], 95.95)
         self.assertEqual(preference['payment_methods']['installments'], 4)
 
+    # TODO: for this and others mock mercadopago SDK to get preference
     def test_course_registration_does_not_generate_mercado_preference_if_not_price(self):
         url = reverse('enroll', args=(self.course_2.pk,))
         response = self.client.get(url)
@@ -138,6 +140,33 @@ class CourseTestCase(TestCase):
         response = self.client.get(url)
         public_key = response.context.get('public_key')
         self.assertIsNone(public_key)
+
+    def test_course_registration_applies_coupon_generates_preference_with_coupon_back_urls(self):
+        self.course_3.price = 101
+        self.course_3.save()
+
+        coupon_code = CourseUserCoupon.objects.create(
+            course=self.course_3,
+            user=self.user,
+            code='test',
+            discount=10,
+            valid_from=datetime.datetime.now(),
+            valid_to=datetime.datetime.now() + datetime.timedelta(days=1)
+        )
+
+        data = {'content': self.course_3.pk, 'action': 'code', 'code': coupon_code.code}
+        url = reverse('enroll', args=(self.course_3.pk,))
+        response = self.client.post(url, data)
+        preference = response.context.get('preference')
+        self.assertEqual(
+            preference['back_urls']['success'],
+            settings.BASE_URL + reverse('course_paid_coupon_applied', args=(coupon_code.code,)))
+        self.assertEqual(
+            preference['back_urls']['failure'],
+            settings.BASE_URL + reverse('course_paid_coupon_applied', args=(coupon_code.code,)))
+        self.assertEqual(
+            preference['back_urls']['pending'],
+            settings.BASE_URL + reverse('course_paid_coupon_applied', args=(coupon_code.code,)))
 
     def test_course_registration_pre_booking(self):
         self.data = {
@@ -301,6 +330,11 @@ class CoursePaymentTestCase(TestCase):
             vacancies=5,
             price=100,
         )
+
+    def test_payment_complete_with_cupon_url_resolves_payment_complete_view(
+            self, mock_api_get_payment_data):
+        view = resolve('/cursos/finalizado/coupon/A123')
+        self.assertEqual(view.func, payment_complete)
 
     def test_finish_mercadopago_payment_redirects_to_course_page(
             self, mock_api_get_payment_data):

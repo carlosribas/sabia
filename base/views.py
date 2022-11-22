@@ -166,6 +166,16 @@ def course_registration(request, course_id, template_name="base/course_registrat
                 price2x = (price / 2).quantize(Dec('.01'))
                 price3x = (price / 3).quantize(Dec('.01'))
                 price4x = (price / 4).quantize(Dec('.01'))
+
+                mercadopago = MercadoPago()
+                config = {
+                    'id': course_id, 'title': str(course), 'unit_price': float(price1x),
+                    'installments': installments
+                }
+                preference = mercadopago.get_preference(config, code)
+                preference_response = preference['response']
+                public_key = settings.MERCADO_PAGO_PUBLIC_KEY
+
                 context = {
                     'course': course,
                     'enrolled': enrolled,
@@ -175,7 +185,8 @@ def course_registration(request, course_id, template_name="base/course_registrat
                     'price2x': price2x,
                     'price3x': price3x,
                     'price4x': price4x,
-                    'coupon': code
+                    'preference': preference_response,
+                    'public_key': public_key
                 }
                 messages.success(request, _('Coupon applied successfully'))
                 return render(request, template_name, context)
@@ -240,6 +251,7 @@ def payment_complete(request):
         course.save()
 
     return redirect('enroll', course_id)
+
 
     # body = json.loads(request.body)
     # course = get_object_or_404(Course, pk=body['courseId'])
