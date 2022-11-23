@@ -1,6 +1,9 @@
 import datetime
+import json
 
 from decimal import Decimal as Dec, ROUND_HALF_UP
+from http import HTTPStatus
+
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -22,6 +25,7 @@ from base.models import Course, CourseUser, CourseUserCoupon, CourseUserIntervie
     CourseMaterialDocument, CourseMaterialVideo, ENROLL, PRE_BOOKING
 from base.mercado_pago_api import MercadoPagoAPI, FAILURE_STATUS, SUCCESS_STATUS, \
     PENDING_STATUS
+from sabia.settings.local import MERCADO_PAGO_WEBHOOK_TOKEN
 from userauth.models import CustomUser
 
 
@@ -78,6 +82,8 @@ def course_registration(request, course_id, template_name="base/course_registrat
             'id': course_id, 'title': str(course), 'unit_price': float(price1x),
             'installments': installments
         }
+        # TODO: try getting preference for more than once. If can't send warning to
+        #  admin
         preference = mercadopago.get_preference(config)
         preference_response = preference['response']
         public_key = settings.MERCADO_PAGO_PUBLIC_KEY
@@ -285,6 +291,25 @@ def payment_complete(request, coupon_code=''):
     #     response = {'message': _("Waiting for payment confirmation")}
     #
     # return JsonResponse(response)
+
+def mercado_pago_webhook(request, token):
+    # TODO: does not allow GET requests
+
+    if token != MERCADO_PAGO_WEBHOOK_TOKEN:
+        response = render(request, '404.html', {})
+        response.status_code = HTTPStatus.NOT_FOUND
+        return response
+
+    body = json.loads(request.body)
+    payment_id = body['data']['id']
+    # TODO: treat errors getting payment_id
+    course_user = CourseUser.objects.filter(payment_id=payment_id)
+    if not course_user and body['action'] == 'payment.updated':
+        # TODO: unify string format; see other places
+        return HttpResponse('Warning: payment {} was not created'.format(payment_id),
+                            status=HTTPStatus.OK)
+
+    return HttpResponse('OK', status=HTTPStatus.OK)
 
 
 @login_required
