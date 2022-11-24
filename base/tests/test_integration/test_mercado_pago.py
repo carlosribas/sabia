@@ -5,16 +5,26 @@ from django.test import TestCase
 from django.urls import reverse
 
 from base.mercado_pago import MercadoPago
+from base.tests.test_views import USER_USERNAME, USER_EMAIL, USER_PWD
+from userauth.models import CustomUser, VET
 
 
 class TestMercadoPago(TestCase):
 
     def setUp(self):
+        self.user = CustomUser.objects.create_user(
+            username=USER_USERNAME,
+            email=USER_EMAIL,
+            password=USER_PWD,
+            academic_background=VET
+        )
+        self.client.login(username=USER_USERNAME, password=USER_PWD)
+
         self.mercadopago = MercadoPago()
         self.course_id = 3
         self.config = {
             'id': self.course_id, 'title': 'Example Course',
-            'unit_price': 100, 'installments': 1
+            'unit_price': 100, 'installments': 1, 'payer_email': self.user.email
         }
 
     def test_mercadopago_creates_preference(self):
@@ -32,6 +42,8 @@ class TestMercadoPago(TestCase):
         self.assertEqual(preference['response']['items'][0]['unit_price'], 100)
         self.assertEqual(
             preference['response']['payment_methods']['installments'], 1)
+        self.assertEqual(preference['response']['payer']['email'],
+                         self.config['payer_email'])
 
     def test_mercadopago_generates_right_preference_back_urls(self):
         preference = self.mercadopago.get_preference(self.config)

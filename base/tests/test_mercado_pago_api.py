@@ -90,7 +90,7 @@ def api_get_payment_mock():
             "payer": {
                 "first_name": None,
                 "last_name": None,
-                "email": "test_user_80507629@testuser.com",
+                "email": "user@example.com",
                 "identification": {
                     "number": "32659430",
                     "type": "DNI"
@@ -144,17 +144,32 @@ def api_get_payment_mock():
         }
 
 
+@patch('base.mercado_pago_api.requests.get')
 class TestMercadoPagoAPI(TestCase):
+    def setUp(self):
+        self.mercadopago_api = MercadoPagoAPI(payment_id='123')
 
-    @patch('base.mercado_pago_api.requests.get')
     def test_get_payment_data(self, mock_api_get_payment_data):
-        mercadopago_api = MercadoPagoAPI(payment_id='123')
         mock_api_get_payment_data.return_value.json.return_value = api_get_payment_mock()
-        self.assertEqual(mercadopago_api.get_payment_data(),
+        self.assertEqual(self.mercadopago_api.get_payment_data(),
                          api_get_payment_mock())
 
-    @patch('base.mercado_pago_api.requests.get')
-    def test_get_course_id_data(self, mock_api_get_payment_data):
-        mercadopago_api = MercadoPagoAPI(payment_id='123')
+    def test_get_course_id(self, mock_api_get_payment_data):
         mock_api_get_payment_data.return_value.json.return_value = api_get_payment_mock()
-        self.assertEqual(mercadopago_api.get_course_id(), '123')
+        self.mercadopago_api.get_payment_data()
+        self.assertEqual(self.mercadopago_api.get_course_id(), '123')
+
+    def test_get_payment_id(self, mock_api_get_payment_data):
+        mock_api_get_payment_data.return_value.json.return_value = api_get_payment_mock()
+        self.mercadopago_api.get_payment_data()
+        self.assertEqual(self.mercadopago_api.get_payment_id(), 1310422398)
+
+    def test_get_payer_email(self, mock_api_get_payment_data):
+        mock_api_get_payment_data.return_value.json.return_value = api_get_payment_mock()
+        self.mercadopago_api.get_payment_data()
+        self.assertEqual(self.mercadopago_api.get_payer_email(), 'user@example.com')
+
+    def test_get_payment_status(self, mock_api_get_payment_data):
+        mock_api_get_payment_data.return_value.json.return_value = api_get_payment_mock()
+        self.mercadopago_api.get_payment_data()
+        self.assertEqual(self.mercadopago_api.get_payment_status(), 'approved')

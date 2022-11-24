@@ -9,9 +9,10 @@ from django.test import TestCase
 from django.urls import reverse, resolve
 
 from base.mercado_pago_api import FAILURE_STATUS, SUCCESS_STATUS, PENDING_STATUS
+from base.tests.test_mercado_pago_api import api_get_payment_mock
 from sabia.settings.local import MERCADO_PAGO_WEBHOOK_TOKEN
 from userauth.models import CustomUser, VET
-from base.models import Course, CourseUser, CourseUserCoupon
+from base.models import Course, CourseUser, CourseUserCoupon, ENROLL
 from base.views import course_list, course_registration, material, my_course, \
     payment_complete, mercado_pago_webhook
 
@@ -112,6 +113,7 @@ class CourseTestCase(TestCase):
         self.assertEqual(preference['items'][0]['title'], 'course 03')
         self.assertEqual(preference['items'][0]['unit_price'], 100)
         self.assertEqual(preference['payment_methods']['installments'], 1)
+        self.assertEqual(preference['payer']['email'], self.user.email)
 
     def test_course_registration_sends_mercadopago_public_key(self):
         url = reverse('enroll', args=(self.course_3.pk,))
@@ -472,6 +474,7 @@ class CoursePaymentTestCase(TestCase):
         }
 
 
+@patch('base.mercado_pago_api.requests.get')
 class MercadoPagoWebookTestCase(TestCase):
     def setUp(self):
         self.user = CustomUser.objects.create_user(
@@ -480,7 +483,6 @@ class MercadoPagoWebookTestCase(TestCase):
             password=USER_PWD,
             academic_background=VET
         )
-
         logged = self.client.login(username=USER_USERNAME, password=USER_PWD)
         self.assertEqual(logged, True)
 
@@ -493,22 +495,27 @@ class MercadoPagoWebookTestCase(TestCase):
             price=150,
         )
 
-    def test_webhook_url_resolves_webhook_view(self):
+        self.payment_mock = api_get_payment_mock()
+        self.payment_mock['payer']['email'] = self.user.email
+        self.payment_mock['additional_info']['items'][0]['id'] = self.course.id
+
+    def test_webhook_url_resolves_webhook_view(self, mock_api_get_payment_data):
         view = resolve('/mercadopago_webhook/' + MERCADO_PAGO_WEBHOOK_TOKEN)
         self.assertEquals(view.func, mercado_pago_webhook)
 
-    def test_webhook_url_incorrect_token_returns_404(self):
+    def test_webhook_url_incorrect_token_returns_404(self, mock_api_get_payment_data):
         response = self.client.post(
             reverse(mercado_pago_webhook, args=('FAKE_TOKEN',)),
             data=json.dumps({'a': 1}), content_type='application/json')
         self.assertEqual(response.status_code, HTTPStatus.NOT_FOUND)
 
-    def test_webhook_url_right_token_returns_200(self):
+    def test_webhook_url_right_token_returns_200(self, mock_api_get_payment_data):
+        mock_api_get_payment_data.return_value.json.return_value = self.payment_mock
         data = {
             'action': 'payment.created',
             'api_version': 'v1',
             'data': {
-                'id': '1310864353'
+                'id': str(self.payment_mock['id'])
             },
             'date_created': '2022-11-16T19:49:05Z',
             'id': 103945298430,
@@ -521,12 +528,14 @@ class MercadoPagoWebookTestCase(TestCase):
             data=json.dumps(data), content_type='application/json')
         self.assertEqual(response.status_code, HTTPStatus.OK)
 
-    def test_webhook_url_doesnt_find_payment_data_and_status_is_updated_returns_200(self):
+    def test_webhook_url_doesnt_find_payment_data_and_status_is_updated_returns_200(
+            self, mock_api_get_payment_data):
+        mock_api_get_payment_data.return_value.json.return_value = self.payment_mock
         data = {
             'action': 'payment.updated',
             'api_version': 'v1',
             'data': {
-                'id': '1310864353'
+                'id': str(self.payment_mock['id'])
             },
             'date_created': '2022-11-16T19:49:05Z',
             'id': 103945298430,
@@ -540,12 +549,41 @@ class MercadoPagoWebookTestCase(TestCase):
                                     content_type='application/json')
         self.assertEqual(response.status_code, HTTPStatus.OK)
 
-    def test_webhook_url_doesnt_find_payment_data_and_status_is_updated_send_email(self):
+    def test_webhook_url_doesnt_find_payment_data_and_status_is_updated_send_email(
+            self, mock_api_get_payment_data):
         # TODO
         ...
 
-    def test_payment_updated_to_success_after_payment_pending_updates_payment_status(self):
-        response = self.client.post(reverse(mercado_pago_webhook,
-                                            args=(MERCADO_PAGO_WEBHOOK_TOKEN,)))
+    def test_webhook_url_payment_created_and_approved_create_course_user(
+            self, mock_api_get_payment_data):
+        self.payment_mock['additional_info']['items'][0]['id'] = self.course.id
+        self.payment_mock['payer']['email'] = self.user.email
+        mock_api_get_payment_data.return_value.json.return_value = self.payment_mock
+        data = {
+            'action': 'payment.created',
+            'api_version': 'v1',
+            'data': {
+                'id': str(self.payment_mock['id'])
+            },
+            'date_created': '2022-11-16T19:49:05Z',
+            'id': 103945298430,
+            'live_mode': False,
+            'type': 'payment',
+            'user_id': '269058111'
+        }
+        self.client.post(reverse(mercado_pago_webhook,
+                                 args=(MERCADO_PAGO_WEBHOOK_TOKEN,)),
+                         data=json.dumps(data),
+                         content_type='application/json')
+        course_user = CourseUser.objects.first()
+        self.assertEqual(course_user.status, ENROLL)
+        self.assertEqual(course_user.user, self.user)
+        self.assertEqual(course_user.payment_id, data['data']['id'])
+        self.assertEqual(course_user.payment_status, SUCCESS_STATUS)
+
+    def test_payment_updated_to_success_after_payment_pending_updates_payment_status(
+            self, mock_api_get_payment_data):
+        ...
+
 
 

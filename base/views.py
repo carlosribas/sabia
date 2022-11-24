@@ -80,7 +80,7 @@ def course_registration(request, course_id, template_name="base/course_registrat
         mercadopago = MercadoPago()
         config = {
             'id': course_id, 'title': str(course), 'unit_price': float(price1x),
-            'installments': installments
+            'installments': installments, 'payer_email': request.user.email
         }
         # TODO: try getting preference for more than once. If can't send warning to
         #  admin
@@ -176,7 +176,7 @@ def course_registration(request, course_id, template_name="base/course_registrat
                 mercadopago = MercadoPago()
                 config = {
                     'id': course_id, 'title': str(course), 'unit_price': float(price1x),
-                    'installments': installments
+                    'installments': installments, 'payer_email': request.user.email
                 }
                 preference = mercadopago.get_preference(config, code)
                 preference_response = preference['response']
@@ -228,6 +228,7 @@ def payment_complete(request, coupon_code=''):
     payment_id = request.GET.get('payment_id')
     # TODO: treat errors
     mercadopago_api = MercadoPagoAPI(payment_id)
+    mercadopago_api.get_payment_data()
     course_id = mercadopago_api.get_course_id()
     course = get_object_or_404(Course, pk=int(course_id))
 
@@ -304,10 +305,30 @@ def mercado_pago_webhook(request, token):
     payment_id = body['data']['id']
     # TODO: treat errors getting payment_id
     course_user = CourseUser.objects.filter(payment_id=payment_id)
+
     if not course_user and body['action'] == 'payment.updated':
         # TODO: unify string format; see other places
         return HttpResponse('Warning: payment {} was not created'.format(payment_id),
                             status=HTTPStatus.OK)
+
+    mercadopago_api = MercadoPagoAPI(payment_id)
+    mercadopago_api.get_payment_data()
+    course_id = mercadopago_api.get_course_id()
+    course = get_object_or_404(Course, pk=int(course_id))
+
+    payment_id = mercadopago_api.get_payment_id()
+    payer_email = mercadopago_api.get_payer_email()
+    user = get_object_or_404(CustomUser, email=payer_email)
+    payment_status = mercadopago_api.get_payment_status()
+
+    if payment_status == SUCCESS_STATUS:
+        CourseUser.objects.create(
+            course=course,
+            user=user,
+            status=ENROLL,
+            payment_id=payment_id,
+            payment_status=SUCCESS_STATUS,
+        )
 
     return HttpResponse('OK', status=HTTPStatus.OK)
 
