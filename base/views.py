@@ -239,43 +239,8 @@ def payment_complete(request):
     if payment_status == PENDING_STATUS:
         messages.warning(request, _('Waiting for payment confirmation'))
 
-    # if payment_status == SUCCESS_STATUS or payment_status == PENDING_STATUS:
-    #     course.registered += 1
-    #     course.save()
-
     return redirect('enroll', course_id)
 
-
-    # body = json.loads(request.body)
-    # course = get_object_or_404(Course, pk=body['courseId'])
-    #
-    # # Increase the number of registered students
-    # course.registered = course.registered + 1 if course.registered else 1
-    # course.save()
-    #
-    # # Check if the amount paid is correct
-    # payment_note = ''
-    # if str(course.price) != body['price']:
-    #     payment_note = 'Valor total incorreto'
-    #
-    # # Create course/user object with payment information
-    # course_user = CourseUser(
-    #     course=course,
-    #     user=request.user,
-    #     status=ENROLL,
-    #     payment_id=body['paymentId'],
-    #     payment_status=body['paymentStatus'],
-    #     payment_note=payment_note,
-    #     coupon_used=body['couponUsed']
-    # )
-    # course_user.save()
-    #
-    # if body['paymentStatus'] == 'COMPLETED':
-    #     response = {'message': _("Payment successful")}
-    # else:
-    #     response = {'message': _("Waiting for payment confirmation")}
-    #
-    # return JsonResponse(response)
 
 def mercado_pago_webhook(request, token):
     # TODO: does not allow GET requests
