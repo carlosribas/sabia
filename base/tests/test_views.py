@@ -520,6 +520,21 @@ class CoursePaymentTestCase(TestCase):
         }
 
 
+def webhook_data_mock(payment_status, payment_id):
+    return {
+        'action': payment_status,
+        'api_version': 'v1',
+        'data': {
+            'id': str(payment_id)
+        },
+        'date_created': '2022-11-16T19:49:05Z',
+        'id': 103945298430,
+        'live_mode': False,
+        'type': 'payment',
+        'user_id': '269058111'
+    }
+
+
 @patch('base.mercado_pago_api.requests.get')
 class MercadoPagoWebookTestCase(TestCase):
     def setUp(self):
@@ -557,18 +572,8 @@ class MercadoPagoWebookTestCase(TestCase):
 
     def test_webhook_url_right_token_returns_200(self, mock_api_get_payment_data):
         mock_api_get_payment_data.return_value.json.return_value = self.payment_mock
-        data = {
-            'action': 'payment.created',
-            'api_version': 'v1',
-            'data': {
-                'id': str(self.payment_mock['id'])
-            },
-            'date_created': '2022-11-16T19:49:05Z',
-            'id': 103945298430,
-            'live_mode': False,
-            'type': 'payment',
-            'user_id': '269058111'
-        }
+        data = webhook_data_mock('payment.created', str(self.payment_mock['id']))
+
         response = self.client.post(
             reverse(mercado_pago_webhook, args=(MERCADO_PAGO_WEBHOOK_TOKEN,)),
             data=json.dumps(data), content_type='application/json')
@@ -577,18 +582,8 @@ class MercadoPagoWebookTestCase(TestCase):
     def test_webhook_url_doesnt_find_payment_data_and_status_is_updated_returns_200(
             self, mock_api_get_payment_data):
         mock_api_get_payment_data.return_value.json.return_value = self.payment_mock
-        data = {
-            'action': 'payment.updated',
-            'api_version': 'v1',
-            'data': {
-                'id': str(self.payment_mock['id'])
-            },
-            'date_created': '2022-11-16T19:49:05Z',
-            'id': 103945298430,
-            'live_mode': False,
-            'type': 'payment',
-            'user_id': '269058111'
-        }
+        data = webhook_data_mock('payment.updated', self.payment_mock['id'])
+
         response = self.client.post(reverse(mercado_pago_webhook,
                                             args=(MERCADO_PAGO_WEBHOOK_TOKEN,)),
                                     data=json.dumps(data),
@@ -602,21 +597,9 @@ class MercadoPagoWebookTestCase(TestCase):
 
     def test_webhook_url_payment_created_and_approved_create_course_user(
             self, mock_api_get_payment_data):
-        self.payment_mock['additional_info']['items'][0]['id'] = self.course.id
-        self.payment_mock['payer']['email'] = self.user.email
         mock_api_get_payment_data.return_value.json.return_value = self.payment_mock
-        data = {
-            'action': 'payment.created',
-            'api_version': 'v1',
-            'data': {
-                'id': str(self.payment_mock['id'])
-            },
-            'date_created': '2022-11-16T19:49:05Z',
-            'id': 103945298430,
-            'live_mode': False,
-            'type': 'payment',
-            'user_id': '269058111'
-        }
+        data = webhook_data_mock('payment.created', self.payment_mock['id'])
+
         self.client.post(reverse(mercado_pago_webhook,
                                  args=(MERCADO_PAGO_WEBHOOK_TOKEN,)),
                          data=json.dumps(data),
@@ -629,21 +612,42 @@ class MercadoPagoWebookTestCase(TestCase):
 
     def test_webhook_url_payment_created_and_approved_increments_registered_students(
             self, mock_api_get_payment_data):
-        self.payment_mock['additional_info']['items'][0]['id'] = self.course.id
-        self.payment_mock['payer']['email'] = self.user.email
         mock_api_get_payment_data.return_value.json.return_value = self.payment_mock
-        data = {
-            'action': 'payment.created',
-            'api_version': 'v1',
-            'data': {
-                'id': str(self.payment_mock['id'])
-            },
-            'date_created': '2022-11-16T19:49:05Z',
-            'id': 103945298430,
-            'live_mode': False,
-            'type': 'payment',
-            'user_id': '269058111'
-        }
+        data = webhook_data_mock('payment.created', self.payment_mock['id'])
+
+        self.client.post(reverse(mercado_pago_webhook,
+                                 args=(MERCADO_PAGO_WEBHOOK_TOKEN,)),
+                         data=json.dumps(data),
+                         content_type='application/json')
+        course_updated = Course.objects.first()
+        self.assertEqual(course_updated.registered, self.course.registered + 1)
+
+    def test_webhook_url_payment_created_and_pending_create_course_user(
+            self, mock_api_get_payment_data):
+        # TODO: see Bidx1 to join this test with
+        #  test_webhook_url_payment_created_and_approved_create_course_user
+        self.payment_mock['status'] = PENDING_STATUS
+        mock_api_get_payment_data.return_value.json.return_value = self.payment_mock
+        data = webhook_data_mock('payment.created', self.payment_mock['id'])
+
+        self.client.post(reverse(mercado_pago_webhook,
+                                 args=(MERCADO_PAGO_WEBHOOK_TOKEN,)),
+                         data=json.dumps(data),
+                         content_type='application/json')
+        course_user = CourseUser.objects.first()
+        self.assertEqual(course_user.status, ENROLL)
+        self.assertEqual(course_user.user, self.user)
+        self.assertEqual(course_user.payment_id, data['data']['id'])
+        self.assertEqual(course_user.payment_status, PENDING_STATUS)
+
+    def test_webhook_url_payment_created_and_pending_increments_registered_students(
+            self, mock_api_get_payment_data):
+        # TODO: see Bidx1 to join this test with
+        #  test_webhook_url_payment_created_and_approved_increments_registered_students
+        self.payment_mock['status'] = PENDING_STATUS
+        mock_api_get_payment_data.return_value.json.return_value = self.payment_mock
+        data = webhook_data_mock('payment.created', self.payment_mock['id'])
+
         self.client.post(reverse(mercado_pago_webhook,
                                  args=(MERCADO_PAGO_WEBHOOK_TOKEN,)),
                          data=json.dumps(data),
@@ -653,7 +657,25 @@ class MercadoPagoWebookTestCase(TestCase):
 
     def test_payment_updated_to_success_after_payment_pending_updates_payment_status(
             self, mock_api_get_payment_data):
-        ...
+        self.payment_mock['status'] = SUCCESS_STATUS
+        mock_api_get_payment_data.return_value.json.return_value = self.payment_mock
+        data = webhook_data_mock('payment.updated', self.payment_mock['id'])
 
+        user = CustomUser.objects.get(email=self.payment_mock['payer']['email'])
+        CourseUser.objects.create(
+            course=self.course,
+            user=user,
+            status=ENROLL,
+            payment_id=self.payment_mock['id'],
+            payment_status=PENDING_STATUS,
+        )
+        self.client.post(reverse(mercado_pago_webhook,
+                                 args=(MERCADO_PAGO_WEBHOOK_TOKEN,)),
+                         data=json.dumps(data),
+                         content_type='application/json')
 
+        # No other CourseUser object was created
+        self.assertEqual(len(CourseUser.objects.all()), 1)
 
+        course_user = CourseUser.objects.first()
+        self.assertEqual(course_user.payment_status, SUCCESS_STATUS)

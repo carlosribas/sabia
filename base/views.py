@@ -287,34 +287,42 @@ def mercado_pago_webhook(request, token):
 
     body = json.loads(request.body)
     payment_id = body['data']['id']
-    # TODO: treat errors getting payment_id
-    course_user = CourseUser.objects.filter(payment_id=payment_id)
-
-    if not course_user and body['action'] == 'payment.updated':
-        # TODO: unify string format; see other places
-        return HttpResponse('Warning: payment {} was not created'.format(payment_id),
-                            status=HTTPStatus.OK)
-
     mercadopago_api = MercadoPagoAPI(payment_id)
     mercadopago_api.get_payment_data()
     course_id = mercadopago_api.get_course_id()
     course = get_object_or_404(Course, pk=int(course_id))
 
-    payment_id = mercadopago_api.get_payment_id()
     payer_email = mercadopago_api.get_payer_email()
     user = get_object_or_404(CustomUser, email=payer_email)
     payment_status = mercadopago_api.get_payment_status()
 
-    if payment_status == SUCCESS_STATUS:
-        CourseUser.objects.create(
-            course=course,
-            user=user,
-            status=ENROLL,
-            payment_id=payment_id,
-            payment_status=SUCCESS_STATUS,
-        )
-        course.registered += 1
-        course.save(update_fields=['registered'])
+    try:
+        course_user = CourseUser.objects.get(user=user, course=course,
+                                             payment_id=payment_id)
+    except CourseUser.DoesNotExist:
+        course_user = None
+
+    if body['action'] == 'payment.updated':
+        if not course_user:
+            # TODO: unify string format; see other places
+            return HttpResponse('Warning: payment {} was not created'.format(payment_id),
+                                status=HTTPStatus.OK)
+        elif course_user.payment_status == PENDING_STATUS \
+                and payment_status == SUCCESS_STATUS:
+            course_user.payment_status = payment_status
+            course_user.save(update_fields=['payment_status'])
+
+    if body['action'] == 'payment.created':
+        if payment_status == SUCCESS_STATUS or payment_status == PENDING_STATUS:
+            CourseUser.objects.create(
+                course=course,
+                user=user,
+                status=ENROLL,
+                payment_id=payment_id,
+                payment_status=payment_status,
+            )
+            course.registered += 1
+            course.save(update_fields=['registered'])
 
     return HttpResponse('OK', status=HTTPStatus.OK)
 
