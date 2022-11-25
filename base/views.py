@@ -76,21 +76,6 @@ def course_registration(request, course_id, template_name="base/course_registrat
     else:
         interview = None
 
-    if price:
-        mercadopago = MercadoPago()
-        config = {
-            'id': course_id, 'title': str(course), 'unit_price': float(price1x),
-            'installments': installments, 'payer_email': request.user.email
-        }
-        # TODO: try getting preference for more than once. If can't send warning to
-        #  admin
-        preference = mercadopago.get_preference(config)
-        preference_response = preference['response']
-        public_key = settings.MERCADO_PAGO_PUBLIC_KEY
-    else:
-        preference_response = None
-        public_key = None
-
     if request.method == "POST":
         course = get_object_or_404(Course, pk=request.POST['content'])
         user = request.user
@@ -175,7 +160,7 @@ def course_registration(request, course_id, template_name="base/course_registrat
 
                 mercadopago = MercadoPago()
                 config = {
-                    'id': course_id, 'title': str(course), 'unit_price': float(price1x),
+                    'id': course_id, 'title': str(course), 'unit_price': float(price),
                     'installments': installments, 'payer_email': request.user.email
                 }
                 preference = mercadopago.get_preference(config, code)
@@ -204,6 +189,21 @@ def course_registration(request, course_id, template_name="base/course_registrat
         redirect_url = reverse("enroll", args=(course_id,))
         return HttpResponseRedirect(redirect_url)
 
+    if price:
+        mercadopago = MercadoPago()
+        config = {
+            'id': course_id, 'title': str(course), 'unit_price': float(price),
+            'installments': installments, 'payer_email': request.user.email
+        }
+        # TODO: try getting preference for more than once. If can't send warning to
+        #  admin
+        preference = mercadopago.get_preference(config)
+        preference_response = preference['response']
+        public_key = settings.MERCADO_PAGO_PUBLIC_KEY
+    else:
+        preference_response = None
+        public_key = None
+
     context = {
         'course': course,
         'enrolled': enrolled,
@@ -221,7 +221,7 @@ def course_registration(request, course_id, template_name="base/course_registrat
 
 
 @login_required
-def payment_complete(request, coupon_code=''):
+def payment_complete(request):
     # TODO: guarantee that requests is only from mercadopago
 
     payment_status = request.GET.get('status')
@@ -230,34 +230,18 @@ def payment_complete(request, coupon_code=''):
     mercadopago_api = MercadoPagoAPI(payment_id)
     mercadopago_api.get_payment_data()
     course_id = mercadopago_api.get_course_id()
-    course = get_object_or_404(Course, pk=int(course_id))
+    get_object_or_404(Course, pk=int(course_id))
 
     if payment_status == FAILURE_STATUS:
         messages.error(request, _('There was an error with the payment'))
     if payment_status == SUCCESS_STATUS:
-        CourseUser.objects.create(
-            course=course,
-            user=request.user,
-            status=ENROLL,
-            payment_id=payment_id,
-            payment_status=SUCCESS_STATUS,
-            coupon_used=coupon_code
-        )
         messages.success(request, _('Payment Successful'))
     if payment_status == PENDING_STATUS:
-        CourseUser.objects.create(
-            course=course,
-            user=request.user,
-            status=ENROLL,
-            payment_id=payment_id,
-            payment_status=PENDING_STATUS,
-            coupon_used=coupon_code
-        )
         messages.warning(request, _('Waiting for payment confirmation'))
 
-    if payment_status == SUCCESS_STATUS or payment_status == PENDING_STATUS:
-        course.registered += 1
-        course.save()
+    # if payment_status == SUCCESS_STATUS or payment_status == PENDING_STATUS:
+    #     course.registered += 1
+    #     course.save()
 
     return redirect('enroll', course_id)
 

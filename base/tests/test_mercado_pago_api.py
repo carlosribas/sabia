@@ -4,6 +4,8 @@ from django.test import TestCase
 
 from base.mercado_pago_api import MercadoPagoAPI
 
+PAYMENT_ID = 1310422398
+
 
 def api_get_payment_mock():
     return {
@@ -69,7 +71,7 @@ def api_get_payment_mock():
                 }
             ],
             "financing_group": None,
-            "id": 1310422398,
+            "id": PAYMENT_ID,
             "installments": 1,
             "integrator_id": None,
             "issuer_id": "24",

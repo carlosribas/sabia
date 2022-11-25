@@ -22,8 +22,6 @@ urlpatterns = [
     path('cursos', course_list, name='cursos'),
     path('cursos/<int:course_id>', course_registration, name='enroll'),
     path('cursos/finalizado', payment_complete, name='course_paid'),
-    path('cursos/finalizado/coupon/<str:coupon_code>', payment_complete,
-         name='course_paid_coupon_applied'),
     path('mercadopago_webhook/<str:token>', mercado_pago_webhook,
          name='mercado_pago_webhook'),
     path('cursos/meus-cursos', my_course, name='my_course'),

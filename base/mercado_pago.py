@@ -17,13 +17,12 @@ class MercadoPago:
 
     @staticmethod
     def set_preference_data(config, coupon_code=None):
-        back_url = reverse('course_paid') if not coupon_code \
-            else reverse('course_paid_coupon_applied', args=(coupon_code,))
-
+        id_ = str(config['id']) if not coupon_code \
+            else str(config['id']) + ':' + coupon_code
         return {
             'items': [
                 {
-                    'id': config['id'],
+                    'id': id_,
                     'title': config['title'],
                     'quantity': 1,
                     'unit_price': config['unit_price'],
@@ -34,8 +33,8 @@ class MercadoPago:
                 'installments': config['installments']
             },
             'back_urls': {
-                'success': settings.BASE_URL + back_url,
-                'failure': settings.BASE_URL + back_url,
-                'pending': settings.BASE_URL + back_url,
+                'success': settings.BASE_URL + reverse('course_paid'),
+                'failure': settings.BASE_URL + reverse('course_paid'),
+                'pending': settings.BASE_URL + reverse('course_paid'),
             },
         }

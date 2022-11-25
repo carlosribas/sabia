@@ -5,8 +5,94 @@ from django.test import TestCase
 from django.urls import reverse
 
 from base.mercado_pago import MercadoPago
-from base.tests.test_views import USER_USERNAME, USER_EMAIL, USER_PWD
 from userauth.models import CustomUser, VET
+
+USER_USERNAME = 'user'
+USER_PWD = 'mypassword'
+USER_EMAIL = 'user@example.com'
+
+
+def preference_mock():
+    return {
+        "status": 201,
+        "response": {
+            "additional_info": "",
+            "auto_return": "",
+            "back_urls": {
+                "failure": "http://localhost:8000/cursos/finalizado",
+                "pending": "http://localhost:8000/cursos/finalizado",
+                "success": "http://localhost:8000/cursos/finalizado",
+            },
+            "binary_mode": False,
+            "client_id": "6226796596410548",
+            "collector_id": 269058111,
+            "coupon_code": None,
+            "coupon_labels": None,
+            "date_created": "2022-11-24T15:17:26.380-04:00",
+            "date_of_expiration": None,
+            "expiration_date_from": None,
+            "expiration_date_to": None,
+            "expires": False,
+            "external_reference": "",
+            "id": "269058111-c3b7b790-38a7-493a-b43d-151b9b4e9f6a",
+            "init_point": "https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=269058111-c3b7b790-38a7-493a-b43d-151b9b4e9f6a",
+            "internal_metadata": None,
+            "items": [
+                {
+                    "id": "202:test",
+                    "category_id": "",
+                    "currency_id": "BRL",
+                    "description": "",
+                    "title": "course 03",
+                    "quantity": 1,
+                    "unit_price": 86.36,
+                }
+            ],
+            "marketplace": "NONE",
+            "marketplace_fee": 0,
+            "metadata": {},
+            "notification_url": None,
+            "operation_type": "regular_payment",
+            "payer": {
+                "phone": {"area_code": "", "number": ""},
+                "address": {"zip_code": "", "street_name": "", "street_number": None},
+                "email": "user@example.com",
+                "identification": {"number": "", "type": ""},
+                "name": "",
+                "surname": "",
+                "date_created": None,
+                "last_purchase": None,
+            },
+            "payment_methods": {
+                "default_card_id": None,
+                "default_payment_method_id": None,
+                "excluded_payment_methods": [{"id": ""}],
+                "excluded_payment_types": [{"id": ""}],
+                "installments": 4,
+                "default_installments": None,
+            },
+            "processing_modes": None,
+            "product_id": None,
+            "redirect_urls": {"failure": "", "pending": "", "success": ""},
+            "sandbox_init_point": "https://sandbox.mercadopago.com.br/checkout/v1/redirect?pref_id=269058111-c3b7b790-38a7-493a-b43d-151b9b4e9f6a",
+            "site_id": "MLB",
+            "shipments": {
+                "default_shipping_method": None,
+                "receiver_address": {
+                    "zip_code": "",
+                    "street_name": "",
+                    "street_number": None,
+                    "floor": "",
+                    "apartment": "",
+                    "city_name": None,
+                    "state_name": None,
+                    "country_name": None,
+                },
+            },
+            "total_amount": None,
+            "last_updated": None,
+        },
+    }
 
 
 class TestMercadoPago(TestCase):
