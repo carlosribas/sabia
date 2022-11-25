@@ -2,6 +2,8 @@ import datetime
 import json
 
 from decimal import Decimal as Dec, ROUND_HALF_UP
+from http import HTTPStatus
+
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -9,8 +11,8 @@ from django.core import mail
 from django.core.exceptions import PermissionDenied
 from django.core.mail import send_mail, EmailMultiAlternatives
 from django.db.models import Q
-from django.http import HttpResponseRedirect, JsonResponse, HttpResponse, BadHeaderError
-from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponseRedirect, HttpResponse, BadHeaderError
+from django.shortcuts import render, get_object_or_404, redirect
 from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils import timezone
@@ -18,8 +20,12 @@ from django.utils.encoding import smart_str
 from django.utils.translation import ugettext as _
 from itertools import chain
 
+from base.mercado_pago import MercadoPago
 from base.models import Course, CourseUser, CourseUserCoupon, CourseUserInterview, CourseMaterial, \
     CourseMaterialDocument, CourseMaterialVideo, ENROLL, PRE_BOOKING
+from base.mercado_pago_api import MercadoPagoAPI, FAILURE_STATUS, SUCCESS_STATUS, \
+    PENDING_STATUS
+from sabia.settings.local import MERCADO_PAGO_WEBHOOK_TOKEN
 from userauth.models import CustomUser
 
 
@@ -47,16 +53,19 @@ def course_registration(request, course_id, template_name="base/course_registrat
         price2x = None
         price3x = None
         price4x = None
+        installments = 1
     elif price and price > 100:
         price1x = course.price - (course.price * Dec('.05')).quantize(Dec('.01'), rounding=ROUND_HALF_UP)
         price2x = (price / 2).quantize(Dec('.01'))
         price3x = (price / 3).quantize(Dec('.01'))
         price4x = (price / 4).quantize(Dec('.01'))
+        installments = 4
     else:
         price1x = None
         price2x = None
         price3x = None
         price4x = None
+        installments = None
 
     # Check if the user is enrolled in the course
     enrolled = CourseUser.objects.filter(course=course.id, user=request.user.id).first()
@@ -148,6 +157,16 @@ def course_registration(request, course_id, template_name="base/course_registrat
                 price2x = (price / 2).quantize(Dec('.01'))
                 price3x = (price / 3).quantize(Dec('.01'))
                 price4x = (price / 4).quantize(Dec('.01'))
+
+                mercadopago = MercadoPago()
+                config = {
+                    'id': course_id, 'title': str(course), 'unit_price': float(price),
+                    'installments': installments, 'payer_email': request.user.email
+                }
+                preference = mercadopago.get_preference(config, code)
+                preference_response = preference['response']
+                public_key = settings.MERCADO_PAGO_PUBLIC_KEY
+
                 context = {
                     'course': course,
                     'enrolled': enrolled,
@@ -157,7 +176,8 @@ def course_registration(request, course_id, template_name="base/course_registrat
                     'price2x': price2x,
                     'price3x': price3x,
                     'price4x': price4x,
-                    'coupon': code
+                    'preference': preference_response,
+                    'public_key': public_key
                 }
                 messages.success(request, _('Coupon applied successfully'))
                 return render(request, template_name, context)
@@ -169,6 +189,21 @@ def course_registration(request, course_id, template_name="base/course_registrat
         redirect_url = reverse("enroll", args=(course_id,))
         return HttpResponseRedirect(redirect_url)
 
+    if price:
+        mercadopago = MercadoPago()
+        config = {
+            'id': course_id, 'title': str(course), 'unit_price': float(price),
+            'installments': installments, 'payer_email': request.user.email
+        }
+        # TODO: try getting preference for more than once. If can't send warning to
+        #  admin
+        preference = mercadopago.get_preference(config)
+        preference_response = preference['response']
+        public_key = settings.MERCADO_PAGO_PUBLIC_KEY
+    else:
+        preference_response = None
+        public_key = None
+
     context = {
         'course': course,
         'enrolled': enrolled,
@@ -178,42 +213,83 @@ def course_registration(request, course_id, template_name="base/course_registrat
         'price2x': price2x,
         'price3x': price3x,
         'price4x': price4x,
+        'preference': preference_response,
+        'public_key': public_key
     }
+
     return render(request, template_name, context)
 
 
 @login_required
 def payment_complete(request):
+    # TODO: guarantee that requests is only from mercadopago
+
+    payment_status = request.GET.get('status')
+    payment_id = request.GET.get('payment_id')
+    # TODO: treat errors
+    mercadopago_api = MercadoPagoAPI(payment_id)
+    mercadopago_api.get_payment_data()
+    course_id = mercadopago_api.get_course_id()
+    get_object_or_404(Course, pk=int(course_id))
+
+    if payment_status == FAILURE_STATUS:
+        messages.error(request, _('There was an error with the payment'))
+    if payment_status == SUCCESS_STATUS:
+        messages.success(request, _('Payment Successful'))
+    if payment_status == PENDING_STATUS:
+        messages.warning(request, _('Waiting for payment confirmation'))
+
+    return redirect('enroll', course_id)
+
+
+def mercado_pago_webhook(request, token):
+    # TODO: does not allow GET requests
+
+    if token != MERCADO_PAGO_WEBHOOK_TOKEN:
+        response = render(request, '404.html', {})
+        response.status_code = HTTPStatus.NOT_FOUND
+        return response
+
     body = json.loads(request.body)
-    course = get_object_or_404(Course, pk=body['courseId'])
+    payment_id = body['data']['id']
+    mercadopago_api = MercadoPagoAPI(payment_id)
+    mercadopago_api.get_payment_data()
+    course_id = mercadopago_api.get_course_id()
+    course = get_object_or_404(Course, pk=int(course_id))
 
-    # Increase the number of registered students
-    course.registered = course.registered + 1 if course.registered else 1
-    course.save()
+    payer_email = mercadopago_api.get_payer_email()
+    user = get_object_or_404(CustomUser, email=payer_email)
+    payment_status = mercadopago_api.get_payment_status()
 
-    # Check if the amount paid is correct
-    payment_note = ''
-    if str(course.price) != body['price']:
-        payment_note = 'Valor total incorreto'
+    try:
+        course_user = CourseUser.objects.get(user=user, course=course,
+                                             payment_id=payment_id)
+    except CourseUser.DoesNotExist:
+        course_user = None
 
-    # Create course/user object with payment information
-    course_user = CourseUser(
-        course=course,
-        user=request.user,
-        status=ENROLL,
-        payment_id=body['paymentId'],
-        payment_status=body['paymentStatus'],
-        payment_note=payment_note,
-        coupon_used=body['couponUsed']
-    )
-    course_user.save()
+    if body['action'] == 'payment.updated':
+        if not course_user:
+            # TODO: unify string format; see other places
+            return HttpResponse('Warning: payment {} was not created'.format(payment_id),
+                                status=HTTPStatus.OK)
+        elif course_user.payment_status == PENDING_STATUS \
+                and payment_status == SUCCESS_STATUS:
+            course_user.payment_status = payment_status
+            course_user.save(update_fields=['payment_status'])
 
-    if body['paymentStatus'] == 'COMPLETED':
-        response = {'message': _("Payment successful")}
-    else:
-        response = {'message': _("Waiting for payment confirmation")}
+    if body['action'] == 'payment.created':
+        if payment_status == SUCCESS_STATUS or payment_status == PENDING_STATUS:
+            CourseUser.objects.create(
+                course=course,
+                user=user,
+                status=ENROLL,
+                payment_id=payment_id,
+                payment_status=payment_status,
+            )
+            course.registered += 1
+            course.save(update_fields=['registered'])
 
-    return JsonResponse(response)
+    return HttpResponse('OK', status=HTTPStatus.OK)
 
 
 @login_required

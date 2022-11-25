@@ -177,6 +177,7 @@ STATICFILES_DIRS = [
     os.path.join(PROJECT_DIR, 'static'),
     os.path.join(BASE_DIR, 'home/static/home'),
     os.path.join(BASE_DIR, 'userauth/static/userauth'),
+    os.path.join(BASE_DIR, 'base/static/base')
 ]
 
 # ManifestStaticFilesStorage is recommended in production, to prevent outdated

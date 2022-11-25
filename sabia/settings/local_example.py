@@ -10,6 +10,8 @@ DATABASES = {
     }
 }
 
+BASE_URL = 'http://localhost:8000'
+
 EMAIL_HOST = 'your.host.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
