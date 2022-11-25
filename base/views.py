@@ -313,6 +313,8 @@ def mercado_pago_webhook(request, token):
             payment_id=payment_id,
             payment_status=SUCCESS_STATUS,
         )
+        course.registered += 1
+        course.save(update_fields=['registered'])
 
     return HttpResponse('OK', status=HTTPStatus.OK)
 
