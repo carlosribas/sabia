@@ -243,12 +243,14 @@ def payment_complete(request):
 
     return redirect('enroll', course_id)
 
+
 # TODO: see if it's best practice. See comment in
 #  https://stackoverflow.com/questions/71999676/webhook-listener-with-csrf
 @csrf_exempt
 def mercado_pago_webhook(request, token):
     # TODO: does not allow GET requests
 
+    # TODO: change to Forbiden
     if token != MERCADO_PAGO_WEBHOOK_TOKEN:
         response = render(request, '404.html', {})
         response.status_code = HTTPStatus.NOT_FOUND
