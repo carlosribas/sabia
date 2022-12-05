@@ -12,7 +12,7 @@ USER_PWD = 'mypassword'
 USER_EMAIL = 'user@example.com'
 
 
-def preference_mock():
+def preference_mock(config):
     return {
         "status": 201,
         "response": {
@@ -39,13 +39,13 @@ def preference_mock():
             "internal_metadata": None,
             "items": [
                 {
-                    "id": "202:test",
+                    "id": config['id'],
                     "category_id": "",
                     "currency_id": "BRL",
                     "description": "",
                     "title": "course 03",
                     "quantity": 1,
-                    "unit_price": 86.36,
+                    "unit_price": config['unit_price'],
                 }
             ],
             "marketplace": "NONE",
@@ -56,7 +56,7 @@ def preference_mock():
             "payer": {
                 "phone": {"area_code": "", "number": ""},
                 "address": {"zip_code": "", "street_name": "", "street_number": None},
-                "email": "user@example.com",
+                "email": config['payer_email'],
                 "identification": {"number": "", "type": ""},
                 "name": "",
                 "surname": "",
@@ -68,7 +68,7 @@ def preference_mock():
                 "default_payment_method_id": None,
                 "excluded_payment_methods": [{"id": ""}],
                 "excluded_payment_types": [{"id": ""}],
-                "installments": 4,
+                "installments": config['installments'],
                 "default_installments": None,
             },
             "processing_modes": None,
@@ -109,8 +109,9 @@ class TestMercadoPago(TestCase):
         self.mercadopago = MercadoPago()
         self.course_id = 3
         self.config = {
-            'id': self.course_id, 'title': 'Example Course',
-            'unit_price': 100, 'installments': 1, 'payer_email': self.user.email
+            'id': str(self.course_id) + '&' + self.user.email + '&',
+            'title': 'Example Course', 'unit_price': 100, 'installments': 1,
+            'payer_email': self.user.email
         }
 
     def test_mercadopago_creates_preference(self):
@@ -121,8 +122,8 @@ class TestMercadoPago(TestCase):
     def test_mercadopago_generates_right_preference(self):
         preference = self.mercadopago.get_preference(self.config)
 
-        self.assertEqual(
-            preference['response']['items'][0]['id'], str(self.course_id))
+        self.assertEqual(preference['response']['items'][0]['id'],
+                         str(self.course_id) + '&' + self.user.email + '&')
         self.assertEqual(
             preference['response']['items'][0]['title'], 'Example Course')
         self.assertEqual(preference['response']['items'][0]['unit_price'], 100)
@@ -130,6 +131,14 @@ class TestMercadoPago(TestCase):
             preference['response']['payment_methods']['installments'], 1)
         self.assertEqual(preference['response']['payer']['email'],
                          self.config['payer_email'])
+
+    def test_mercadopago_generates_right_preference_coupon_applied(self):
+        coupon_code = 'A123'
+        self.config['id'] = str(self.course_id) + '&' + self.user.email + '&' + coupon_code
+        preference = self.mercadopago.get_preference(self.config)
+
+        self.assertEqual(preference['response']['items'][0]['id'],
+                         str(self.course_id) + '&' + self.user.email + '&' + coupon_code)
 
     def test_mercadopago_generates_right_preference_back_urls(self):
         preference = self.mercadopago.get_preference(self.config)
@@ -141,16 +150,3 @@ class TestMercadoPago(TestCase):
         self.assertEqual(preference['response']['back_urls']['pending'],
                          settings.BASE_URL + reverse('course_paid'))
 
-    def test_mercadopago_generates_right_preference_coupon_back_urls(self):
-        coupon_code = 'A123'
-        preference = self.mercadopago.get_preference(self.config, coupon_code)
-
-        self.assertEqual(preference['response']['back_urls']['success'],
-                         settings.BASE_URL
-                         + reverse('course_paid_coupon_applied', args=(coupon_code,)))
-        self.assertEqual(preference['response']['back_urls']['failure'],
-                         settings.BASE_URL
-                         + reverse('course_paid_coupon_applied', args=(coupon_code,)))
-        self.assertEqual(preference['response']['back_urls']['pending'],
-                         settings.BASE_URL
-                         + reverse('course_paid_coupon_applied', args=(coupon_code,)))

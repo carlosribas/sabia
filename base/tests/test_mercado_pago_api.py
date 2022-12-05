@@ -18,7 +18,7 @@ def api_get_payment_mock():
                     {
                         "category_id": None,
                         "description": None,
-                        "id": "123",
+                        "id": "123&user@example.com&",
                         "picture_url": None,
                         "quantity": "1",
                         "title": "Radiologia pra clínicos: Doenças respiratórias",
@@ -92,7 +92,7 @@ def api_get_payment_mock():
             "payer": {
                 "first_name": None,
                 "last_name": None,
-                "email": "user@example.com",
+                "email": None,
                 "identification": {
                     "number": "32659430",
                     "type": "DNI"
@@ -166,12 +166,55 @@ class TestMercadoPagoAPI(TestCase):
         self.mercadopago_api.get_payment_data()
         self.assertEqual(self.mercadopago_api.get_payment_id(), 1310422398)
 
-    def test_get_payer_email(self, mock_api_get_payment_data):
+    def test_get_payer_email_when_coupon_was_not_used(self, mock_api_get_payment_data):
         mock_api_get_payment_data.return_value.json.return_value = api_get_payment_mock()
         self.mercadopago_api.get_payment_data()
+        self.assertEqual(self.mercadopago_api.get_payer_email(), 'user@example.com')
+
+    def test_get_payer_email_when_coupon_was_not_used_when_email_has_ampersend_chars(
+            self, mock_api_get_payment_data):
+        payment_data_mock = api_get_payment_mock()
+        id_ = '123&user&abc@example.com&'
+        payment_data_mock['additional_info']['items'][0]['id'] = id_
+        mock_api_get_payment_data.return_value.json.return_value = payment_data_mock
+        self.mercadopago_api.get_payment_data()
+
+        self.assertEqual(self.mercadopago_api.get_payer_email(),
+                         'user&abc@example.com')
+
+    def test_get_payer_email_when_coupon_was_used(self, mock_api_get_payment_data):
+        payment_data_mock = api_get_payment_mock()
+        payment_data_mock['additional_info']['items'][0]['id'] += 'COUPON_CODE'
+        mock_api_get_payment_data.return_value.json.return_value = payment_data_mock
+        self.mercadopago_api.get_payment_data()
+
         self.assertEqual(self.mercadopago_api.get_payer_email(), 'user@example.com')
 
     def test_get_payment_status(self, mock_api_get_payment_data):
         mock_api_get_payment_data.return_value.json.return_value = api_get_payment_mock()
         self.mercadopago_api.get_payment_data()
         self.assertEqual(self.mercadopago_api.get_payment_status(), 'approved')
+
+    def test_coupon_used_should_return_false(self, mock_api_get_payment_data):
+        mock_api_get_payment_data.return_value.json.return_value = api_get_payment_mock()
+        self.mercadopago_api.get_payment_data()
+
+        self.assertEqual(self.mercadopago_api.coupon_used(), False)
+
+    def test_coupon_used_should_return_true(self, mock_api_get_payment_data):
+        payment_data_mock = api_get_payment_mock()
+        payment_data_mock['additional_info']['items'][0]['id'] += 'COUPON_CODE'
+        mock_api_get_payment_data.return_value.json.return_value = payment_data_mock
+        self.mercadopago_api.get_payment_data()
+
+        self.assertEqual(self.mercadopago_api.coupon_used(), True)
+
+    def test_get_coupon(self, mock_api_get_payment_data):
+        coupon_code = 'COUPON_CODE'
+        payment_data_mock = api_get_payment_mock()
+        payment_data_mock['additional_info']['items'][0]['id'] += '&' + coupon_code
+        mock_api_get_payment_data.return_value.json.return_value = payment_data_mock
+        self.mercadopago_api.get_payment_data()
+
+        self.assertEqual(self.mercadopago_api.get_coupon(), coupon_code)
+

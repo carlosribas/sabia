@@ -162,7 +162,8 @@ def course_registration(request, course_id, template_name="base/course_registrat
 
                 mercadopago = MercadoPago()
                 config = {
-                    'id': course_id, 'title': str(course), 'unit_price': float(price),
+                    'id': str(course_id) + '&' + request.user.email + '&' + coupon.code,
+                    'title': str(course), 'unit_price': float(price),
                     'installments': installments, 'payer_email': request.user.email
                 }
                 preference = mercadopago.get_preference(config, code)
@@ -194,7 +195,8 @@ def course_registration(request, course_id, template_name="base/course_registrat
     if price:
         mercadopago = MercadoPago()
         config = {
-            'id': course_id, 'title': str(course), 'unit_price': float(price),
+            'id': str(course_id) + '&' + request.user.email + '&', 'title': str(course),
+            'unit_price': float(price),
             # TODO: ERROR: anonymous user has no attribute 'email'. It's necessary to
             #  treat mercadopago initialization if user is anonymous: will not
             #  display Pagar button.
@@ -270,6 +272,9 @@ def mercado_pago_webhook(request, token):
     user = get_object_or_404(CustomUser, email=payer_email)
     payment_status = mercadopago_api.get_payment_status()
 
+    coupon_code = mercadopago_api.get_coupon() if mercadopago_api.coupon_used()  \
+        else ''
+
     try:
         course_user = CourseUser.objects.get(user=user, course=course,
                                              payment_id=payment_id)
@@ -294,6 +299,7 @@ def mercado_pago_webhook(request, token):
                 status=ENROLL,
                 payment_id=payment_id,
                 payment_status=payment_status,
+                coupon_used=coupon_code
             )
             course.registered += 1
             course.save(update_fields=['registered'])

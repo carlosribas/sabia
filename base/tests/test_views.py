@@ -112,14 +112,24 @@ class CourseTestCase(TestCase):
     @patch('base.mercado_pago.mercadopago.SDK')
     def test_course_registration_generates_mercadopago_preference(
             self, mercado_pago_sdk_mock, get_preference):
-        preference_mock_data = preference_mock()
-        preference_mock_data['response']['items'][0]['unit_price'] = self.course_3.price
-        preference_mock_data['response']['payment_methods']['installments'] = 1
+        preference_config = {
+            'id': str(self.course_3.id) + '&' + self.user.email + '&',
+            'title': self.course_3.name, 'unit_price': float(self.course_3.price),
+            'installments': 1, 'payer_email': self.user.email
+        }
+        preference_mock_data = preference_mock(preference_config)
+        # TODO: it's necessary to verify the config that is called
         get_preference.return_value = preference_mock_data
 
         url = reverse('enroll', args=(self.course_3.pk,))
         response = self.client.get(url)
         preference = response.context.get('preference')
+
+        self.assertEqual(get_preference.call_args, call(preference_config))
+
+        self.assertEqual(
+            preference['items'][0]['id'],
+            str(self.course_3.id) + '&' + self.user.email + '&')
         self.assertEqual(preference['items'][0]['title'], self.course_3.name)
         self.assertEqual(preference['items'][0]['unit_price'], self.course_3.price)
         self.assertEqual(preference['payment_methods']['installments'], 1)
@@ -141,24 +151,24 @@ class CourseTestCase(TestCase):
         self.course_3.price = 101
         self.course_3.save()
 
-        # Mock preference sdk create response and set item values to the final result
-        # based on the call of get_preference with the arguments bellow in the
-        # variable config
-        preference_mock_data = preference_mock()
-        preference_mock_data['response']['items'][0]['id'] = str(self.course_3.id)
-        preference_mock_data['response']['items'][0]['unit_price'] = self.course_3.price
+        preference_config = {
+            'id': str(self.course_3.id) + '&' + self.user.email + '&',
+            'title': str(self.course_3), 'unit_price': float(self.course_3.price),
+            'installments': 4, 'payer_email': self.user.email
+        }
+
+        preference_mock_data = preference_mock(preference_config)
         get_preference.return_value = preference_mock_data
 
         url = reverse('enroll', args=(self.course_3.pk,))
         response = self.client.get(url)
         preference = response.context.get('preference')
 
-        config = {'id': self.course_3.id, 'title': str(self.course_3),
-                  'unit_price': float(self.course_3.price), 'installments': 4,
-                  'payer_email': self.user.email}
-        self.assertEqual(get_preference.call_args, call(config))
+        self.assertEqual(get_preference.call_args, call(preference_config))
 
-        self.assertEqual(preference['items'][0]['id'], str(self.course_3.pk))
+        self.assertEqual(
+            preference['items'][0]['id'],
+            str(self.course_3.id) + '&' + self.user.email + '&')
         self.assertEqual(preference['items'][0]['title'], self.course_3.name)
         self.assertEqual(preference['items'][0]['unit_price'], self.course_3.price)
         self.assertEqual(preference['payment_methods']['installments'], 4)
@@ -193,11 +203,21 @@ class CourseTestCase(TestCase):
             valid_to=datetime.datetime.now() + datetime.timedelta(days=1)
         )
 
+        # The way price coupon is figured out in the view
+        discount = Dec(coupon_code.discount / 100) \
+            .quantize(Dec('.01'), rounding=ROUND_HALF_UP)
+        course_price = self.course_3.price - (self.course_3.price * discount) \
+            .quantize(Dec('.01'), rounding=ROUND_HALF_UP)
+
+        preference_config = {
+            'id': str(self.course_3.id) + '&' + self.user.email + '&' + coupon_code.code,
+            'title': self.course_3.name, 'unit_price': float(course_price),
+            'installments': 4, 'payer_email': self.user.email
+        }
+
         # Mock preference sdk create response and set item values to the final result
         # based on the call of get_preference with the arguments bellow
-        preference_mock_data = preference_mock()
-        preference_mock_data['response']['items'][0]['id'] = \
-            str(self.course_3.id) + ':' + coupon_code.code
+        preference_mock_data = preference_mock(preference_config)
         get_preference.return_value = preference_mock_data
 
         data = {'content': self.course_3.pk, 'action': 'code', 'code': coupon_code.code}
@@ -205,21 +225,11 @@ class CourseTestCase(TestCase):
         response = self.client.post(url, data)
         preference = response.context.get('preference')
 
-        # The way price coupon is figured out in the view
-        discount = Dec(coupon_code.discount / 100)\
-            .quantize(Dec('.01'), rounding=ROUND_HALF_UP)
-        course_price = self.course_3.price - (self.course_3.price * discount)\
-            .quantize(Dec('.01'), rounding=ROUND_HALF_UP)
+        self.assertEqual(get_preference.call_args, call(preference_config, coupon_code.code))
 
-        config = {'id': self.course_3.id, 'title': str(self.course_3),
-                  'unit_price': float(course_price), 'installments': 4,
-                  'payer_email': self.user.email}
-        self.assertEqual(get_preference.call_args, call(config, coupon_code.code))
-        # TODO: chance view to call only once
-        # self.assertTrue(get_preference.assert_called_once_with())
-
-        self.assertEqual(preference['items'][0]['id'], str(self.course_3.id) + ':'
-                         + coupon_code.code)
+        self.assertEqual(
+            preference['items'][0]['id'],
+            str(self.course_3.id) + '&' + self.user.email + '&' + coupon_code.code)
 
     def test_course_registration_pre_booking(self):
         self.data = {
@@ -557,8 +567,8 @@ class MercadoPagoWebookTestCase(TestCase):
         )
 
         self.payment_mock = api_get_payment_mock()
-        self.payment_mock['payer']['email'] = self.user.email
-        self.payment_mock['additional_info']['items'][0]['id'] = self.course.id
+        self.payment_mock['additional_info']['items'][0]['id'] = \
+            str(self.course.id) + '&' + self.user.email + '&'
 
     def test_webhook_url_resolves_webhook_view(self, mock_api_get_payment_data):
         view = resolve('/mercadopago_webhook/' + MERCADO_PAGO_WEBHOOK_TOKEN)
@@ -608,6 +618,22 @@ class MercadoPagoWebookTestCase(TestCase):
         self.assertEqual(course_user.status, ENROLL)
         self.assertEqual(course_user.user, self.user)
         self.assertEqual(course_user.payment_id, data['data']['id'])
+        self.assertEqual(course_user.payment_status, SUCCESS_STATUS)
+
+    def test_webhook_url_payment_created_and_approved_create_course_user_with_coupon(
+            self, mock_api_get_payment_data):
+        coupon_code = 'A123'
+        self.payment_mock['additional_info']['items'][0]['id'] = \
+            str(self.course.id) + '&' + self.user.email + '&' + coupon_code
+        mock_api_get_payment_data.return_value.json.return_value = self.payment_mock
+        data = webhook_data_mock('payment.created', self.payment_mock['id'])
+
+        self.client.post(reverse(mercado_pago_webhook,
+                                 args=(MERCADO_PAGO_WEBHOOK_TOKEN,)),
+                         data=json.dumps(data),
+                         content_type='application/json')
+        course_user = CourseUser.objects.first()
+        self.assertEqual(course_user.coupon_used, coupon_code)
         self.assertEqual(course_user.payment_status, SUCCESS_STATUS)
 
     def test_webhook_url_payment_created_and_approved_increments_registered_students(
@@ -661,10 +687,9 @@ class MercadoPagoWebookTestCase(TestCase):
         mock_api_get_payment_data.return_value.json.return_value = self.payment_mock
         data = webhook_data_mock('payment.updated', self.payment_mock['id'])
 
-        user = CustomUser.objects.get(email=self.payment_mock['payer']['email'])
         CourseUser.objects.create(
             course=self.course,
-            user=user,
+            user=self.user,
             status=ENROLL,
             payment_id=self.payment_mock['id'],
             payment_status=PENDING_STATUS,

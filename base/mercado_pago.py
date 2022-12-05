@@ -8,21 +8,19 @@ class MercadoPago:
     def __init__(self):
         self.sdk = mercadopago.SDK(settings.MERCADO_PAGO_ACCESS_TOKEN)
 
-    def get_preference(self, config, cupon_code=None):
-        preference_data = self.set_preference_data(config, cupon_code)
+    def get_preference(self, config):
+        preference_data = self.set_preference_data(config)
         preference = self.sdk.preference().create(preference_data)
         # TODO: treat errors!
 
         return preference
 
     @staticmethod
-    def set_preference_data(config, coupon_code=None):
-        id_ = str(config['id']) if not coupon_code \
-            else str(config['id']) + ':' + coupon_code
+    def set_preference_data(config):
         return {
             'items': [
                 {
-                    'id': id_,
+                    'id': config['id'],
                     'title': config['title'],
                     'quantity': 1,
                     'unit_price': config['unit_price'],
