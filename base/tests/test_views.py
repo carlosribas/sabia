@@ -225,7 +225,7 @@ class CourseTestCase(TestCase):
         response = self.client.post(url, data)
         preference = response.context.get('preference')
 
-        self.assertEqual(get_preference.call_args, call(preference_config, coupon_code.code))
+        self.assertEqual(get_preference.call_args, call(preference_config))
 
         self.assertEqual(
             preference['items'][0]['id'],

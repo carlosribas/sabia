@@ -166,7 +166,7 @@ def course_registration(request, course_id, template_name="base/course_registrat
                     'title': str(course), 'unit_price': float(price),
                     'installments': installments, 'payer_email': request.user.email
                 }
-                preference = mercadopago.get_preference(config, code)
+                preference = mercadopago.get_preference(config)
                 preference_response = preference['response']
                 public_key = settings.MERCADO_PAGO_PUBLIC_KEY
 
@@ -192,6 +192,8 @@ def course_registration(request, course_id, template_name="base/course_registrat
         redirect_url = reverse("enroll", args=(course_id,))
         return HttpResponseRedirect(redirect_url)
 
+    # TODO: test also for user enrolled -- don't create preference if user is
+    # enrolled
     if price:
         mercadopago = MercadoPago()
         config = {
@@ -244,6 +246,8 @@ def payment_complete(request):
     if payment_status == SUCCESS_STATUS:
         messages.success(request, _('Payment Successful'))
     if payment_status == PENDING_STATUS:
+        # TODO: if payment type is PIX check mp payment for if the user already
+        # payed before coming back to the site.
         messages.warning(request, _('Waiting for payment confirmation'))
 
     return redirect('enroll', course_id)
