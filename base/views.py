@@ -169,7 +169,8 @@ def course_registration(request, course_id, template_name="base/course_registrat
                     'id': str(course_id) + '&' + request.user.email + '&' + coupon.code,
                     # TODO: it's price1x, not price
                     'title': str(course), 'unit_price': float(price),
-                    'installments': installments, 'payer_email': request.user.email
+                    # TODO: define payer_email as request.user.email
+                    'installments': installments, 'payer_email': ''
                 }
                 preference = mercadopago.get_preference(config)
                 preference_response = preference['response']
