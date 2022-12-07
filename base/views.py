@@ -299,9 +299,9 @@ def mercado_pago_webhook(request, token):
 
     if body['action'] == 'payment.updated':
         if not course_user:
-            logging.warning('Webhook request has status updated but the
-                            CourseUser object was not created before for
-                            payment id ' + payment_id)
+            logging.warning('Webhook request has status updated but the'
+                            'CourseUser object was not created before for'
+                            'payment id ' + payment_id)
             # TODO: unify string format; see other places
             return HttpResponse('Warning: payment {} was not created'.format(payment_id),
                                 status=HTTPStatus.OK)
