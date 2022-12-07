@@ -1,5 +1,6 @@
 import datetime
 import json
+import logging
 
 from decimal import Decimal as Dec, ROUND_HALF_UP
 from http import HTTPStatus
@@ -29,6 +30,9 @@ from base.mercado_pago_api import MercadoPagoAPI, FAILURE_STATUS, SUCCESS_STATUS
     PENDING_STATUS
 from sabia.settings.local import MERCADO_PAGO_WEBHOOK_TOKEN
 from userauth.models import CustomUser
+
+
+logger = logging.getLogger(__name__)
 
 
 def course_list(request, template_name="base/course_list.html"):
@@ -163,6 +167,7 @@ def course_registration(request, course_id, template_name="base/course_registrat
                 mercadopago = MercadoPago()
                 config = {
                     'id': str(course_id) + '&' + request.user.email + '&' + coupon.code,
+                    # TODO: it's price1x, not price
                     'title': str(course), 'unit_price': float(price),
                     'installments': installments, 'payer_email': request.user.email
                 }
@@ -257,22 +262,29 @@ def payment_complete(request):
 #  https://stackoverflow.com/questions/71999676/webhook-listener-with-csrf
 @csrf_exempt
 def mercado_pago_webhook(request, token):
+    logger.info('Received mercado pago webhook request')
     # TODO: does not allow GET requests
 
     # TODO: change to Forbiden
     if token != MERCADO_PAGO_WEBHOOK_TOKEN:
+        logger.warning('Request receveid with wrong token')
         response = render(request, '404.html', {})
         response.status_code = HTTPStatus.NOT_FOUND
         return response
 
     body = json.loads(request.body)
     payment_id = body['data']['id']
+    logger.info('Webhook called for payment id ' + payment_id)
     mercadopago_api = MercadoPagoAPI(payment_id)
-    mercadopago_api.get_payment_data()
+    payment_data = mercadopago_api.get_payment_data()
+    logger.info('Payment data for payment id ' + payment_id)
+    logger.info(payment_data)
     course_id = mercadopago_api.get_course_id()
+    logger.info('Gettting course object for course id ' + course_id)
     course = get_object_or_404(Course, pk=int(course_id))
 
     payer_email = mercadopago_api.get_payer_email()
+    logger.info('Gettting user by payer email ' + payer_email)
     user = get_object_or_404(CustomUser, email=payer_email)
     payment_status = mercadopago_api.get_payment_status()
 
@@ -287,6 +299,9 @@ def mercado_pago_webhook(request, token):
 
     if body['action'] == 'payment.updated':
         if not course_user:
+            logging.warning('Webhook request has status updated but the
+                            CourseUser object was not created before for
+                            payment id ' + payment_id)
             # TODO: unify string format; see other places
             return HttpResponse('Warning: payment {} was not created'.format(payment_id),
                                 status=HTTPStatus.OK)
