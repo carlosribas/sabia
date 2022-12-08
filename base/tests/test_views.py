@@ -467,7 +467,7 @@ class CoursePaymentTestCase(TestCase):
     #     self.assertEqual(course_user.payment_status, SUCCESS_STATUS)
     #     self.assertEqual(course_user.user, self.user)
 
-    def test_mercadopago_payment_pending_status_redirects_to_course_page_with_message(
+    def test_mercadopago_payment_pending_status_redirects_to_course_page_with_message_1(
             self, mock_api_get_payment_data):
         mock_api_get_payment_data.return_value.json.return_value = \
             self.mercadopago_api_get_payment_mock(PENDING_STATUS)
@@ -480,31 +480,18 @@ class CoursePaymentTestCase(TestCase):
         self.assertEqual(len(message), 1)
         self.assertEqual(str(message[0]), 'Waiting for payment confirmation')
 
-    # def test_payment_complete_with_coupon_url_resolves_payment_complete_view(
-    #         self, mock_api_get_payment_data):
-    #     view = resolve('/cursos/finalizado/coupon/A123')
-    #     self.assertEqual(view.func, payment_complete)
+    def test_mercadopago_payment_pending_status_redirects_to_course_page_with_message_2(
+            self, mock_api_get_payment_data):
+        mock_api_get_payment_data.return_value.json.return_value = \
+            self.mercadopago_api_get_payment_mock(SUCCESS_STATUS)
+        # Other parameters can be ommited
+        url = reverse('course_paid') + '?payment_id=123&status=' + PENDING_STATUS
+        response = self.client.get(url, follow=True)
 
-    # def test_mercadopago_payment_success_with_coupon_url_creates_course_object_with_coupon_code(
-    #         self, mock_api_get_payment_data):
-    #     mock_api_get_payment_data.return_value.json.return_value = \
-    #         self.mercadopago_api_get_payment_mock(SUCCESS_STATUS)
-    #     coupon_code = CourseUserCoupon.objects.create(
-    #         course=self.course,
-    #         user=self.user,
-    #         code='A123',
-    #         discount=10,
-    #         valid_from=datetime.datetime.now(),
-    #         valid_to=datetime.datetime.now() + datetime.timedelta(days=1)
-    #     )
-    #
-    #     # Other parameters can be ommited
-    #     url = reverse('course_paid_coupon_applied', args=(coupon_code.code,)) \
-    #         + '?payment_id=123&status=' + SUCCESS_STATUS
-    #     self.client.get(url, follow=True)
-    #
-    #     course_user = CourseUser.objects.first()
-    #     self.assertEqual(course_user.coupon_used, coupon_code.code)
+        message = list(get_messages(response.wsgi_request))
+        # TODO: see assertContains or equivalent for messages
+        self.assertEqual(len(message), 1)
+        self.assertEqual(str(message[0]), 'Payment Successful')
 
     def mercadopago_api_get_payment_mock(self, status):
         # TODO: use mock from mercadopago api

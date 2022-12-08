@@ -169,8 +169,7 @@ def course_registration(request, course_id, template_name="base/course_registrat
                     'id': str(course_id) + '&' + request.user.email + '&' + coupon.code,
                     # TODO: it's price1x, not price
                     'title': str(course), 'unit_price': float(price),
-                    # TODO: define payer_email as request.user.email
-                    'installments': installments, 'payer_email': ''
+                    'installments': installments, 'payer_email': request.user.email
                 }
                 preference = mercadopago.get_preference(config)
                 preference_response = preference['response']
@@ -208,8 +207,7 @@ def course_registration(request, course_id, template_name="base/course_registrat
             # TODO: ERROR: anonymous user has no attribute 'email'. It's necessary to
             #  treat mercadopago initialization if user is anonymous: will not
             #  display Pagar button.
-            # TODO: define payer_email as request.user.email
-            'installments': installments, 'payer_email': ''
+            'installments': installments, 'payer_email': request.user.email
         }
         # TODO: try getting preference for more than once. If can't send warning to
         #  admin
@@ -247,15 +245,17 @@ def payment_complete(request):
     mercadopago_api.get_payment_data()
     course_id = mercadopago_api.get_course_id()
     get_object_or_404(Course, pk=int(course_id))
+    new_payment_status = mercadopago_api.get_payment_status()
 
     if payment_status == FAILURE_STATUS:
         messages.error(request, _('There was an error with the payment'))
     if payment_status == SUCCESS_STATUS:
         messages.success(request, _('Payment Successful'))
     if payment_status == PENDING_STATUS:
-        # TODO: if payment type is PIX check mp payment for if the user already
-        # payed before coming back to the site.
-        messages.warning(request, _('Waiting for payment confirmation'))
+        if new_payment_status == SUCCESS_STATUS:
+            messages.success(request, _('Payment Successful'))
+        else:
+            messages.warning(request, _('Waiting for payment confirmation'))
 
     return redirect('enroll', course_id)
 
@@ -267,7 +267,7 @@ def mercado_pago_webhook(request, token):
     logger.info('Received mercado pago webhook request')
     # TODO: does not allow GET requests
 
-    # TODO: change to Forbiden
+    # TODO: maybe change to Forbiden
     if token != MERCADO_PAGO_WEBHOOK_TOKEN:
         logger.warning('Request receveid with wrong token')
         response = render(request, '404.html', {})
