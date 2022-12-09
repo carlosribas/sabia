@@ -189,6 +189,22 @@ class CourseTestCase(TestCase):
         public_key = response.context.get('public_key')
         self.assertIsNone(public_key)
 
+    def test_course_registration_does_not_generate_mercadopago_preference_if_user_enrolled(
+            self):
+        CourseUser.objects.create(course=self.course_3, user=self.user, status='enroll')
+        url = reverse('enroll', args=(self.course_3.pk,))
+        response = self.client.get(url)
+        preference = response.context.get('preference')
+        self.assertIsNone(preference)
+
+    def test_course_registration_does_not_generate_mercadopago_preference_if_not_logged(
+            self):
+        self.client.logout()
+        url = reverse('enroll', args=(self.course_3.pk,))
+        response = self.client.get(url)
+        preference = response.context.get('preference')
+        self.assertIsNone(preference)
+
     @patch('base.mercado_pago.MercadoPago.get_preference')
     @patch('base.mercado_pago.mercadopago.SDK')
     def test_course_registration_applies_coupon_generates_right_preference(

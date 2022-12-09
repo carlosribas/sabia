@@ -196,19 +196,14 @@ def course_registration(request, course_id, template_name="base/course_registrat
         redirect_url = reverse("enroll", args=(course_id,))
         return HttpResponseRedirect(redirect_url)
 
-    # TODO: test also for user enrolled -- don't create preference if user is
-    # enrolled
-    if price:
+    if request.user.is_authenticated and not enrolled and price:
         mercadopago = MercadoPago()
         config = {
             'id': str(course_id) + '&' + request.user.email + '&', 'title': str(course),
             'unit_price': float(price1x),
-            # TODO: ERROR: anonymous user has no attribute 'email'. It's necessary to
-            #  treat mercadopago initialization if user is anonymous: will not
-            #  display Pagar button.
             'installments': installments, 'payer_email': request.user.email
         }
-        # TODO: try getting preference for more than once. If can't send warning to
+        # TODO: try getting preference for more than once. If can't, send warning to
         #  admin
         preference = mercadopago.get_preference(config)
         preference_response = preference['response']
