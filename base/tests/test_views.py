@@ -2,6 +2,7 @@ import datetime
 import json
 from http import HTTPStatus
 from unittest.mock import patch, call
+from decimal import Decimal as Dec, ROUND_HALF_UP
 
 from django.conf import settings
 from django.contrib.messages import get_messages
@@ -118,7 +119,6 @@ class CourseTestCase(TestCase):
             'installments': 1, 'payer_email': self.user.email
         }
         preference_mock_data = preference_mock(preference_config)
-        # TODO: it's necessary to verify the config that is called
         get_preference.return_value = preference_mock_data
 
         url = reverse('enroll', args=(self.course_3.pk,))
@@ -151,12 +151,14 @@ class CourseTestCase(TestCase):
         self.course_3.price = 101
         self.course_3.save()
 
+        # Emulate how price is calculated
+        price1x = self.course_3.price - \
+                (self.course_3.price * Dec('.05')).quantize(Dec('.01'), rounding=ROUND_HALF_UP)
         preference_config = {
             'id': str(self.course_3.id) + '&' + self.user.email + '&',
-            'title': str(self.course_3), 'unit_price': float(self.course_3.price),
+            'title': str(self.course_3), 'unit_price': float(price1x),
             'installments': 4, 'payer_email': self.user.email
         }
-
         preference_mock_data = preference_mock(preference_config)
         get_preference.return_value = preference_mock_data
 
@@ -170,7 +172,7 @@ class CourseTestCase(TestCase):
             preference['items'][0]['id'],
             str(self.course_3.id) + '&' + self.user.email + '&')
         self.assertEqual(preference['items'][0]['title'], self.course_3.name)
-        self.assertEqual(preference['items'][0]['unit_price'], self.course_3.price)
+        self.assertEqual(preference['items'][0]['unit_price'], float(price1x))
         self.assertEqual(preference['payment_methods']['installments'], 4)
 
     def test_course_registration_does_not_generate_mercado_preference_if_not_price(
@@ -208,15 +210,13 @@ class CourseTestCase(TestCase):
             .quantize(Dec('.01'), rounding=ROUND_HALF_UP)
         course_price = self.course_3.price - (self.course_3.price * discount) \
             .quantize(Dec('.01'), rounding=ROUND_HALF_UP)
-
+        price1x = (course_price - course_price * 5 / 100) \
+            .quantize(Dec('.01'), rounding=ROUND_HALF_UP)
         preference_config = {
             'id': str(self.course_3.id) + '&' + self.user.email + '&' + coupon_code.code,
-            'title': self.course_3.name, 'unit_price': float(course_price),
+            'title': self.course_3.name, 'unit_price': float(price1x),
             'installments': 4, 'payer_email': self.user.email
         }
-
-        # Mock preference sdk create response and set item values to the final result
-        # based on the call of get_preference with the arguments bellow
         preference_mock_data = preference_mock(preference_config)
         get_preference.return_value = preference_mock_data
 
