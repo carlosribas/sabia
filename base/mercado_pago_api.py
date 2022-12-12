@@ -15,8 +15,7 @@ class MercadoPagoAPI:
         self.headers = {'Authorization': 'Bearer ' + settings.MERCADO_PAGO_ACCESS_TOKEN}
         self.payment_data = None
 
-    # TODO: change to fetch_payment_data
-    def get_payment_data(self):
+    def fetch_payment_data(self):
         # TODO: treat errors
         self.payment_data = requests.get(url=self.endpoint, headers=self.headers).json()
         return self.payment_data

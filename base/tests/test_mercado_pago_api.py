@@ -153,22 +153,22 @@ class TestMercadoPagoAPI(TestCase):
 
     def test_get_payment_data(self, mock_api_get_payment_data):
         mock_api_get_payment_data.return_value.json.return_value = api_get_payment_mock()
-        self.assertEqual(self.mercadopago_api.get_payment_data(),
+        self.assertEqual(self.mercadopago_api.fetch_payment_data(),
                          api_get_payment_mock())
 
     def test_get_course_id(self, mock_api_get_payment_data):
         mock_api_get_payment_data.return_value.json.return_value = api_get_payment_mock()
-        self.mercadopago_api.get_payment_data()
+        self.mercadopago_api.fetch_payment_data()
         self.assertEqual(self.mercadopago_api.get_course_id(), '123')
 
     def test_get_payment_id(self, mock_api_get_payment_data):
         mock_api_get_payment_data.return_value.json.return_value = api_get_payment_mock()
-        self.mercadopago_api.get_payment_data()
+        self.mercadopago_api.fetch_payment_data()
         self.assertEqual(self.mercadopago_api.get_payment_id(), 1310422398)
 
     def test_get_payer_email_when_coupon_was_not_used(self, mock_api_get_payment_data):
         mock_api_get_payment_data.return_value.json.return_value = api_get_payment_mock()
-        self.mercadopago_api.get_payment_data()
+        self.mercadopago_api.fetch_payment_data()
         self.assertEqual(self.mercadopago_api.get_payer_email(), 'user@example.com')
 
     def test_get_payer_email_when_coupon_was_not_used_when_email_has_ampersend_chars(
@@ -177,7 +177,7 @@ class TestMercadoPagoAPI(TestCase):
         id_ = '123&user&abc@example.com&'
         payment_data_mock['additional_info']['items'][0]['id'] = id_
         mock_api_get_payment_data.return_value.json.return_value = payment_data_mock
-        self.mercadopago_api.get_payment_data()
+        self.mercadopago_api.fetch_payment_data()
 
         self.assertEqual(self.mercadopago_api.get_payer_email(),
                          'user&abc@example.com')
@@ -186,18 +186,18 @@ class TestMercadoPagoAPI(TestCase):
         payment_data_mock = api_get_payment_mock()
         payment_data_mock['additional_info']['items'][0]['id'] += 'COUPON_CODE'
         mock_api_get_payment_data.return_value.json.return_value = payment_data_mock
-        self.mercadopago_api.get_payment_data()
+        self.mercadopago_api.fetch_payment_data()
 
         self.assertEqual(self.mercadopago_api.get_payer_email(), 'user@example.com')
 
     def test_get_payment_status(self, mock_api_get_payment_data):
         mock_api_get_payment_data.return_value.json.return_value = api_get_payment_mock()
-        self.mercadopago_api.get_payment_data()
+        self.mercadopago_api.fetch_payment_data()
         self.assertEqual(self.mercadopago_api.get_payment_status(), 'approved')
 
     def test_coupon_used_should_return_false(self, mock_api_get_payment_data):
         mock_api_get_payment_data.return_value.json.return_value = api_get_payment_mock()
-        self.mercadopago_api.get_payment_data()
+        self.mercadopago_api.fetch_payment_data()
 
         self.assertEqual(self.mercadopago_api.coupon_used(), False)
 
@@ -205,7 +205,7 @@ class TestMercadoPagoAPI(TestCase):
         payment_data_mock = api_get_payment_mock()
         payment_data_mock['additional_info']['items'][0]['id'] += 'COUPON_CODE'
         mock_api_get_payment_data.return_value.json.return_value = payment_data_mock
-        self.mercadopago_api.get_payment_data()
+        self.mercadopago_api.fetch_payment_data()
 
         self.assertEqual(self.mercadopago_api.coupon_used(), True)
 
@@ -214,7 +214,7 @@ class TestMercadoPagoAPI(TestCase):
         payment_data_mock = api_get_payment_mock()
         payment_data_mock['additional_info']['items'][0]['id'] += '&' + coupon_code
         mock_api_get_payment_data.return_value.json.return_value = payment_data_mock
-        self.mercadopago_api.get_payment_data()
+        self.mercadopago_api.fetch_payment_data()
 
         self.assertEqual(self.mercadopago_api.get_coupon(), coupon_code)
 

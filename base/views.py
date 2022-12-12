@@ -231,13 +231,13 @@ def course_registration(request, course_id, template_name="base/course_registrat
 
 @login_required
 def payment_complete(request):
-    # TODO: guarantee that requests is only from mercadopago
+    # TODO: if it's possible guarantee that requests is only from mercadopago
 
     payment_status = request.GET.get('status')
     payment_id = request.GET.get('payment_id')
     # TODO: treat errors
     mercadopago_api = MercadoPagoAPI(payment_id)
-    mercadopago_api.get_payment_data()
+    mercadopago_api.fetch_payment_data()
     course_id = mercadopago_api.get_course_id()
     get_object_or_404(Course, pk=int(course_id))
     new_payment_status = mercadopago_api.get_payment_status()
@@ -269,7 +269,7 @@ def mercado_pago_webhook(request, token):
     payment_id = body['data']['id']
     logger.info('Webhook called for payment id ' + payment_id)
     mercadopago_api = MercadoPagoAPI(payment_id)
-    payment_data = mercadopago_api.get_payment_data()
+    payment_data = mercadopago_api.fetch_payment_data()
     logger.info('Payment data for payment id ' + payment_id)
     logger.info(payment_data)
     course_id = mercadopago_api.get_course_id()
