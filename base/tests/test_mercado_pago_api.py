@@ -146,25 +146,45 @@ def api_get_payment_mock():
         }
 
 
+def api_get_payment_not_found_mock():
+    return {
+        'message': 'Payment not found', 'error': 'not_found', 'status': 404,
+        'cause': [
+            {
+                'code': 2000, 'description': 'Payment not found',
+                'data': '12-12-2022T17:10:45UTC;fa5e2139-8ee9-46b1-8b76-57f895eab9a4'
+            }
+        ]
+    }
+
+
 @patch('base.mercado_pago_api.requests.get')
 class TestMercadoPagoAPI(TestCase):
     def setUp(self):
         self.mercadopago_api = MercadoPagoAPI(payment_id='123')
 
-    def test_get_payment_data(self, mock_api_get_payment_data):
+    def test_fetch_payment_data(self, mock_api_get_payment_data):
         mock_api_get_payment_data.return_value.json.return_value = api_get_payment_mock()
         self.assertEqual(self.mercadopago_api.fetch_payment_data(),
                          api_get_payment_mock())
 
-    def test_get_course_id(self, mock_api_get_payment_data):
-        mock_api_get_payment_data.return_value.json.return_value = api_get_payment_mock()
-        self.mercadopago_api.fetch_payment_data()
-        self.assertEqual(self.mercadopago_api.get_course_id(), '123')
+    def test_fetch_payment_data_doesnt_find_payment_data_signals_payment_not_found(
+            self, mock_api_get_payment_data):
+        mock_api_get_payment_data.return_value.json.return_value = \
+            api_get_payment_not_found_mock()
+        self.assertEqual(self.mercadopago_api.fetch_payment_data(),
+                         api_get_payment_not_found_mock())
+        self.assertTrue(self.mercadopago_api.payment_not_found())
 
     def test_get_payment_id(self, mock_api_get_payment_data):
         mock_api_get_payment_data.return_value.json.return_value = api_get_payment_mock()
         self.mercadopago_api.fetch_payment_data()
         self.assertEqual(self.mercadopago_api.get_payment_id(), 1310422398)
+
+    def test_get_course_id(self, mock_api_get_payment_data):
+        mock_api_get_payment_data.return_value.json.return_value = api_get_payment_mock()
+        self.mercadopago_api.fetch_payment_data()
+        self.assertEqual(self.mercadopago_api.get_course_id(), '123')
 
     def test_get_payer_email_when_coupon_was_not_used(self, mock_api_get_payment_data):
         mock_api_get_payment_data.return_value.json.return_value = api_get_payment_mock()

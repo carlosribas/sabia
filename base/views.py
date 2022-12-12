@@ -12,7 +12,8 @@ from django.core import mail
 from django.core.exceptions import PermissionDenied
 from django.core.mail import send_mail, EmailMultiAlternatives
 from django.db.models import Q
-from django.http import HttpResponseRedirect, HttpResponse, BadHeaderError
+from django.http import HttpResponseRedirect, HttpResponse, BadHeaderError, \
+    HttpResponseBadRequest
 from django.shortcuts import render, get_object_or_404, redirect
 from django.template.loader import render_to_string
 from django.urls import reverse
@@ -235,9 +236,16 @@ def payment_complete(request):
 
     payment_status = request.GET.get('status')
     payment_id = request.GET.get('payment_id')
+    if payment_status not in [FAILURE_STATUS, SUCCESS_STATUS, PENDING_STATUS] \
+            or payment_id is None:
+        return HttpResponseBadRequest(_('Cannot process this request'))
+
     # TODO: treat errors
     mercadopago_api = MercadoPagoAPI(payment_id)
     mercadopago_api.fetch_payment_data()
+    if mercadopago_api.payment_not_found():
+        return HttpResponseBadRequest(_('Cannot process this request'))
+
     course_id = mercadopago_api.get_course_id()
     get_object_or_404(Course, pk=int(course_id))
     new_payment_status = mercadopago_api.get_payment_status()
