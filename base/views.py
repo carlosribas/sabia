@@ -22,6 +22,7 @@ from django.utils.translation import ugettext as _
 from itertools import chain
 
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
 
 from base.mercado_pago import MercadoPago
 from base.models import Course, CourseUser, CourseUserCoupon, CourseUserInterview, CourseMaterial, \
@@ -254,14 +255,10 @@ def payment_complete(request):
     return redirect('enroll', course_id)
 
 
-# TODO: see if it's best practice. See comment in
-#  https://stackoverflow.com/questions/71999676/webhook-listener-with-csrf
 @csrf_exempt
+@require_POST
 def mercado_pago_webhook(request, token):
-    logger.info('Received mercado pago webhook request')
-    # TODO: does not allow GET requests
-
-    # TODO: maybe change to Forbiden
+    # Request made probably outside MP Webhook
     if token != MERCADO_PAGO_WEBHOOK_TOKEN:
         logger.warning('Request receveid with wrong token')
         response = render(request, '404.html', {})

@@ -583,6 +583,12 @@ class MercadoPagoWebookTestCase(TestCase):
             data=json.dumps({'a': 1}), content_type='application/json')
         self.assertEqual(response.status_code, HTTPStatus.NOT_FOUND)
 
+    def test_webhook_url_GET_request_not_allowed(self, mock_api_get_payment_data):
+        response = self.client.get(
+            reverse(mercado_pago_webhook, args=(MERCADO_PAGO_WEBHOOK_TOKEN,))
+        )
+        self.assertEqual(response.status_code, HTTPStatus.METHOD_NOT_ALLOWED)
+
     def test_webhook_url_right_token_returns_200(self, mock_api_get_payment_data):
         mock_api_get_payment_data.return_value.json.return_value = self.payment_mock
         data = webhook_data_mock('payment.created', str(self.payment_mock['id']))
