@@ -2,6 +2,10 @@
 {% load static %}
 {% load i18n wagtailcore_tags %}
 
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/mercadopago.css' %}">
+{% endblock %}
+
 {% block extra_js %}
     <!-- Meta Pixel Code -->
     <script>

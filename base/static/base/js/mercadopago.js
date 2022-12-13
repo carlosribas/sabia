@@ -9,7 +9,7 @@ const initMercadoPagoButton = function (pubKey, prevenceId) {
         },
         render: {
             container: '.cho-container',
-            label: 'Pagar',
+            type: 'wallet',
         }
     });
 }
