@@ -8,9 +8,8 @@ from wagtail.core import urls as wagtail_urls
 from wagtail.documents import urls as wagtaildocs_urls
 
 from search import views as search_views
-from base.views import course_list, course_registration, cursos_xsendfile, material, \
-    my_course, payment_complete, \
-    send_email, mercado_pago_webhook
+from base.views import course_list, course_registration, cursos_xsendfile, material, my_course, payment_complete, \
+    send_email, users_report, mercado_pago_webhook
 
 urlpatterns = [
     path('django-admin/', admin.site.urls),
@@ -25,6 +24,7 @@ urlpatterns = [
     path('mercadopago_webhook/<str:token>', mercado_pago_webhook,
          name='mercado_pago_webhook'),
     path('cursos/meus-cursos', my_course, name='my_course'),
+    path('cursos/inscritos/<int:course_id>', users_report, name='users-report'),
     re_path(r'^media/cursos', cursos_xsendfile, name='cursos_xsendfile'),
     path('material', material, name='material'),
     path('email', send_email, name='send_email'),

@@ -4,6 +4,8 @@ import datetime
 from django.conf import settings
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
+from django.urls import reverse
+from django.utils.html import format_html
 from django_extensions.db.fields import AutoSlugField
 from django.utils.text import slugify
 from django.utils.translation import ugettext as _
@@ -184,6 +186,9 @@ class Course(index.Indexed, ClusterableModel):
 
     def show_course(self):
         return self.start_date >= datetime.datetime.now().date() if self.start_date else False
+
+    def csv(self):
+        return format_html("<a href='{0}'>Download</a>", reverse("users-report", kwargs={"course_id": self.pk}))
 
     class Meta:
         verbose_name = _("Course")

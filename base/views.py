@@ -1,3 +1,4 @@
+import csv
 import datetime
 import json
 import logging
@@ -12,8 +13,8 @@ from django.core import mail
 from django.core.exceptions import PermissionDenied
 from django.core.mail import send_mail, EmailMultiAlternatives
 from django.db.models import Q
-from django.http import HttpResponseRedirect, HttpResponse, BadHeaderError, \
-    HttpResponseBadRequest
+from django.http import HttpResponseRedirect, HttpResponse, \
+    BadHeaderError, Http404, HttpResponseBadRequest
 from django.shortcuts import render, get_object_or_404, redirect
 from django.template.loader import render_to_string
 from django.urls import reverse
@@ -422,3 +423,20 @@ def send_email(request):
         return render(request, 'base/send_email.html')
     else:
         raise PermissionDenied
+
+
+@login_required
+def users_report(request, course_id):
+    if request.user.is_superuser:
+        course = get_object_or_404(Course, pk=course_id)
+        user_list = CourseUser.objects.filter(course=course)
+
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = f'attachment; filename={course.name}.csv'
+        writer = csv.writer(response, delimiter=',')
+        for item in user_list:
+            writer.writerow([item.user, item.user.email])
+
+        return response
+    else:
+        raise Http404
