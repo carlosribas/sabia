@@ -80,8 +80,6 @@ LOGGING = {
     },
 }
 # Disable logging when testing
-# TODO: maybe a better way.
-#  See: https://betterstack.com/community/questions/how-to-disable-logging-while-running-django-unit-tests/ 
 if len(sys.argv) > 1 and sys.argv[1] == 'test':
     logging.disable(logging.CRITICAL)
 

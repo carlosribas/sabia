@@ -1,3 +1,7 @@
+import os
+
+import vcr
+
 from http import HTTPStatus
 
 from django.conf import settings
@@ -95,6 +99,11 @@ def preference_mock(config):
     }
 
 
+sabia_vcr = vcr.VCR(
+    cassette_library_dir=os.path.dirname(os.path.abspath(__file__)) + '/cassettes',
+    path_transformer=vcr.VCR.ensure_suffix('.yaml'))
+
+
 class TestMercadoPago(TestCase):
 
     def setUp(self):
@@ -114,11 +123,13 @@ class TestMercadoPago(TestCase):
             'payer_email': self.user.email
         }
 
+    @sabia_vcr.use_cassette()
     def test_mercadopago_creates_preference(self):
         preference = self.mercadopago.get_preference(self.config)
 
         self.assertEqual(preference['status'], HTTPStatus.CREATED)
 
+    @sabia_vcr.use_cassette()
     def test_mercadopago_generates_right_preference(self):
         preference = self.mercadopago.get_preference(self.config)
 
@@ -132,6 +143,7 @@ class TestMercadoPago(TestCase):
         self.assertEqual(preference['response']['payer']['email'],
                          self.config['payer_email'])
 
+    @sabia_vcr.use_cassette()
     def test_mercadopago_generates_right_preference_coupon_applied(self):
         coupon_code = 'A123'
         self.config['id'] = str(self.course_id) + '&' + self.user.email + '&' + coupon_code
@@ -140,6 +152,7 @@ class TestMercadoPago(TestCase):
         self.assertEqual(preference['response']['items'][0]['id'],
                          str(self.course_id) + '&' + self.user.email + '&' + coupon_code)
 
+    @sabia_vcr.use_cassette()
     def test_mercadopago_generates_right_preference_back_urls(self):
         preference = self.mercadopago.get_preference(self.config)
 
@@ -149,4 +162,3 @@ class TestMercadoPago(TestCase):
                          settings.BASE_URL + reverse('course_paid'))
         self.assertEqual(preference['response']['back_urls']['pending'],
                          settings.BASE_URL + reverse('course_paid'))
-

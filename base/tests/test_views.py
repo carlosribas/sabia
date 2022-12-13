@@ -415,7 +415,6 @@ class CoursePaymentTestCase(TestCase):
         logged = self.client.login(username=USER_USERNAME, password=USER_PWD)
         self.assertEqual(logged, True)
 
-        # TODO: see Bidx1 for Fixtures
         self.course = Course.objects.create(
             name="awesome course",
             start_date=datetime.date.today() + datetime.timedelta(days=15),

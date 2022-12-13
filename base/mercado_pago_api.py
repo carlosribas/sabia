@@ -2,7 +2,6 @@ import requests
 from django.conf import settings
 
 END_POINT = 'https://api.mercadopago.com/v1/payments/'
-# TODO: see Bidx1 for defining constants
 FAILURE_STATUS = 'failure'
 PENDING_STATUS = 'pending'
 SUCCESS_STATUS = 'approved'
@@ -33,7 +32,6 @@ class MercadoPagoAPI:
         return self.payment_data['id']
 
     def get_course_id(self):
-        # TODO: try catch or if to get payment data first (for this and the others)
         item_id = self.payment_data['additional_info']['items'][0]['id']
         course_id = item_id.split(ID_SEPARATOR)[0]
         return course_id

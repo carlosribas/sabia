@@ -14,7 +14,6 @@ const initMercadoPagoButton = function (pubKey, prevenceId) {
     });
 }
 
-// TODO: why $('#mp_button button').click doesn't work?
 $("#mp_button").click(function (e) {
     e.preventDefault();
 })
