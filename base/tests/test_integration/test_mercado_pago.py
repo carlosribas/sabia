@@ -101,7 +101,8 @@ def preference_mock(config):
 
 sabia_vcr = vcr.VCR(
     cassette_library_dir=os.path.dirname(os.path.abspath(__file__)) + '/cassettes',
-    path_transformer=vcr.VCR.ensure_suffix('.yaml'))
+    path_transformer=vcr.VCR.ensure_suffix('.yaml'),
+    filter_headers=['authorization'])
 
 
 class TestMercadoPago(TestCase):

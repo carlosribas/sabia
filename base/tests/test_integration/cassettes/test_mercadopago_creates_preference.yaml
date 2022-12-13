@@ -9,8 +9,6 @@ interactions:
       - application/json
       Accept-Encoding:
       - gzip, deflate
-      Authorization:
-      - Bearer TEST-6226796596410548-110115-ff0602458011dd96574bd26f949bbac7-269058111
       Connection:
       - keep-alive
       Content-Length:
@@ -20,7 +18,7 @@ interactions:
       User-Agent:
       - MercadoPago Python SDK v2.2.0
       x-idempotency-key:
-      - '54406040685157187476085162691595535232'
+      - '143374458404788210636002440014509994324'
       x-product-id:
       - bc32bpftrpp001u8nhlg
       x-tracking-id:
@@ -30,20 +28,20 @@ interactions:
   response:
     body:
       string: !!binary |
-        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
+        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
         ZQcAAA==
     headers:
       Access-Control-Allow-Headers:
@@ -61,7 +59,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Tue, 13 Dec 2022 18:13:01 GMT
+      - Tue, 13 Dec 2022 20:30:27 GMT
       Strict-Transport-Security:
       - max-age=16070400; includeSubDomains; preload
       Timing-Allow-Origin:
@@ -69,7 +67,7 @@ interactions:
       X-Content-Type-Options:
       - nosniff
       X-Request-Id:
-      - b803280e-24fc-43f1-b68c-f8dca0f63ab7
+      - 371d8cba-839e-415f-9edf-e4411b7f8352
       X-XSS-Protection:
       - 1; mode=block
       content-encoding:
