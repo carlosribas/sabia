@@ -24,3 +24,11 @@ RECAPTCHA_PUBLIC_KEY = 'reCaptcha_public_key'
 RECAPTCHA_PRIVATE_KEY = 'reCaptcha_private_key'
 # enable no captcha
 NOCAPTCHA = True
+
+# Mercado Pago credentials
+MERCADO_PAGO_PUBLIC_KEY = ''
+MERCADO_PAGO_ACCESS_TOKEN = ''
+
+# Token for Mercado Pago webhook endpoint
+# Choose one very long and with a mixed of alfanumeric chars and with special chars
+MERCADO_PAGO_WEBHOOK_TOKEN = ''
