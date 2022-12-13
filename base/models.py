@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 
 import datetime
 from django.conf import settings
-from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.validators import MinValueValidator, MaxValueValidator, RegexValidator
 from django.db import models
 from django.urls import reverse
 from django.utils.html import format_html
@@ -35,6 +35,7 @@ from wagtailstreamforms.models.abstract import AbstractFormSetting
 
 from userauth.models import CustomUser
 from .blocks import BaseStreamBlock
+from .mercado_pago_api import ID_SEPARATOR
 from .richtext_options import RICHTEXT_FEATURES
 
 
@@ -262,7 +263,8 @@ class CourseUserCoupon(models.Model):
     """A Django model to create discount coupons"""
     course = models.ForeignKey(Course, verbose_name=_('Course'), on_delete=models.CASCADE)
     user = models.ForeignKey(CustomUser, verbose_name=_('User'), on_delete=models.CASCADE, blank=True, null=True)
-    code = models.CharField(_("Code"), max_length=50, unique=True)
+    code = models.CharField(_("Code"), max_length=50, unique=True,
+                            validators=[RegexValidator('[{}]'.format(ID_SEPARATOR), inverse_match=True)])
     discount = models.IntegerField(_("Discount"), default=5, validators=[MinValueValidator(0), MaxValueValidator(100)])
     valid_from = models.DateTimeField(_("Valid from"))
     valid_to = models.DateTimeField(_("Valid to"))

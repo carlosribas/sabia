@@ -6,6 +6,7 @@ END_POINT = 'https://api.mercadopago.com/v1/payments/'
 FAILURE_STATUS = 'failure'
 PENDING_STATUS = 'pending'
 SUCCESS_STATUS = 'approved'
+ID_SEPARATOR = '&'
 
 
 class MercadoPagoAPI:
@@ -34,12 +35,12 @@ class MercadoPagoAPI:
     def get_course_id(self):
         # TODO: try catch or if to get payment data first (for this and the others)
         item_id = self.payment_data['additional_info']['items'][0]['id']
-        course_id = item_id.split('&')[0]
+        course_id = item_id.split(ID_SEPARATOR)[0]
         return course_id
 
     def get_payer_email(self):
         item_id = self.payment_data['additional_info']['items'][0]['id']
-        email = '&'.join(item_id.split('&')[1:-1])
+        email = ID_SEPARATOR.join(item_id.split(ID_SEPARATOR)[1:-1])
 
         return email
 
@@ -48,9 +49,9 @@ class MercadoPagoAPI:
 
     def coupon_used(self):
         item_id = self.payment_data['additional_info']['items'][0]['id']
-        return item_id[-1] != '&'
+        return item_id[-1] != ID_SEPARATOR
 
     def get_coupon(self):
         if self.coupon_used():
             item_id = self.payment_data['additional_info']['items'][0]['id']
-            return item_id.split('&')[-1]
+            return item_id.split(ID_SEPARATOR)[-1]
