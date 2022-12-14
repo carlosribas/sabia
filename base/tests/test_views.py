@@ -403,7 +403,6 @@ class CourseTestCase(TestCase):
 
 
 def mercadopago_api_get_payment_mock(course_id, status):
-    # TODO: use mock from mercadopago api
     # Real mercadopago response have several other fields that are ommited here
     return {
         "additional_info": {
@@ -562,7 +561,6 @@ class MercadoPagoWebookTestCase(TestCase):
         logged = self.client.login(username=USER_USERNAME, password=USER_PWD)
         self.assertEqual(logged, True)
 
-        # TODO: see Bidx1 for Fixtures
         self.course = Course.objects.create(
             name="awesome course",
             start_date=datetime.date.today() + datetime.timedelta(days=15),
@@ -661,8 +659,6 @@ class MercadoPagoWebookTestCase(TestCase):
 
     def test_webhook_url_payment_created_and_pending_create_course_user(
             self, mock_api_get_payment_data):
-        # TODO: see Bidx1 to join this test with
-        #  test_webhook_url_payment_created_and_approved_create_course_user
         self.payment_mock['status'] = PENDING_STATUS
         mock_api_get_payment_data.return_value.json.return_value = self.payment_mock
         data = webhook_data_mock('payment.created', self.payment_mock['id'])
@@ -679,8 +675,6 @@ class MercadoPagoWebookTestCase(TestCase):
 
     def test_webhook_url_payment_created_and_pending_increments_registered_students(
             self, mock_api_get_payment_data):
-        # TODO: see Bidx1 to join this test with
-        #  test_webhook_url_payment_created_and_approved_increments_registered_students
         self.payment_mock['status'] = PENDING_STATUS
         mock_api_get_payment_data.return_value.json.return_value = self.payment_mock
         data = webhook_data_mock('payment.created', self.payment_mock['id'])

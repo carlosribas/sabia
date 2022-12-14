@@ -233,8 +233,6 @@ def course_registration(request, course_id, template_name="base/course_registrat
 
 @login_required
 def payment_complete(request):
-    # TODO: if it's possible guarantee that requests is only from mercadopago
-
     payment_status = request.GET.get('status')
     payment_id = request.GET.get('payment_id')
     if payment_status not in [
