@@ -10,7 +10,7 @@ from django.urls import reverse, resolve
 from decimal import Decimal as Dec, ROUND_HALF_UP
 
 from base.mercado_pago_api import FAILURE_STATUS, SUCCESS_STATUS, PENDING_STATUS, \
-    ID_SEPARATOR
+    ID_SEPARATOR, IN_PROCESS_STATUS
 from base.tests.test_integration.test_mercado_pago import preference_mock
 from base.tests.test_mercado_pago_api import api_get_payment_mock, \
     api_get_payment_not_found_mock
@@ -475,14 +475,16 @@ class CoursePaymentTestCase(TestCase):
             self, mock_api_get_payment_data):
         mock_api_get_payment_data.return_value.json.return_value = \
             mercadopago_api_get_payment_mock(self.course.id, SUCCESS_STATUS)
-        # Other parameters can be ommited
-        url = reverse('course_paid') + '?payment_id=123&status=' + SUCCESS_STATUS
-        response = self.client.get(url)
+        for status in [FAILURE_STATUS, PENDING_STATUS, SUCCESS_STATUS,
+                       IN_PROCESS_STATUS]:
+            # Other parameters can be ommited
+            url = reverse('course_paid') + '?payment_id=123&status=' + status
+            response = self.client.get(url)
 
-        self.assertRedirects(response, reverse('enroll', args=(self.course.pk,)),
-                             status_code=HTTPStatus.FOUND,
-                             target_status_code=HTTPStatus.OK,
-                             fetch_redirect_response=False)
+            self.assertRedirects(response, reverse('enroll', args=(self.course.pk,)),
+                                 status_code=HTTPStatus.FOUND,
+                                 target_status_code=HTTPStatus.OK,
+                                 fetch_redirect_response=False)
 
     def test_mercadopago_payment_failure_status_redirects_to_course_page_with_message(
             self, mock_api_get_payment_data):

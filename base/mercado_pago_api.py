@@ -5,6 +5,7 @@ END_POINT = 'https://api.mercadopago.com/v1/payments/'
 FAILURE_STATUS = 'failure'
 PENDING_STATUS = 'pending'
 SUCCESS_STATUS = 'approved'
+IN_PROCESS_STATUS = 'in_process'
 ID_SEPARATOR = '&'
 
 
