@@ -174,8 +174,12 @@ def course_registration(request, course_id, template_name="base/course_registrat
                     'installments': installments, 'payer_email': request.user.email
                 }
                 preference = mercadopago.get_preference(config)
-                preference_response = preference['response']
-                public_key = settings.MERCADO_PAGO_PUBLIC_KEY
+                if preference is not None:
+                    preference_response = preference['response']
+                    public_key = settings.MERCADO_PAGO_PUBLIC_KEY
+                else:
+                    preference_response = None
+                    public_key = None
 
                 context = {
                     'course': course,
@@ -206,11 +210,13 @@ def course_registration(request, course_id, template_name="base/course_registrat
             'unit_price': float(price1x),
             'installments': installments, 'payer_email': request.user.email
         }
-        # TODO: try getting preference for more than once. If can't, send warning to
-        #  admin
         preference = mercadopago.get_preference(config)
-        preference_response = preference['response']
-        public_key = settings.MERCADO_PAGO_PUBLIC_KEY
+        if preference is not None:
+            preference_response = preference['response']
+            public_key = settings.MERCADO_PAGO_PUBLIC_KEY
+        else:
+            preference_response = None
+            public_key = None
     else:
         preference_response = None
         public_key = None

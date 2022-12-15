@@ -111,9 +111,8 @@ class CourseTestCase(TestCase):
         self.assertEquals(view.func, course_registration)
 
     @patch('base.mercado_pago.MercadoPago.get_preference')
-    @patch('base.mercado_pago.mercadopago.SDK')
     def test_course_registration_generates_mercadopago_preference(
-            self, mercado_pago_sdk_mock, get_preference_mock):
+            self, get_preference_mock):
         preference_config = {
             'id': str(self.course_3.id) + '&' + self.user.email + '&',
             'title': self.course_3.name, 'unit_price': float(self.course_3.price),
@@ -137,31 +136,28 @@ class CourseTestCase(TestCase):
         self.assertEqual(preference['payer']['email'], self.user.email)
 
     @patch('base.mercado_pago.MercadoPago.get_preference')
-    @patch('base.mercado_pago.mercadopago.SDK')
     def test_course_registration_sends_mercadopago_public_key(
-            self, mercado_pago_sdk_mock, get_preference_mock):
+            self, get_preference_mock):
         url = reverse('enroll', args=(self.course_3.pk,))
         response = self.client.get(url)
         public_key = response.context.get('public_key')
         self.assertEqual(public_key, settings.MERCADO_PAGO_PUBLIC_KEY)
 
     @patch('base.mercado_pago.MercadoPago.get_preference')
-    @patch('base.mercado_pago.mercadopago.SDK')
     def test_course_registration_generates_mercadopago_preference_price_gt_100(
-            self, mercado_pago_sdk_mock, get_preference_mock):
+            self, get_preference_mock):
         self.course_3.price = 101
         self.course_3.save()
 
         # Emulate how price is calculated
         price1x = self.course_3.price - \
-                (self.course_3.price * Dec('.05')).quantize(Dec('.01'), rounding=ROUND_HALF_UP)
+            (self.course_3.price * Dec('.05')).quantize(Dec('.01'), rounding=ROUND_HALF_UP)
         preference_config = {
             'id': str(self.course_3.id) + '&' + self.user.email + '&',
             'title': str(self.course_3), 'unit_price': float(price1x),
             'installments': 4, 'payer_email': self.user.email
         }
-        preference_mock_data = preference_mock(preference_config)
-        get_preference_mock.return_value = preference_mock_data
+        get_preference_mock.return_value = preference_mock(preference_config)
 
         url = reverse('enroll', args=(self.course_3.pk,))
         response = self.client.get(url)
@@ -176,7 +172,18 @@ class CourseTestCase(TestCase):
         self.assertEqual(preference['items'][0]['unit_price'], float(price1x))
         self.assertEqual(preference['payment_methods']['installments'], 4)
 
-    def test_course_registration_does_not_generate_mercado_preference_if_not_price(
+    @patch('base.mercado_pago.MercadoPago.get_preference')
+    def test_course_registration_does_not_generate_mercadopago_preference_if_api_error(
+            self, get_preference_mock):
+        get_preference_mock.return_value = None
+
+        url = reverse('enroll', args=(self.course_3.pk,))
+        response = self.client.get(url)
+        preference = response.context.get('preference')
+
+        self.assertIsNone(preference)
+
+    def test_course_registration_does_not_generate_mercadopago_preference_if_not_price(
             self):
         url = reverse('enroll', args=(self.course_2.pk,))
         response = self.client.get(url)
@@ -207,12 +214,8 @@ class CourseTestCase(TestCase):
         self.assertIsNone(preference)
 
     @patch('base.mercado_pago.MercadoPago.get_preference')
-    @patch('base.mercado_pago.mercadopago.SDK')
     def test_course_registration_applies_coupon_generates_right_preference(
-            self, mercado_pago_sdk_mock, get_preference_mock):
-        self.course_3.price = 101
-        self.course_3.save()
-
+            self, get_preference_mock):
         coupon_code = CourseUserCoupon.objects.create(
             course=self.course_3,
             user=self.user,
@@ -223,16 +226,11 @@ class CourseTestCase(TestCase):
         )
 
         # The way price coupon is figured out in the view
-        discount = Dec(coupon_code.discount / 100) \
-            .quantize(Dec('.01'), rounding=ROUND_HALF_UP)
-        course_price = self.course_3.price - (self.course_3.price * discount) \
-            .quantize(Dec('.01'), rounding=ROUND_HALF_UP)
-        price1x = (course_price - course_price * 5 / 100) \
-            .quantize(Dec('.01'), rounding=ROUND_HALF_UP)
+        price1x = self.generates_price_like_in_views(coupon_code)
         preference_config = {
             'id': str(self.course_3.id) + '&' + self.user.email + '&' + coupon_code.code,
             'title': self.course_3.name, 'unit_price': float(price1x),
-            'installments': 4, 'payer_email': self.user.email
+            'installments': 1, 'payer_email': self.user.email
         }
         preference_mock_data = preference_mock(preference_config)
         get_preference_mock.return_value = preference_mock_data
@@ -247,6 +245,27 @@ class CourseTestCase(TestCase):
         self.assertEqual(
             preference['items'][0]['id'],
             str(self.course_3.id) + '&' + self.user.email + '&' + coupon_code.code)
+
+    @patch('base.mercado_pago.MercadoPago.get_preference')
+    def test_course_registration_applies_coupon_does_not_generate_mercadopago_preference_if_api_error(
+            self, get_preference_mock):
+        coupon_code = CourseUserCoupon.objects.create(
+            course=self.course_3,
+            user=self.user,
+            code='test',
+            discount=10,
+            valid_from=datetime.datetime.now(),
+            valid_to=datetime.datetime.now() + datetime.timedelta(days=1)
+        )
+
+        get_preference_mock.return_value = None
+
+        data = {'content': self.course_3.pk, 'action': 'code', 'code': coupon_code.code}
+        url = reverse('enroll', args=(self.course_3.pk,))
+        response = self.client.post(url, data)
+        preference = response.context.get('preference')
+
+        self.assertIsNone(preference)
 
     def test_course_registration_pre_booking(self):
         self.data = {
@@ -334,8 +353,7 @@ class CourseTestCase(TestCase):
         self.assertEqual(str(message[0]), 'Coupon not found')
 
     @patch('base.mercado_pago.MercadoPago.get_preference')
-    @patch('base.mercado_pago.mercadopago.SDK')
-    def test_course_user_coupon_ok(self, mercado_pago_sdk_mock, get_preference_mock):
+    def test_course_user_coupon_ok(self, get_preference_mock):
         CourseUserCoupon.objects.create(
             course=self.course_3,
             user=self.user,
@@ -400,6 +418,16 @@ class CourseTestCase(TestCase):
     def test_material_url_resolves_my_course_view(self):
         view = resolve('/material')
         self.assertEquals(view.func, material)
+
+    def generates_price_like_in_views(self, coupon_code):
+        discount = Dec(coupon_code.discount / 100) \
+            .quantize(Dec('.01'), rounding=ROUND_HALF_UP)
+        course_price = self.course_3.price - (self.course_3.price * discount) \
+            .quantize(Dec('.01'), rounding=ROUND_HALF_UP)
+        price1x = (course_price - course_price * 5 / 100) \
+            .quantize(Dec('.01'), rounding=ROUND_HALF_UP)
+
+        return price1x
 
 
 def mercadopago_api_get_payment_mock(course_id, status):

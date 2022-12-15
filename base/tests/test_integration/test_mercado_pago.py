@@ -1,4 +1,5 @@
 import os
+from unittest.mock import patch
 
 import vcr
 
@@ -123,6 +124,16 @@ class TestMercadoPago(TestCase):
             'title': 'Example Course', 'unit_price': 100, 'installments': 1,
             'payer_email': self.user.email
         }
+
+    @patch('base.mercado_pago.mercadopago.SDK.preference')
+    def test_mercadopago_creates_none_preference_if_failed_getting_preference(
+            self, mercadopago_preference_mock):
+        mercadopago_preference_mock.return_value.create.return_value = {
+            'status': 500, 'response': 'Error'
+        }
+
+        preference = self.mercadopago.get_preference(self.config)
+        self.assertIsNone(preference)
 
     @sabia_vcr.use_cassette()
     def test_mercadopago_creates_preference(self):

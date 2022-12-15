@@ -1,3 +1,5 @@
+from http import HTTPStatus
+
 import mercadopago
 from django.conf import settings
 from django.urls import reverse
@@ -11,7 +13,8 @@ class MercadoPago:
     def get_preference(self, config):
         preference_data = self.set_preference_data(config)
         preference = self.sdk.preference().create(preference_data)
-        # TODO: treat errors!
+        if preference['status'] != HTTPStatus.CREATED:
+            return None
 
         return preference
 
