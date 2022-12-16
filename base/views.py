@@ -27,6 +27,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 
 from base.mercado_pago import MercadoPago
+from base.mercadopago_payment_data import MercadoPagoPaymentData, ID_SEPARATOR
 from base.models import Course, CourseUser, CourseUserCoupon, CourseUserInterview, CourseMaterial, \
     CourseMaterialDocument, CourseMaterialVideo, ENROLL, PRE_BOOKING
 from base.mercado_pago_api import MercadoPagoAPI, FAILURE_STATUS, SUCCESS_STATUS, \
@@ -169,7 +170,7 @@ def course_registration(request, course_id, template_name="base/course_registrat
 
                 mercadopago = MercadoPago()
                 config = {
-                    'id': str(course_id) + '&' + request.user.email + '&' + coupon.code,
+                    'id': str(course_id) + ID_SEPARATOR + request.user.email + ID_SEPARATOR + coupon.code,
                     'title': str(course), 'unit_price': float(price1x),
                     'installments': installments, 'payer_email': request.user.email
                 }
@@ -206,7 +207,7 @@ def course_registration(request, course_id, template_name="base/course_registrat
     if request.user.is_authenticated and not enrolled and price:
         mercadopago = MercadoPago()
         config = {
-            'id': str(course_id) + '&' + request.user.email + '&', 'title': str(course),
+            'id': str(course_id) + ID_SEPARATOR + request.user.email + ID_SEPARATOR, 'title': str(course),
             'unit_price': float(price1x),
             'installments': installments, 'payer_email': request.user.email
         }
@@ -246,15 +247,24 @@ def payment_complete(request):
     ] or payment_id is None:
         return HttpResponseBadRequest(_('Cannot process this request'))
 
-    # TODO: treat errors
     mercadopago_api = MercadoPagoAPI(payment_id)
-    mercadopago_api.fetch_payment_data()
+    mercadopago_response = mercadopago_api.fetch_payment_data()
+    if mercadopago_response is None:
+        logger.error(
+            'Could not retrieve payment data for payment_id ' + payment_id
+            + ' for user ' + request.user.email)
+        messages.error(request,
+                       _('Something went wrong. Please contact the staff if your '
+                         'payment was made and will return you as soon as possible.'))
+        return redirect('/')
+
     if mercadopago_api.payment_not_found():
         return HttpResponseBadRequest(_('Cannot process this request'))
 
-    course_id = mercadopago_api.get_course_id()
+    mp_payment_data = MercadoPagoPaymentData(mercadopago_response)
+    course_id = mp_payment_data.get_course_id()
     get_object_or_404(Course, pk=int(course_id))
-    new_payment_status = mercadopago_api.get_payment_status()
+    new_payment_status = mp_payment_data.get_payment_status()
 
     if payment_status == FAILURE_STATUS:
         messages.error(request, _('There was an error with the payment'))
@@ -283,19 +293,24 @@ def mercado_pago_webhook(request, token):
     payment_id = body['data']['id']
     logger.info('Webhook called for payment id ' + payment_id)
     mercadopago_api = MercadoPagoAPI(payment_id)
-    payment_data = mercadopago_api.fetch_payment_data()
+
+    mercadopago_response = mercadopago_api.fetch_payment_data()
+    if mercadopago_response is None:
+        logger.error('Could not retrieve payment data')
+        return HttpResponse('Could not retrieve payment data', status=HTTPStatus.OK)
     logger.info('Payment data for payment id ' + payment_id)
-    logger.info(payment_data)
-    course_id = mercadopago_api.get_course_id()
+    logger.info(mercadopago_response)
+    mp_payment_data = MercadoPagoPaymentData(mercadopago_response)
+    course_id = mp_payment_data.get_course_id()
     logger.info('Gettting course object for course id ' + course_id)
     course = get_object_or_404(Course, pk=int(course_id))
 
-    payer_email = mercadopago_api.get_payer_email()
+    payer_email = mp_payment_data.get_payer_email()
     logger.info('Gettting user by payer email ' + payer_email)
     user = get_object_or_404(CustomUser, email=payer_email)
-    payment_status = mercadopago_api.get_payment_status()
+    payment_status = mp_payment_data.get_payment_status()
 
-    coupon_code = mercadopago_api.get_coupon() if mercadopago_api.coupon_used()  \
+    coupon_code = mp_payment_data.get_coupon() if mp_payment_data.coupon_used()  \
         else ''
 
     try:
@@ -308,7 +323,7 @@ def mercado_pago_webhook(request, token):
         if not course_user:
             logging.warning('Webhook request has status updated but the'
                             'CourseUser object was not created before for'
-                            'payment id ' + payment_id)
+                            ' the payment id ' + payment_id)
             # TODO: unify string format; see other places
             return HttpResponse('Warning: payment {} was not created'.format(payment_id),
                                 status=HTTPStatus.OK)

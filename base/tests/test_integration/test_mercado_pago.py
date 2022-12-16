@@ -10,6 +10,7 @@ from django.test import TestCase
 from django.urls import reverse
 
 from base.mercado_pago import MercadoPago
+from base.mercadopago_payment_data import ID_SEPARATOR
 from userauth.models import CustomUser, VET
 
 USER_USERNAME = 'user'
@@ -120,7 +121,7 @@ class TestMercadoPago(TestCase):
         self.mercadopago = MercadoPago()
         self.course_id = 3
         self.config = {
-            'id': str(self.course_id) + '&' + self.user.email + '&',
+            'id': str(self.course_id) + ID_SEPARATOR + self.user.email + ID_SEPARATOR,
             'title': 'Example Course', 'unit_price': 100, 'installments': 1,
             'payer_email': self.user.email
         }
@@ -146,7 +147,7 @@ class TestMercadoPago(TestCase):
         preference = self.mercadopago.get_preference(self.config)
 
         self.assertEqual(preference['response']['items'][0]['id'],
-                         str(self.course_id) + '&' + self.user.email + '&')
+                         str(self.course_id) + ID_SEPARATOR + self.user.email + ID_SEPARATOR)
         self.assertEqual(
             preference['response']['items'][0]['title'], 'Example Course')
         self.assertEqual(preference['response']['items'][0]['unit_price'], 100)
@@ -158,11 +159,11 @@ class TestMercadoPago(TestCase):
     @sabia_vcr.use_cassette()
     def test_mercadopago_generates_right_preference_coupon_applied(self):
         coupon_code = 'A123'
-        self.config['id'] = str(self.course_id) + '&' + self.user.email + '&' + coupon_code
+        self.config['id'] = str(self.course_id) + ID_SEPARATOR + self.user.email + ID_SEPARATOR + coupon_code
         preference = self.mercadopago.get_preference(self.config)
 
         self.assertEqual(preference['response']['items'][0]['id'],
-                         str(self.course_id) + '&' + self.user.email + '&' + coupon_code)
+                         str(self.course_id) + ID_SEPARATOR + self.user.email + ID_SEPARATOR + coupon_code)
 
     @sabia_vcr.use_cassette()
     def test_mercadopago_generates_right_preference_back_urls(self):

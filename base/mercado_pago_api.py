@@ -6,7 +6,6 @@ FAILURE_STATUS = 'failure'
 PENDING_STATUS = 'pending'
 SUCCESS_STATUS = 'approved'
 IN_PROCESS_STATUS = 'in_process'
-ID_SEPARATOR = '&'
 
 
 class MercadoPagoAPI:
@@ -23,34 +22,11 @@ class MercadoPagoAPI:
         return self.payment_not_found_
 
     def fetch_payment_data(self):
-        # TODO: treat http request errors
-        self.payment_data = requests.get(url=self.endpoint, headers=self.headers).json()
-        self.payment_not_found_ = self.payment_data['status'] == 404
+        response = requests.get(url=self.endpoint, headers=self.headers)
+        if response.ok:
+            self.payment_data = response.json()
+            self.payment_not_found_ = self.payment_data['status'] == 404
+            return self.payment_data
+        else:
+            return None
 
-        return self.payment_data
-
-    def get_payment_id(self):
-        return self.payment_data['id']
-
-    def get_course_id(self):
-        item_id = self.payment_data['additional_info']['items'][0]['id']
-        course_id = item_id.split(ID_SEPARATOR)[0]
-        return course_id
-
-    def get_payer_email(self):
-        item_id = self.payment_data['additional_info']['items'][0]['id']
-        email = ID_SEPARATOR.join(item_id.split(ID_SEPARATOR)[1:-1])
-
-        return email
-
-    def get_payment_status(self):
-        return self.payment_data['status']
-
-    def coupon_used(self):
-        item_id = self.payment_data['additional_info']['items'][0]['id']
-        return item_id[-1] != ID_SEPARATOR
-
-    def get_coupon(self):
-        if self.coupon_used():
-            item_id = self.payment_data['additional_info']['items'][0]['id']
-            return item_id.split(ID_SEPARATOR)[-1]

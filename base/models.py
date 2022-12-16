@@ -35,7 +35,7 @@ from wagtailstreamforms.models.abstract import AbstractFormSetting
 
 from userauth.models import CustomUser
 from .blocks import BaseStreamBlock
-from .mercado_pago_api import ID_SEPARATOR
+from .mercadopago_payment_data import ID_SEPARATOR
 from .richtext_options import RICHTEXT_FEATURES
 
 
