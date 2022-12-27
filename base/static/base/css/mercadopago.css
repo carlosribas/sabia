@@ -1,0 +1,5 @@
+/* Class rendered by mercadopago js sdk */
+.mercadopago-button {
+    font-size: large !important; /* force style after mercadopago sdk */
+    font-weight: bold;
+}

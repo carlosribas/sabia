@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+import sys
+import logging
 
 from django.urls import reverse_lazy
 
@@ -177,6 +179,7 @@ STATICFILES_DIRS = [
     os.path.join(PROJECT_DIR, 'static'),
     os.path.join(BASE_DIR, 'home/static/home'),
     os.path.join(BASE_DIR, 'userauth/static/userauth'),
+    os.path.join(BASE_DIR, 'base/static/base')
 ]
 
 # ManifestStaticFilesStorage is recommended in production, to prevent outdated
@@ -270,3 +273,36 @@ WAGTAILSTREAMFORMS_FORM_TEMPLATES = (
 )
 
 WAGTAILSTREAMFORMS_ADVANCED_SETTINGS_MODEL = 'base.AdvancedFormSetting'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'simple': {
+            'format': '{levelname} {asctime} {module} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': './log/log_file.log',
+            'formatter': 'simple',
+        },
+        'console': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
+        },
+    },
+    'loggers': {
+        'base': {
+            'handlers': ['file', 'console'],
+            'level': 'INFO',
+        },
+    },
+}
+# Disable logging when testing
+if len(sys.argv) > 1 and sys.argv[1] == 'test':
+    logging.disable(logging.CRITICAL)
