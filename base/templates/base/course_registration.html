@@ -146,6 +146,8 @@
                             <button type="submit" name="action" value="pre-booking" class="btn btn-course">{% trans "Make pre-booking" %}</button>
                         {% endif %}
                     {% endif %}
+                {% elif course.type == 'admin' and request.user.is_superuser %}
+                    <div id="mp_button" class="cho-container"></div>
                 {% endif %}
             </form>
         {% else %}
