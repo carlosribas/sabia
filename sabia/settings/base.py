@@ -287,7 +287,7 @@ LOGGING = {
         'file': {
             'level': 'INFO',
             'class': 'logging.FileHandler',
-            'filename': './log/log_file.log',
+            'filename': os.path.join(BASE_DIR, 'log/log_file.log'),
             'formatter': 'simple',
         },
         'console': {
