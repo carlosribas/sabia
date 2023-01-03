@@ -9,7 +9,10 @@ const initMercadoPagoButton = function (pubKey, prevenceId) {
         },
         render: {
             container: '.cho-container',
-            type: 'wallet',
+            label: 'Fazer pagamento',
+        },
+        theme: {
+            elementsColor: '#ff6600',
         }
     });
 }
