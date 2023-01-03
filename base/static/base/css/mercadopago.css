@@ -1,5 +1,12 @@
 /* Class rendered by mercadopago js sdk */
 .mercadopago-button {
-    font-size: large !important; /* force style after mercadopago sdk */
-    font-weight: bold;
+  letter-spacing: 1.1px;
+  line-height: 1.5 !important;
+  padding: 15px 40px 15px !important;
+  font-weight: 700;
+  font-size: 14px !important;
+  text-transform: uppercase;
+  background-color: #ff6600 !important;
+  border-color: #ff6600 !important;
+  width: fit-content;
 }
