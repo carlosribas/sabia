@@ -161,3 +161,9 @@
         <p>{% trans "Sorry, this page could not be found." %}</p>
     {% endif %}
 {% endblock %}
+
+{% block card-footer %}
+    {% if user.is_authenticated and price and course.show_course and not enrolled and course.vacancies > course.registered %}
+        <p><a href="https://baronimassad.com.br/pt-br/contato/">{% trans "Contact us" %}</a>{% trans " if you are unable to complete the payment" %}</p>
+    {% endif %}
+{% endblock %}
