@@ -84,12 +84,9 @@
             <strong>{% trans "Price" %}</strong>:
             <br>
             {% if price %}
-                {% if price1x %}R$ {{ price1x }} {% trans "one-time payment" %}{% endif %}<br/>
+                R$ {{ price }} {% trans "one-time payment" %} {% if price > 100 %}*{% endif %}<br/>
                 {% if price > 100 %}
-                    {% if price2x %}{% trans " or 2 monthly payments of " %}R$ {{ price2x }} *{% endif %}<br/>
-                    {% if price3x %}{% trans " or 3 monthly payments of " %}R$ {{ price3x }} *{% endif %} <br/>
-                    {% if price4x %}{% trans " or 4 monthly payments of " %}R$ {{ price4x }} *{% endif %} <br/>
-                    {% if price2x or price3x or price4x %}<i><small>{% trans "* The total amount of the installments is " %}R$ {{ price }}</small></i>{% endif %} <br/>
+                    <i><small>{% trans "* This amount can be paid in installments if you choose to pay with a credit card. " %}</small></i><br/>
                 {% endif %}
                 {% if user.is_authenticated and course.type != 'individual' and not enrolled.status or user.is_authenticated and course.type == 'individual' and interview %}
                     <a data-toggle="collapse" href="#collapseCoupon" role="button" aria-expanded="false" aria-controls="collapseCoupon">{% trans "Apply coupon" %}</a>
