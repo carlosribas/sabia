@@ -90,7 +90,7 @@ def course_registration(request, course_id, template_name="base/course_registrat
     price = course.price
 
     # Get number of installments
-    installments = get_installments(price)
+    installments = get_installments(price) if price else None
 
     # Check if the user is enrolled in the course
     enrolled = CourseUser.objects.filter(course=course.id, user=request.user.id).first()
@@ -178,7 +178,7 @@ def course_registration(request, course_id, template_name="base/course_registrat
             elif coupon and coupon.discount != 100:
                 discount = Dec(coupon.discount / 100).quantize(Dec('.01'), rounding=ROUND_HALF_UP)
                 price = course.price - (course.price * discount).quantize(Dec('.01'), rounding=ROUND_HALF_UP)
-                installments = get_installments(price)
+                installments = get_installments(price) if price else None
 
                 mercadopago = MercadoPago()
                 config = {
