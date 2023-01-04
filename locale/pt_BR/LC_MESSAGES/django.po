@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-03 21:58+0000\n"
+"POT-Creation-Date: 2023-01-04 21:15+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -311,8 +311,8 @@ msgid "Pre-booked"
 msgstr "Pré-reservado"
 
 #: base/templates/base/course_registration.html:48
-#: base/templates/base/course_registration.html:132
-#: base/templates/base/course_registration.html:155
+#: base/templates/base/course_registration.html:129
+#: base/templates/base/course_registration.html:152
 msgid "Exhausted vacancies"
 msgstr "Vagas esgotadas"
 
@@ -343,7 +343,7 @@ msgid "(Brasília time)"
 msgstr "(Horário de Brasília)"
 
 #: base/templates/base/course_registration.html:76
-#: base/templates/base/course_registration.html:98
+#: base/templates/base/course_registration.html:95
 msgid "Not available"
 msgstr "Não disponível"
 
@@ -352,70 +352,61 @@ msgid "one-time payment"
 msgstr "à vista"
 
 #: base/templates/base/course_registration.html:89
-msgid " or 2 monthly payments of "
-msgstr " ou 2x de "
-
-#: base/templates/base/course_registration.html:90
-msgid " or 3 monthly payments of "
-msgstr " ou 3x de "
-
-#: base/templates/base/course_registration.html:91
-msgid " or 4 monthly payments of "
-msgstr " ou 4x de "
+msgid ""
+"* This amount can be paid in installments if you choose to pay with a credit "
+"card. "
+msgstr ""
+"* Esse valor pode ser parcelado se você optar por pagar com cartão de crédito."
 
 #: base/templates/base/course_registration.html:92
-msgid "* The total amount of the installments is "
-msgstr "* O valor total das parcelas é de "
-
-#: base/templates/base/course_registration.html:95
 msgid "Apply coupon"
 msgstr "Aplicar cupom"
 
-#: base/templates/base/course_registration.html:100
+#: base/templates/base/course_registration.html:97
 msgid "Free registration!"
 msgstr "Inscrição gratuita!"
 
-#: base/templates/base/course_registration.html:109
+#: base/templates/base/course_registration.html:106
 msgid "Enter coupon"
 msgstr "Inserir cupom"
 
-#: base/templates/base/course_registration.html:111
+#: base/templates/base/course_registration.html:108
 msgid "Apply"
 msgstr "Aplicar"
 
-#: base/templates/base/course_registration.html:122
-#: base/templates/base/course_registration.html:124
-#: base/templates/base/course_registration.html:157
+#: base/templates/base/course_registration.html:119
+#: base/templates/base/course_registration.html:121
+#: base/templates/base/course_registration.html:154
 msgid "I'm interested"
 msgstr "Tenho interesse"
 
-#: base/templates/base/course_registration.html:129
+#: base/templates/base/course_registration.html:126
 msgid "Cancel registration"
 msgstr "Cancelar inscrição"
 
-#: base/templates/base/course_registration.html:138
-#: base/templates/base/course_registration.html:157
+#: base/templates/base/course_registration.html:135
+#: base/templates/base/course_registration.html:154
 msgid "Make registration"
 msgstr "Fazer inscrição"
 
-#: base/templates/base/course_registration.html:144
+#: base/templates/base/course_registration.html:141
 msgid "Cancel pre-booking"
 msgstr "Cancelar pré-reserva"
 
-#: base/templates/base/course_registration.html:146
-#: base/templates/base/course_registration.html:157
+#: base/templates/base/course_registration.html:143
+#: base/templates/base/course_registration.html:154
 msgid "Make pre-booking"
 msgstr "Fazer pré-reserva"
 
-#: base/templates/base/course_registration.html:161 sabia/templates/404.html:17
+#: base/templates/base/course_registration.html:158 sabia/templates/404.html:17
 msgid "Sorry, this page could not be found."
 msgstr "Desculpe, a página que você está procurando não existe."
 
-#: base/templates/base/course_registration.html:167
+#: base/templates/base/course_registration.html:164
 msgid "Contact us"
 msgstr "Entre em contato"
 
-#: base/templates/base/course_registration.html:167
+#: base/templates/base/course_registration.html:164
 msgid " if you are unable to complete the payment"
 msgstr " caso não consiga realizar o pagamento"
 
@@ -471,70 +462,70 @@ msgstr "Anexo"
 msgid "Send"
 msgstr "Enviar"
 
-#: base/views.py:100
+#: base/views.py:115
 msgid "Pre-booking successful"
 msgstr "Pré-reserva realizada com sucesso"
 
-#: base/views.py:109
+#: base/views.py:124
 msgid "Pre-booking canceled successfully"
 msgstr "Pré-reserva cancelada com sucesso"
 
-#: base/views.py:119
+#: base/views.py:134
 msgid "Registration successful!"
 msgstr "Inscrição realizada com sucesso!"
 
-#: base/views.py:121
+#: base/views.py:136
 msgid "Sorry, there are no more vacancies for this course"
 msgstr "Desculpe, não há mais vagas para este curso"
 
-#: base/views.py:130
+#: base/views.py:145
 msgid "Unsubscribe successfully"
 msgstr "Inscrição cancelada com sucesso"
 
-#: base/views.py:145
+#: base/views.py:160
 msgid "Interest registered successfully"
 msgstr "Interesse registrado com sucesso"
 
-#: base/views.py:159 base/views.py:162
+#: base/views.py:174 base/views.py:177
 msgid "Coupon not found"
 msgstr "Cupom não encontrado"
 
-#: base/views.py:197
+#: base/views.py:206
 msgid "Coupon applied successfully"
 msgstr "Cupom aplicado com sucesso"
 
-#: base/views.py:201
+#: base/views.py:210
 msgid "Coupon applied successfully. This course is now free!"
 msgstr "Cupom aplicado com sucesso. Este curso agora é gratuito!"
 
-#: base/views.py:248 base/views.py:262
+#: base/views.py:253 base/views.py:267
 msgid "Cannot process this request"
 msgstr "Não foi possível processar esta solicitação"
 
-#: base/views.py:257
+#: base/views.py:262
 msgid ""
 "Something went wrong. Please contact the staff if your payment was made and "
 "will return you as soon as possible."
 msgstr ""
 "Algo deu errado. Entre em contato conosco caso tenha efetuado seu pagamento."
 
-#: base/views.py:270
+#: base/views.py:275
 msgid "There was an error with the payment"
 msgstr "Houve um erro com o pagamento"
 
-#: base/views.py:272 base/views.py:275
+#: base/views.py:277 base/views.py:280
 msgid "Payment Successful"
 msgstr "Pagamento realizado com sucesso"
 
-#: base/views.py:277
+#: base/views.py:282
 msgid "Waiting for payment confirmation"
 msgstr "Aguardando a confirmação do pagamento"
 
-#: base/views.py:439
+#: base/views.py:444
 msgid "Email successfully sent!"
 msgstr "Email realizado com sucesso."
 
-#: base/views.py:441
+#: base/views.py:446
 msgid "You must fill in the subject and message fields"
 msgstr "Você precisa preencher os campos assunto e mensagem"
 
