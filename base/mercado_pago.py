@@ -31,7 +31,8 @@ class MercadoPago:
             ],
             'payer': {'email': config['payer_email']},
             'payment_methods': {
-                'installments': config['installments']
+                'installments': config['installments'],
+                'excluded_payment_types': [{'id': 'ticket'}],
             },
             'back_urls': {
                 'success': settings.BASE_URL + reverse('course_paid'),
