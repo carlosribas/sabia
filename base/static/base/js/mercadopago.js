@@ -10,9 +10,6 @@ const initMercadoPagoButton = function (pubKey, prevenceId) {
         render: {
             container: '.cho-container',
             label: 'Fazer pagamento',
-        },
-        theme: {
-            elementsColor: '#ff6600',
         }
     });
 }
