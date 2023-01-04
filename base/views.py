@@ -53,29 +53,44 @@ def course_list(request, template_name="base/course_list.html"):
     return render(request, template_name, context)
 
 
+def get_installments(price):
+    """Set the number of installments according to the course value"""
+    if price <= 100:
+        installments = 1
+    elif 100 < price <= 200:
+        installments = 2
+    elif 200 < price <= 300:
+        installments = 3
+    elif 300 < price <= 400:
+        installments = 4
+    elif 400 < price <= 500:
+        installments = 5
+    elif 500 < price <= 600:
+        installments = 6
+    elif 600 < price <= 700:
+        installments = 7
+    elif 700 < price <= 800:
+        installments = 8
+    elif 800 < price <= 900:
+        installments = 9
+    elif 900 < price <= 1000:
+        installments = 10
+    elif 1000 < price <= 1100:
+        installments = 11
+    else:
+        installments = 12
+
+    return installments
+
+
 def course_registration(request, course_id, template_name="base/course_registration.html"):
     course = get_object_or_404(Course, pk=course_id)
 
     # Get the course fee
-    price = course.price  # paypal value
-    if price and price <= 100:
-        price1x = course.price
-        price2x = None
-        price3x = None
-        price4x = None
-        installments = 1
-    elif price and price > 100:
-        price1x = course.price - (course.price * Dec('.05')).quantize(Dec('.01'), rounding=ROUND_HALF_UP)
-        price2x = (price / 2).quantize(Dec('.01'))
-        price3x = (price / 3).quantize(Dec('.01'))
-        price4x = (price / 4).quantize(Dec('.01'))
-        installments = 4
-    else:
-        price1x = None
-        price2x = None
-        price3x = None
-        price4x = None
-        installments = None
+    price = course.price
+
+    # Get number of installments
+    installments = get_installments(price)
 
     # Check if the user is enrolled in the course
     enrolled = CourseUser.objects.filter(course=course.id, user=request.user.id).first()
@@ -163,18 +178,16 @@ def course_registration(request, course_id, template_name="base/course_registrat
             elif coupon and coupon.discount != 100:
                 discount = Dec(coupon.discount / 100).quantize(Dec('.01'), rounding=ROUND_HALF_UP)
                 price = course.price - (course.price * discount).quantize(Dec('.01'), rounding=ROUND_HALF_UP)
-                price1x = (price - price * 5 / 100).quantize(Dec('.01'), rounding=ROUND_HALF_UP)
-                price2x = (price / 2).quantize(Dec('.01'))
-                price3x = (price / 3).quantize(Dec('.01'))
-                price4x = (price / 4).quantize(Dec('.01'))
+                installments = get_installments(price)
 
                 mercadopago = MercadoPago()
                 config = {
                     'id': str(course_id) + ID_SEPARATOR + request.user.email + ID_SEPARATOR + coupon.code,
-                    'title': str(course), 'unit_price': float(price1x),
+                    'title': str(course), 'unit_price': float(price),
                     'installments': installments, 'payer_email': request.user.email
                 }
                 preference = mercadopago.get_preference(config)
+
                 if preference is not None:
                     preference_response = preference['response']
                     public_key = settings.MERCADO_PAGO_PUBLIC_KEY
@@ -187,10 +200,6 @@ def course_registration(request, course_id, template_name="base/course_registrat
                     'enrolled': enrolled,
                     'interview': interview,
                     'price': price,
-                    'price1x': price1x,
-                    'price2x': price2x,
-                    'price3x': price3x,
-                    'price4x': price4x,
                     'preference': preference_response,
                     'public_key': public_key
                 }
@@ -208,7 +217,7 @@ def course_registration(request, course_id, template_name="base/course_registrat
         mercadopago = MercadoPago()
         config = {
             'id': str(course_id) + ID_SEPARATOR + request.user.email + ID_SEPARATOR, 'title': str(course),
-            'unit_price': float(price1x),
+            'unit_price': float(price),
             'installments': installments, 'payer_email': request.user.email
         }
         preference = mercadopago.get_preference(config)
@@ -227,10 +236,6 @@ def course_registration(request, course_id, template_name="base/course_registrat
         'enrolled': enrolled,
         'interview': interview,
         'price': price,
-        'price1x': price1x,
-        'price2x': price2x,
-        'price3x': price3x,
-        'price4x': price4x,
         'preference': preference_response,
         'public_key': public_key
     }
