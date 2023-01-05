@@ -6,7 +6,7 @@ DATABASES = {
         'NAME': 'sabia',
         'USER': 'sabia',
         'PASSWORD': 'sabia',
-        'HOST': 'db',
+        'HOST': 'localhost',
     }
 }
 
@@ -26,9 +26,8 @@ RECAPTCHA_PRIVATE_KEY = 'reCaptcha_private_key'
 NOCAPTCHA = True
 
 # Mercado Pago credentials
-MERCADO_PAGO_PUBLIC_KEY = ''
-MERCADO_PAGO_ACCESS_TOKEN = ''
+MERCADO_PAGO_PUBLIC_KEY = 'mp_public_key'
+MERCADO_PAGO_ACCESS_TOKEN = 'mp_access_token'
 
 # Token for Mercado Pago webhook endpoint
-# Choose one very long and with a mix of alfanumeric chars and with special chars
-MERCADO_PAGO_WEBHOOK_TOKEN = ''
+MERCADO_PAGO_WEBHOOK_TOKEN = 'mp_webhook_token'
