@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-04 21:15+0000\n"
+"POT-Creation-Date: 2023-01-05 22:56+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -311,8 +311,8 @@ msgid "Pre-booked"
 msgstr "Pré-reservado"
 
 #: base/templates/base/course_registration.html:48
-#: base/templates/base/course_registration.html:129
-#: base/templates/base/course_registration.html:152
+#: base/templates/base/course_registration.html:126
+#: base/templates/base/course_registration.html:149
 msgid "Exhausted vacancies"
 msgstr "Vagas esgotadas"
 
@@ -343,7 +343,7 @@ msgid "(Brasília time)"
 msgstr "(Horário de Brasília)"
 
 #: base/templates/base/course_registration.html:76
-#: base/templates/base/course_registration.html:95
+#: base/templates/base/course_registration.html:92
 msgid "Not available"
 msgstr "Não disponível"
 
@@ -352,63 +352,70 @@ msgid "one-time payment"
 msgstr "à vista"
 
 #: base/templates/base/course_registration.html:89
-msgid ""
-"* This amount can be paid in installments if you choose to pay with a credit "
-"card. "
-msgstr ""
-"* Esse valor pode ser parcelado no cartão de crédito."
-
-#: base/templates/base/course_registration.html:92
 msgid "Apply coupon"
 msgstr "Aplicar cupom"
 
-#: base/templates/base/course_registration.html:97
+#: base/templates/base/course_registration.html:94
 msgid "Free registration!"
 msgstr "Inscrição gratuita!"
 
-#: base/templates/base/course_registration.html:106
+#: base/templates/base/course_registration.html:103
 msgid "Enter coupon"
 msgstr "Inserir cupom"
 
-#: base/templates/base/course_registration.html:108
+#: base/templates/base/course_registration.html:105
 msgid "Apply"
 msgstr "Aplicar"
 
-#: base/templates/base/course_registration.html:119
-#: base/templates/base/course_registration.html:121
-#: base/templates/base/course_registration.html:154
+#: base/templates/base/course_registration.html:116
+#: base/templates/base/course_registration.html:118
+#: base/templates/base/course_registration.html:151
 msgid "I'm interested"
 msgstr "Tenho interesse"
 
-#: base/templates/base/course_registration.html:126
+#: base/templates/base/course_registration.html:123
 msgid "Cancel registration"
 msgstr "Cancelar inscrição"
 
-#: base/templates/base/course_registration.html:135
-#: base/templates/base/course_registration.html:154
+#: base/templates/base/course_registration.html:132
+#: base/templates/base/course_registration.html:151
 msgid "Make registration"
 msgstr "Fazer inscrição"
 
-#: base/templates/base/course_registration.html:141
+#: base/templates/base/course_registration.html:138
 msgid "Cancel pre-booking"
 msgstr "Cancelar pré-reserva"
 
-#: base/templates/base/course_registration.html:143
-#: base/templates/base/course_registration.html:154
+#: base/templates/base/course_registration.html:140
+#: base/templates/base/course_registration.html:151
 msgid "Make pre-booking"
 msgstr "Fazer pré-reserva"
+
+#: base/templates/base/course_registration.html:155
+msgid ""
+"* This amount can be paid in installments if you choose to pay with a credit "
+"card. "
+msgstr "* Esse valor pode ser parcelado no cartão de crédito."
 
 #: base/templates/base/course_registration.html:158 sabia/templates/404.html:17
 msgid "Sorry, this page could not be found."
 msgstr "Desculpe, a página que você está procurando não existe."
 
-#: base/templates/base/course_registration.html:164
+#: base/templates/base/course_registration.html:165
+msgid "This website uses"
+msgstr "A Baroni-Massad utiliza o"
+
+#: base/templates/base/course_registration.html:165
+msgid "to guarantee all security and privacy of purchases for our students"
+msgstr "para garantir toda segurança e privacidade de compra para nossos alunos"
+
+#: base/templates/base/course_registration.html:166
 msgid "Contact us"
 msgstr "Entre em contato"
 
-#: base/templates/base/course_registration.html:164
-msgid " if you are unable to complete the payment"
-msgstr " caso não consiga realizar o pagamento"
+#: base/templates/base/course_registration.html:166
+msgid " if you have any questions or difficulties during payment"
+msgstr " caso tenha alguma dúvida ou dificuldade durante o pagamento"
 
 #: base/templates/base/members_page.html:17
 msgid "See more"
