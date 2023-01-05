@@ -356,7 +356,7 @@ msgid ""
 "* This amount can be paid in installments if you choose to pay with a credit "
 "card. "
 msgstr ""
-"* Esse valor pode ser parcelado se você optar por pagar com cartão de crédito."
+"* Esse valor pode ser parcelado no cartão de crédito."
 
 #: base/templates/base/course_registration.html:92
 msgid "Apply coupon"
