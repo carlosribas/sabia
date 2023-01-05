@@ -54,7 +54,7 @@
 {% endblock %}
 
 {% block card-body %}
-    {% if course.type == 'admin' and request.user.is_superuser or course.show_course or course.type == 'individual' %}
+    {% if course.show_course or course.type == 'individual' %}
         <div id="cover"></div>
         {% if enrolled.status == 'enroll' %}
             <div class="alert alert-custom" role="alert">

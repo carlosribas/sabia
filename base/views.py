@@ -86,6 +86,9 @@ def get_installments(price):
 def course_registration(request, course_id, template_name="base/course_registration.html"):
     course = get_object_or_404(Course, pk=course_id)
 
+    if course.type == "admin" and not request.user.is_superuser:
+        return render(request, "404.html", {})
+
     # Get the course fee
     price = course.price
 
