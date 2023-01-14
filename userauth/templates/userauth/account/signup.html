@@ -10,8 +10,7 @@
 
 {% block card-body %}
     {% get_providers as socialaccount_providers %}
-
-    <form method="POST" action="{% url 'account_signup' %}" class="needs-validation" novalidate>
+    <form method="POST" action="{% url 'account_signup' %}?next={{ request.GET.next }}" class="needs-validation" novalidate>
         {% csrf_token %}
         <div class="form-row">
             <div class="form-group col-md-6">

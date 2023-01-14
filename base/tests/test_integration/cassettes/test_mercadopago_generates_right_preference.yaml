@@ -1,0 +1,80 @@
+interactions:
+- request:
+    body: '{"items": [{"id": "3&user@example.com&", "title": "Example Course", "quantity":
+      1, "unit_price": 100}], "payer": {"email": "user@example.com"}, "payment_methods":
+      {"installments": 1}, "back_urls": {"success": "http://localhost:8000/cursos/finalizado",
+      "failure": "http://localhost:8000/cursos/finalizado", "pending": "http://localhost:8000/cursos/finalizado"}}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '360'
+      Content-type:
+      - application/json
+      User-Agent:
+      - MercadoPago Python SDK v2.2.0
+      x-idempotency-key:
+      - '91830909690998925336813037036532166608'
+      x-product-id:
+      - bc32bpftrpp001u8nhlg
+      x-tracking-id:
+      - platform:3.8.1,type:SDK2.2.0,so;
+    method: POST
+    uri: https://api.mercadopago.com/checkout/preferences
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAA/7RUS4/jNgz+K4XOzvgxiSdjoGixxd62W6DorS0ERqITYWRJpaidZIP890K285rd
+        HrZFb/ZHUuT38XEUoLVh4x1YaVzvRSdEISCxl4ScyE3ABtSLTGSj6I6iB2MToejEjjl0ZWm9Arvz
+        kbt1VVWlShR9LHvjwJrPoL0oRECnjdt+U0xMSmGM3xBzKsTGOKCDHLxG0fVgIxZCWYOOpdGiE23T
+        tE/P7eq5XdbVarkWhVDeWlTsafRo2udqta7rOhtS8E6q8S2XrL1AFjaYxZhADYxSEQJjTtFUTbOo
+        m0X9+Fvddo/Lrl4/1I/Pi2rZVZWY3X0vcR8MQRb//NAVkaNTT374Jxv7OwvGC13cM1JuKGGPhE7h
+        1MSR/4XeQrXrZqWXy0Wr2tViWenVYrMEvaiecPUEarXWqslRzrAM3jieGxG7snx9fX0YkBRoH2Dr
+        H5QfHjZUqh2qF5+4/FSXhNoQKv4hEPbS6O//ReaZx4AMGhjOhA3jEEX3+3Gi9PhHqqqmTRHpR9zD
+        ECzmgiY09xcYt54O0wBkIFGWZQbe/fohNwWjIhOmbmQnNmyzcO+nF7/7ySeKKArxVwLHhg+iqwuR
+        RnXIZI3rqjr9WYgB6AU5WBh1//jLx/fiDpQ9ouiqQlxpHU+FcJ5Nb9TU4UT2TNYHnNvOh5BfJNwm
+        CyQDHAZ0nJcLDkh5M8POO8wfQAjz3GYuLg2b7CHyhoDWNK7VUXw24cYrMiGydDC8AeboXM+pEDiA
+        saITb/UeJwzdlUXOcM1ciLn+XMNNjkTXn/tFmvhbiCxDIrWDiJciZvJ5NHZej2Q09pAsSwWkx87O
+        yznD9xE3DrhXNmnU8os3zwMmclu/cMt03joZFxmszfY4zsc5+73hTIJ8PnDGbcd7dbkngbxOim9q
+        PC/TV27w3XG9u5pZ6AhOb/xefnWLZ+P/v8nRME7L9vOHd/l/Z8IsxbVvGQyjFqP+V+oKzSck+Z/m
+        thC99X4eRAhAPO7OdA4MH+boyTVynsNbRPnkmG69TqdCsGewEoZsvBvXFPR1hE9/BwAA//8RvGX6
+        ZQcAAA==
+    headers:
+      Access-Control-Allow-Headers:
+      - Content-Type
+      Access-Control-Allow-Methods:
+      - PUT, GET, POST, DELETE, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '86400'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '802'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Tue, 13 Dec 2022 20:34:18 GMT
+      Strict-Transport-Security:
+      - max-age=16070400; includeSubDomains; preload
+      Timing-Allow-Origin:
+      - '*'
+      X-Content-Type-Options:
+      - nosniff
+      X-Request-Id:
+      - bde8b18e-b645-42da-b3cb-69fba969429b
+      X-XSS-Protection:
+      - 1; mode=block
+      content-encoding:
+      - gzip
+      vary:
+      - Accept-Encoding
+    status:
+      code: 201
+      message: Created
+version: 1

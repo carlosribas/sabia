@@ -1,5 +1,10 @@
 {% extends 'account/base_card.html' %}
+{% load static %}
 {% load i18n wagtailcore_tags %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/mercadopago.css' %}">
+{% endblock %}
 
 {% block extra_js %}
     <!-- Meta Pixel Code -->
@@ -19,6 +24,13 @@
     src="https://www.facebook.com/tr?id=1243571323145313&ev=PageView&noscript=1"
     /></noscript>
     <!-- End Meta Pixel Code -->
+
+    <script src="https://sdk.mercadopago.com/js/v2"></script>
+    <script src="{% static 'js/mercadopago.js' %}"></script>
+    <script>
+        {# only init if there are public_key and preference #}
+        initMercadoPagoButton('{{ public_key }}', '{{ preference.id }}')
+    </script>
 {% endblock %}
 
 {% block title %}{{ course.name }} - Baroni-Massad{% endblock %}
@@ -41,101 +53,8 @@
     {% endif %}
 {% endblock %}
 
-{% block extra_css %}
-    {% if price %}
-        {{ price|json_script:"course-price" }}
-        {{ course.id|json_script:"course-id" }}
-        {{ coupon|json_script:"coupon-used" }}
-
-        <script src="https://www.paypal.com/sdk/js?client-id=Adncgqi0-vc3rPc8ACBco4rhfMvbwHqvONyu-jj3sneX4Ab-BMmzmrDKxdkL4f2b96CcidFnUyTe_moW&locale=pt_BR&currency=BRL"></script>
-        <script>
-          // Acquire the token
-          function getCookie(name) {
-            let cookieValue = null;
-            if (document.cookie && document.cookie !== '') {
-              const cookies = document.cookie.split(';');
-              for (let i = 0; i < cookies.length; i++) {
-                const cookie = cookies[i].trim();
-                // Does this cookie string begin with the name we want?
-                if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                  break;
-                }
-              }
-            }
-            return cookieValue;
-          }
-
-          const csrftoken = getCookie('csrftoken');
-          const price = JSON.parse(document.getElementById('course-price').textContent);
-          const courseId = JSON.parse(document.getElementById('course-id').textContent);
-          const couponUsed = JSON.parse(document.getElementById('coupon-used').textContent);
-
-          // Submit payment information
-          function completeOrder(paymentId, paymentStatus){
-            let url = "{% url 'course_paid' %}"
-
-            fetch(url, {
-                method: 'POST',
-                headers: {'Content-type': 'application/json', 'X-CSRFToken': csrftoken},
-                body: JSON.stringify(
-                  {
-                    'price': price,
-                    'courseId': courseId,
-                    'couponUsed': couponUsed,
-                    'paymentId': paymentId,
-                    'paymentStatus': paymentStatus
-                  }
-                )
-              }
-            )
-            .then(function (response) {
-              if (response.ok) { return response.json() }
-              else { throw response }
-            })
-            .then(data => {
-              $("#cover").fadeOut(100);
-              window.location.href = "{% url 'enroll' 54321 %}".replace(/54321/, courseId.toString());
-              new Toast({message: data.message, type: 'success'});
-            })
-          }
-
-          // Render the PayPal button into #paypal-button-container
-          paypal.Buttons({
-            // Button style
-            style: {
-                color:  'blue',
-                shape:  'pill',
-                label:  'pay',
-                height: 40
-            },
-
-            // Set up transaction
-            createOrder: function(data, actions) {
-              return actions.order.create({
-                purchase_units: [{
-                  amount: {
-                    value: price
-                  }
-                }]
-              });
-            },
-
-            // Finalize the transaction
-            onApprove: function (data, actions) {
-              $("#cover").fadeIn(100);
-              new Toast({message: "{% trans "Please wait. We are finalizing your registration." %}", type: 'success'});
-              return actions.order.capture().then(function (details) {
-                completeOrder(details['id'], details['status']);
-              })
-            }
-          }).render('#paypal-button-container');
-        </script>
-    {% endif %}
-{% endblock %}
-
 {% block card-body %}
-    {% if course.type == 'admin' and request.user.is_superuser or course.show_course or course.type == 'individual' %}
+    {% if course.show_course or course.type == 'individual' %}
         <div id="cover"></div>
         {% if enrolled.status == 'enroll' %}
             <div class="alert alert-custom" role="alert">
@@ -165,13 +84,7 @@
             <strong>{% trans "Price" %}</strong>:
             <br>
             {% if price %}
-                {% if price1x %}R$ {{ price1x }} {% trans "one-time payment" %}{% endif %}<br/>
-                {% if price > 100 %}
-                    {% if price2x %}{% trans " or 2 monthly payments of " %}R$ {{ price2x }} *{% endif %}<br/>
-                    {% if price3x %}{% trans " or 3 monthly payments of " %}R$ {{ price3x }} *{% endif %} <br/>
-                    {% if price4x %}{% trans " or 4 monthly payments of " %}R$ {{ price4x }} *{% endif %} <br/>
-                    {% if price2x or price3x or price4x %}<i><small>{% trans "* The total amount of the installments is " %}R$ {{ price }}</small></i>{% endif %} <br/>
-                {% endif %}
+                R$ {{ price }} {% trans "one-time payment" %} {% if price > 100 %}*{% endif %}<br/>
                 {% if user.is_authenticated and course.type != 'individual' and not enrolled.status or user.is_authenticated and course.type == 'individual' and interview %}
                     <a data-toggle="collapse" href="#collapseCoupon" role="button" aria-expanded="false" aria-controls="collapseCoupon">{% trans "Apply coupon" %}</a>
                 {% endif %}
@@ -198,7 +111,7 @@
                     {% if enrolled.status == 'enroll' %}
                         <br />
                     {% elif interview.show_button == True %}
-                        <div id="paypal-button-container"></div>
+                        <div id="mp_button" class="cho-container"></div>
                     {% elif interview.show_button == False %}
                         <button type="submit" name="action" value="interview" class="btn btn-course" disabled>{% trans "I'm interested" %}</button>
                     {% else %}
@@ -213,8 +126,8 @@
                                 <button type="submit" name="action" value="enroll" class="btn btn-course" disabled>{% trans "Exhausted vacancies" %}</button>
                             {% else %}
                                 {% if price %}
-                                    <div id="paypal-button-container"></div>
-                                    <p>{{ course.info|richtext }}</p>
+                                    <div id="mp_button" class="cho-container"></div>
+{#                                    <p>{{ course.info|richtext }}</p>#}
                                 {% else %}
                                     <button type="submit" name="action" value="enroll" class="btn btn-course">{% trans "Make registration" %}</button>
                                 {% endif %}
@@ -227,6 +140,8 @@
                             <button type="submit" name="action" value="pre-booking" class="btn btn-course">{% trans "Make pre-booking" %}</button>
                         {% endif %}
                     {% endif %}
+                {% elif course.type == 'admin' and request.user.is_superuser %}
+                    <div id="mp_button" class="cho-container"></div>
                 {% endif %}
             </form>
         {% else %}
@@ -236,6 +151,9 @@
                 <span><a class="btn btn-course" href="{% url 'account_login' %}?next={% url 'enroll' course.pk %}">{% if course.start_date %}{% trans "Make registration" %}{% elif course.type == 'individual' %}{% trans "I'm interested" %}{% else %}{% trans "Make pre-booking" %}{% endif %}</a></span>
             {% endif %}
         {% endif %}
+        {% if price > 100 %}
+            <p class="mt-3"><i><small>{% trans "* This amount can be paid in installments if you choose to pay with a credit card. " %}</small></i></p>
+        {% endif %}
     {% else %}
         <p>{% trans "Sorry, this page could not be found." %}</p>
     {% endif %}
@@ -243,6 +161,9 @@
 
 {% block card-footer %}
     {% if user.is_authenticated and price and course.show_course and not enrolled and course.vacancies > course.registered %}
-        <p>{% trans "Can't pay via PayPal?" %} <a href="https://baronimassad.com.br/pt-br/contato/">{% trans "Contact us" %}</a>{% trans " and we will send you another form of payment" %}</p>
+        <p>
+            {% trans "This website uses" %} <a href="https://www.mercadopago.com.br" target="_blank">Mercado Pago</a> {% trans "to guarantee all security and privacy of purchases for our students" %}.
+            <a href="https://baronimassad.com.br/pt-br/contato/">{% trans "Contact us" %}</a>{% trans " if you have any questions or difficulties during payment" %}.
+        </p>
     {% endif %}
 {% endblock %}

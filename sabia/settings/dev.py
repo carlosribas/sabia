@@ -37,13 +37,4 @@ INTERNAL_IPS = ["127.0.0.1", ip[:-1] + '1']
 try:
     from .local import *
 except ImportError:
-    # Database used to run tests on github
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'sabia',
-            'USER': 'sabia',
-            'PASSWORD': 'sabia',
-            'HOST': 'localhost',
-        }
-    }
+    pass
