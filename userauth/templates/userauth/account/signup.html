@@ -48,6 +48,11 @@
         <p>{% blocktrans with site.name as site_name %}or sign up with one of your existing third party accounts:{% endblocktrans %}</p>
         <p>{% include "socialaccount/provider_list.html" with process="login" %}</p>
     {% endif %}
+    <small>
+        {% blocktrans %}
+        When you create a Baroni-Massad account you agree to the <a href="/pt-br/termos-de-uso/">Terms of Use</a> and <a href="/pt-br/politica-privacidade/">Privacy Policy</a>.
+        {% endblocktrans %}
+    </small>
 {% endblock %}
 
 {% block card-footer %}

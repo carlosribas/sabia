@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-05 22:56+0000\n"
+"POT-Creation-Date: 2023-01-14 19:46+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -407,7 +407,8 @@ msgstr "A Baroni-Massad utiliza o"
 
 #: base/templates/base/course_registration.html:165
 msgid "to guarantee all security and privacy of purchases for our students"
-msgstr "para garantir toda segurança e privacidade de compra para nossos alunos"
+msgstr ""
+"para garantir toda segurança e privacidade de compra para nossos alunos"
 
 #: base/templates/base/course_registration.html:166
 msgid "Contact us"
@@ -469,70 +470,70 @@ msgstr "Anexo"
 msgid "Send"
 msgstr "Enviar"
 
-#: base/views.py:115
+#: base/views.py:118
 msgid "Pre-booking successful"
 msgstr "Pré-reserva realizada com sucesso"
 
-#: base/views.py:124
+#: base/views.py:127
 msgid "Pre-booking canceled successfully"
 msgstr "Pré-reserva cancelada com sucesso"
 
-#: base/views.py:134
+#: base/views.py:137
 msgid "Registration successful!"
 msgstr "Inscrição realizada com sucesso!"
 
-#: base/views.py:136
+#: base/views.py:139
 msgid "Sorry, there are no more vacancies for this course"
 msgstr "Desculpe, não há mais vagas para este curso"
 
-#: base/views.py:145
+#: base/views.py:148
 msgid "Unsubscribe successfully"
 msgstr "Inscrição cancelada com sucesso"
 
-#: base/views.py:160
+#: base/views.py:163
 msgid "Interest registered successfully"
 msgstr "Interesse registrado com sucesso"
 
-#: base/views.py:174 base/views.py:177
+#: base/views.py:177 base/views.py:180
 msgid "Coupon not found"
 msgstr "Cupom não encontrado"
 
-#: base/views.py:206
+#: base/views.py:209
 msgid "Coupon applied successfully"
 msgstr "Cupom aplicado com sucesso"
 
-#: base/views.py:210
+#: base/views.py:213
 msgid "Coupon applied successfully. This course is now free!"
 msgstr "Cupom aplicado com sucesso. Este curso agora é gratuito!"
 
-#: base/views.py:253 base/views.py:267
+#: base/views.py:256 base/views.py:270
 msgid "Cannot process this request"
 msgstr "Não foi possível processar esta solicitação"
 
-#: base/views.py:262
+#: base/views.py:265
 msgid ""
 "Something went wrong. Please contact the staff if your payment was made and "
 "will return you as soon as possible."
 msgstr ""
 "Algo deu errado. Entre em contato conosco caso tenha efetuado seu pagamento."
 
-#: base/views.py:275
+#: base/views.py:278
 msgid "There was an error with the payment"
 msgstr "Houve um erro com o pagamento"
 
-#: base/views.py:277 base/views.py:280
+#: base/views.py:280 base/views.py:283
 msgid "Payment Successful"
 msgstr "Pagamento realizado com sucesso"
 
-#: base/views.py:282
+#: base/views.py:285
 msgid "Waiting for payment confirmation"
 msgstr "Aguardando a confirmação do pagamento"
 
-#: base/views.py:444
+#: base/views.py:447
 msgid "Email successfully sent!"
 msgstr "Email realizado com sucesso."
 
-#: base/views.py:446
+#: base/views.py:449
 msgid "You must fill in the subject and message fields"
 msgstr "Você precisa preencher os campos assunto e mensagem"
 
@@ -625,7 +626,7 @@ msgstr "Você não tem autorização para visualizar esta página."
 #: userauth/templates/userauth/account/login.html:8
 #: userauth/templates/userauth/account/login.html:23
 #: userauth/templates/userauth/account/password_reset_from_key_done.html:15
-#: userauth/templates/userauth/account/signup.html:55
+#: userauth/templates/userauth/account/signup.html:59
 msgid "Sign in"
 msgstr "Entrar"
 
@@ -770,7 +771,7 @@ msgstr "Você ainda não tem conta?"
 #: userauth/templates/userauth/account/login.html:13
 #: userauth/templates/userauth/account/signup.html:5
 #: userauth/templates/userauth/account/signup.html:8
-#: userauth/templates/userauth/account/signup.html:45
+#: userauth/templates/userauth/account/signup.html:44
 #: userauth/templates/userauth/socialaccount/authentication_error.html:16
 #: userauth/templates/userauth/socialaccount/signup.html:5
 #: userauth/templates/userauth/socialaccount/signup.html:8
@@ -878,11 +879,24 @@ msgstr ""
 msgid "Update your account"
 msgstr "Atualizar conta"
 
-#: userauth/templates/userauth/account/signup.html:49
+#: userauth/templates/userauth/account/signup.html:48
 msgid "or sign up with one of your existing third party accounts:"
 msgstr "ou registre-se com uma de suas redes sociais:"
 
-#: userauth/templates/userauth/account/signup.html:55
+#: userauth/templates/userauth/account/signup.html:52
+msgid ""
+"\n"
+"        When you create a Baroni-Massad account you agree to the <a href=\"/"
+"pt-br/termos-de-uso/\">Terms of Use</a> and <a href=\"/pt-br/politica-"
+"privacidade/\">Privacy Policy</a>.\n"
+"        "
+msgstr ""
+"        Ao criar uma conta na Baroni-Massad, você concorda com os <a href=\"/"
+"pt-br/termos-de-uso/\">Termos de Uso</a> e com a <a href=\"/pt-br/politica-"
+"privacidade/\">Política de Privacidade</a>.\n"
+"        "
+
+#: userauth/templates/userauth/account/signup.html:59
 #: userauth/templates/userauth/socialaccount/signup.html:44
 msgid "Already have an account?"
 msgstr "Já tem uma conta?"
