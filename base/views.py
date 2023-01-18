@@ -31,7 +31,7 @@ from base.mercadopago_payment_data import MercadoPagoPaymentData, ID_SEPARATOR
 from base.models import Course, CourseUser, CourseUserCoupon, CourseUserInterview, CourseMaterial, \
     CourseMaterialDocument, CourseMaterialVideo, ENROLL, PRE_BOOKING
 from base.mercado_pago_api import MercadoPagoAPI, FAILURE_STATUS, SUCCESS_STATUS, \
-    PENDING_STATUS, IN_PROCESS_STATUS
+    PENDING_STATUS, IN_PROCESS_STATUS, REJECTED_STATUS
 from sabia.settings.local import MERCADO_PAGO_WEBHOOK_TOKEN
 from userauth.models import CustomUser
 
@@ -243,7 +243,8 @@ def payment_complete(request):
     payment_status = request.GET.get('status')
     payment_id = request.GET.get('payment_id')
     if payment_status not in [
-        FAILURE_STATUS, SUCCESS_STATUS, PENDING_STATUS, IN_PROCESS_STATUS
+        FAILURE_STATUS, SUCCESS_STATUS, PENDING_STATUS, IN_PROCESS_STATUS,
+        REJECTED_STATUS
     ] or payment_id is None:
         return HttpResponseBadRequest(_('Cannot process this request'))
 
@@ -266,7 +267,7 @@ def payment_complete(request):
     get_object_or_404(Course, pk=int(course_id))
     new_payment_status = mp_payment_data.get_payment_status()
 
-    if payment_status == FAILURE_STATUS:
+    if payment_status == FAILURE_STATUS or payment_status == REJECTED_STATUS:
         messages.error(request, _('There was an error with the payment'))
     if payment_status == SUCCESS_STATUS:
         messages.success(request, _('Payment Successful'))
