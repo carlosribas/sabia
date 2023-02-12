@@ -6,6 +6,7 @@ FAILURE_STATUS = 'failure'
 PENDING_STATUS = 'pending'
 SUCCESS_STATUS = 'approved'
 IN_PROCESS_STATUS = 'in_process'
+REJECTED_STATUS = 'rejected'
 
 
 class MercadoPagoAPI:

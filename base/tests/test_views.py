@@ -10,7 +10,7 @@ from django.urls import reverse, resolve
 from decimal import Decimal as Dec, ROUND_HALF_UP
 
 from base.mercado_pago_api import FAILURE_STATUS, SUCCESS_STATUS, PENDING_STATUS, \
-    IN_PROCESS_STATUS
+    IN_PROCESS_STATUS, REJECTED_STATUS
 from base.mercadopago_payment_data import ID_SEPARATOR
 from base.tests.test_integration.test_mercado_pago import preference_mock
 from base.tests.test_mercado_pago_api import api_get_payment_mock, \
@@ -511,7 +511,7 @@ class CoursePaymentTestCase(TestCase):
         mock_api_fetch_payment_data.return_value = \
             mercadopago_api_get_payment_mock(self.course.id, SUCCESS_STATUS)
         for status in [FAILURE_STATUS, PENDING_STATUS, SUCCESS_STATUS,
-                       IN_PROCESS_STATUS]:
+                       IN_PROCESS_STATUS, REJECTED_STATUS]:
             # Other parameters can be ommited
             url = reverse('course_paid') + '?payment_id=123&status=' + status
             response = self.client.get(url)
@@ -528,6 +528,24 @@ class CoursePaymentTestCase(TestCase):
             mercadopago_api_get_payment_mock(self.course.id, FAILURE_STATUS)
         # Other parameters can be ommited
         url = reverse('course_paid') + '?payment_id=123&status=' + FAILURE_STATUS
+        response = self.client.get(url)
+
+        message = list(get_messages(response.wsgi_request))
+        self.assertEqual(len(message), 1)
+        self.assertEqual(str(message[0]), 'There was an error with the payment')
+
+        self.assertRedirects(response, reverse('enroll', args=(self.course.pk,)),
+                             status_code=HTTPStatus.FOUND,
+                             target_status_code=HTTPStatus.OK,
+                             fetch_redirect_response=False)
+
+    @patch('base.mercado_pago_api.MercadoPagoAPI.fetch_payment_data')
+    def test_mercadopago_payment_rejected_status_redirects_to_course_page_with_message(
+            self, mock_api_fetch_payment_data):
+        mock_api_fetch_payment_data.return_value = \
+            mercadopago_api_get_payment_mock(self.course.id, REJECTED_STATUS)
+        # Other parameters can be ommited
+        url = reverse('course_paid') + '?payment_id=123&status=' + REJECTED_STATUS
         response = self.client.get(url)
 
         message = list(get_messages(response.wsgi_request))
