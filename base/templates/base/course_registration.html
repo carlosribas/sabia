@@ -58,7 +58,11 @@
         <div id="cover"></div>
         {% if enrolled.status == 'enroll' %}
             <div class="alert alert-custom" role="alert">
-                {% trans "The link for the transmission of the class/lecture and other support materials will be available here:" %} <a href="{% url 'my_course' %}">MINHA CONTA > Meus cursos</a>.
+                {% if course.type == 'recorded' %}
+                    {% trans "Videos and other course materials are available at" %} <a href="{% url 'my_course' %}">MINHA CONTA > Meus cursos</a>.
+                {% else %}
+                    {% trans "The link for the transmission of the class/lecture and other support materials will be available here:" %} <a href="{% url 'my_course' %}">MINHA CONTA > Meus cursos</a>.
+                {% endif %}
             </div>
         {% elif interview.show_button == False %}
             <div class="alert alert-success" role="alert">
@@ -66,13 +70,15 @@
             </div>
         {% endif %}
         <p>
-            <strong>{% trans "Date" %}</strong>:
-            <br>
+            {% if course.type != 'recorded' %}
+                <strong>{% trans "Date" %}</strong>:
+                <br>
+            {% endif %}
             {% if course.type == 'individual' %}
                 {% trans "To be agreed" %}
             {% elif course.start_date %}
                 {{ course.start_date|date:'d/m/Y' }}{% if course.end_date %} a {{ course.end_date|date:'d/m/Y' }}{% endif %}{% if course.start_time and course.end_time %} das {{ course.start_time }} às {{ course.end_time }} {% trans "(Brasília time)" %}{% endif %}
-            {% else %}
+            {% elif course.type != 'recorded' %}
                 {% trans "Not available" %}
             {% endif %}
         </p>
@@ -127,7 +133,6 @@
                             {% else %}
                                 {% if price %}
                                     <div id="mp_button" class="cho-container"></div>
-{#                                    <p>{{ course.info|richtext }}</p>#}
                                 {% else %}
                                     <button type="submit" name="action" value="enroll" class="btn btn-course">{% trans "Make registration" %}</button>
                                 {% endif %}
@@ -141,6 +146,8 @@
                         {% endif %}
                     {% endif %}
                 {% elif course.type == 'admin' and request.user.is_superuser %}
+                    <div id="mp_button" class="cho-container"></div>
+                {% elif course.type == 'recorded' %}
                     <div id="mp_button" class="cho-container"></div>
                 {% endif %}
             </form>

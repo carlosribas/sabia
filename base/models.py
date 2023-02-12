@@ -186,7 +186,10 @@ class Course(index.Indexed, ClusterableModel):
         return tags
 
     def show_course(self):
-        return self.start_date >= datetime.datetime.now().date() if self.start_date else False
+        if self.type == "recorded":
+            return True
+        else:
+            return self.start_date >= datetime.datetime.now().date() if self.start_date else False
 
     def csv(self):
         return format_html("<a href='{0}'>Download</a>", reverse("users-report", kwargs={"course_id": self.pk}))
