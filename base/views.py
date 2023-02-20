@@ -42,8 +42,8 @@ logger = logging.getLogger(__name__)
 def course_list(request, template_name="base/course_list.html"):
     # List of available courses
     today = datetime.datetime.today()
-    next_courses = Course.objects.filter(start_date__gte=today).exclude(type='admin').order_by('-start_date')
-    other_courses = Course.objects.exclude(Q(start_date__gte=today) | Q(type='admin')).order_by('-start_date')
+    next_courses = Course.objects.filter(start_date__gte=today).exclude(type='admin').order_by('start_date')
+    other_courses = Course.objects.exclude(Q(start_date__gte=today) | Q(type='admin')).order_by('start_date')
     courses = list(chain(next_courses, other_courses))
     hidden_courses = Course.objects.filter(type='admin')
     context = {
