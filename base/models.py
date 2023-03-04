@@ -207,13 +207,15 @@ class CourseMaterial(index.Indexed, ClusterableModel):
     date = models.DateField(_("Date"), blank=True, null=True)
     description = RichTextField(_("Description"), features=RICHTEXT_FEATURES, blank=True)
     link = models.URLField(_('Broadcast link'), blank=True, null=True)
+    order = models.IntegerField(_('Order'), default=0, blank=True, null=True)
 
     panels = [
         FieldPanel('course'),
         MultiFieldPanel([
             FieldRowPanel([
-                FieldPanel('title', classname="col6"),
+                FieldPanel('title', classname="col12"),
                 FieldPanel('date', classname="col6"),
+                FieldPanel('order', classname="col6"),
                 FieldPanel('link', classname="col12"),
                 FieldPanel('description', classname="col12"),
             ])

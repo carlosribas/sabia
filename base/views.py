@@ -360,13 +360,19 @@ def mercado_pago_webhook(request, token):
 @login_required
 def my_course(request, template_name="base/my_course.html"):
     # Check if the user is enrolled in any course
-    course_user = CourseUser.objects.filter(user=request.user.id).order_by('-course__start_date')
+    course_user = CourseUser.objects.filter(user=request.user.id)
+
+    # Sort the courses
+    today = datetime.datetime.today()
+    next_courses = course_user.filter(course__start_date__gte=today).order_by('course__start_date')
+    other_courses = course_user.exclude(course__start_date__gte=today).order_by('-course__start_date')
+    course_user = list(chain(next_courses, other_courses))
 
     # Get course materials
     my_courses = []
     for course in course_user:
         # Get material
-        course_material = CourseMaterial.objects.filter(course=course.course).order_by('date')
+        course_material = CourseMaterial.objects.filter(course=course.course).order_by('date', 'order')
 
         # Get items
         material_items = []
