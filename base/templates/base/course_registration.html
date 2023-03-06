@@ -155,7 +155,7 @@
             {% if course.registered >= course.vacancies and course.type != 'individual'%}
                 <span><a class="btn btn-course disabled" href="#" aria-disabled="true">{% trans "Exhausted vacancies" %}</a></span>
             {% else %}
-                <span><a class="btn btn-course" href="{% url 'account_login' %}?next={% url 'enroll' course.pk %}">{% if course.start_date %}{% trans "Make registration" %}{% elif course.type == 'individual' %}{% trans "I'm interested" %}{% else %}{% trans "Make pre-booking" %}{% endif %}</a></span>
+                <span><a class="btn btn-course" href="{% url 'account_login' %}?next={% url 'enroll' course.pk %}">{% if course.start_date or course.type == "recorded" %}{% trans "Make registration" %}{% elif course.type == 'individual' %}{% trans "I'm interested" %}{% else %}{% trans "Make pre-booking" %}{% endif %}</a></span>
             {% endif %}
         {% endif %}
         {% if price > 100 %}
