@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    <div class="container mt-5">
+        <div class="card userauth">
+            <div class="card-header">
+                {% block card-header %}{% endblock %}
+            </div>
+            <div class="card-body">
+                {% block card-body %}{% endblock %}
+            </div>
+            <div class="card-footer text-muted text-center">
+                {% block card-footer %}{% endblock %}
+            </div>
+       </div>
+    </div>
+{% endblock %}

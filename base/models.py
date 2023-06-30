@@ -186,7 +186,7 @@ class Course(index.Indexed, ClusterableModel):
         return tags
 
     def show_course(self):
-        if self.type == "recorded":
+        if self.type == "recorded" or self.type == "individual":
             return True
         else:
             return self.start_date >= datetime.datetime.now().date() if self.start_date else False
@@ -208,6 +208,7 @@ class CourseMaterial(index.Indexed, ClusterableModel):
     description = RichTextField(_("Description"), features=RICHTEXT_FEATURES, blank=True)
     link = models.URLField(_('Broadcast link'), blank=True, null=True)
     order = models.IntegerField(_('Order'), default=0, blank=True, null=True)
+    public = models.BooleanField(_("Free class"), default=False)
 
     panels = [
         FieldPanel('course'),
@@ -218,6 +219,7 @@ class CourseMaterial(index.Indexed, ClusterableModel):
                 FieldPanel('order', classname="col6"),
                 FieldPanel('link', classname="col12"),
                 FieldPanel('description', classname="col12"),
+                FieldPanel('public', classname="col12"),
             ])
         ], heading=_("Lesson information")),
         InlinePanel('course_material_document', label=_("Documents")),

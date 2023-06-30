@@ -1,4 +1,4 @@
-{% extends 'account/base_card.html' %}
+{% extends "base/base_course.html" %}
 {% load static %}
 {% load i18n wagtailcore_tags %}
 
@@ -37,133 +37,174 @@
 {% block description %}<meta name="description" content="{{ course.introduction }}">{% endblock %}
 
 {% block card-header %}
-    {% if course.type == 'admin' and request.user.is_superuser or course.show_course or course.type == 'individual' %}
-        <h3>
-            {{ course.name }}
-            {% if enrolled.status == 'enroll' %}
-                <span class="label label-as-badge ml-2">{% trans "Enrolled" %}</span>
-            {% elif enrolled.status == 'pre-booking' %}
-                <span class="label label-as-badge ml-2">{% trans "Pre-booked" %}</span>
-            {% elif course.registered >= course.vacancies and course.type != 'individual'  %}
-                <span class="label label-as-badge ml-2">{% trans "Exhausted vacancies" %}</span>
-            {% endif %}
-        </h3>
-    {% else %}
-        <h3>{% trans "Page not found" %}</h3>
-    {% endif %}
+    <h3>
+        {{ course.name }}
+        {% if enrolled.status == 'enroll' %}
+            <span class="label label-as-badge ml-2">{% trans "Enrolled" %}</span>
+        {% elif enrolled.status == 'pre-booking' %}
+            <span class="label label-as-badge ml-2">{% trans "Pre-booked" %}</span>
+        {% elif course.registered >= course.vacancies and course.show_course  %}
+            <span class="label label-as-badge ml-2">{% trans "Exhausted vacancies" %}</span>
+        {% endif %}
+    </h3>
 {% endblock %}
 
 {% block card-body %}
-    {% if course.show_course or course.type == 'individual' %}
-        <div id="cover"></div>
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link {% if not enrolled %}active{% endif %}" data-toggle="tab" href="#course-description">{% trans "Description" %}</a>
+        </li>
         {% if enrolled.status == 'enroll' %}
-            <div class="alert alert-custom" role="alert">
-                {% if course.type == 'recorded' %}
-                    {% trans "Videos and other course materials are available at" %} <a href="{% url 'my_course' %}">MINHA CONTA > Meus cursos</a>.
-                {% else %}
-                    {% trans "The link for the transmission of the class/lecture and other support materials will be available here:" %} <a href="{% url 'my_course' %}">MINHA CONTA > Meus cursos</a>.
-                {% endif %}
-            </div>
-        {% elif interview.show_button == False %}
-            <div class="alert alert-success" role="alert">
-                {% trans "Thank you for your interest in our course. We will contact you soon" %}
-            </div>
+            <li class="nav-item">
+                <a class="nav-link {% if enrolled.status == 'enroll' %}active{% endif %}" data-toggle="tab" href="#course-content">{% trans "Course content" %}</a>
+            </li>
         {% endif %}
-        <p>
-            {% if course.type != 'recorded' %}
-                <strong>{% trans "Date" %}</strong>:
-                <br>
-            {% endif %}
-            {% if course.type == 'individual' %}
-                {% trans "To be agreed" %}
-            {% elif course.start_date %}
-                {{ course.start_date|date:'d/m/Y' }}{% if course.end_date %} a {{ course.end_date|date:'d/m/Y' }}{% endif %}{% if course.start_time and course.end_time %} das {{ course.start_time }} às {{ course.end_time }} {% trans "(Brasília time)" %}{% endif %}
-            {% elif course.type != 'recorded' %}
-                {% trans "Not available" %}
-            {% endif %}
-        </p>
-        <p>
-            <strong>{% trans "Description" %}</strong>:
-            {{ course.description|richtext }}
-        </p>
-        <p>
-            <strong>{% trans "Price" %}</strong>:
-            <br>
-            {% if price %}
-                R$ {{ price }} {% trans "one-time payment" %} {% if price > 100 %}*{% endif %}<br/>
-                {% if user.is_authenticated and course.type != 'individual' and not enrolled.status or user.is_authenticated and course.type == 'individual' and interview %}
-                    <a data-toggle="collapse" href="#collapseCoupon" role="button" aria-expanded="false" aria-controls="collapseCoupon">{% trans "Apply coupon" %}</a>
-                {% endif %}
-            {% elif not price and not course.start_date %}
-                {% trans "Not available" %}
-            {% else %}
-                {% trans "Free registration!" %}
-            {% endif %}
-        </p>
-        {% if user.is_authenticated %}
-            <form role="form" method="post">{% csrf_token %}
-                <input type="hidden" name="content" value="{{course.id}}">
-                {% if price %}
-                    <div class="collapse" id="collapseCoupon">
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" name="code" placeholder="{% trans "Enter coupon" %}">
-                            <div class="input-group-append">
-                                <button type="submit" name="action" value="code" class="btn btn-outline-secondary">{% trans "Apply" %}</button>
-                            </div>
-                        </div>
-                    </div>
+    </ul>
+    <div class="tab-content">
+        <div id="course-description" class="tab-pane fade show {% if not enrolled %}active{% endif %}">
+            <br/>
+            <div id="cover"></div>
+            <p>
+                {% if course.type != 'recorded' %}
+                    <strong>{% trans "Date" %}</strong>:
+                    <br>
                 {% endif %}
                 {% if course.type == 'individual' %}
-                    {% if enrolled.status == 'enroll' %}
-                        <br />
-                    {% elif interview.show_button == True %}
-                        <div id="mp_button" class="cho-container"></div>
-                    {% elif interview.show_button == False %}
-                        <button type="submit" name="action" value="interview" class="btn btn-course" disabled>{% trans "I'm interested" %}</button>
-                    {% else %}
-                        <button type="submit" name="action" value="interview" class="btn btn-course">{% trans "I'm interested" %}</button>
+                    {% trans "To be agreed" %}
+                {% elif course.start_date %}
+                    {{ course.start_date|date:'d/m/Y' }}{% if course.end_date %} a {{ course.end_date|date:'d/m/Y' }}{% endif %}{% if course.start_time and course.end_time %} das {{ course.start_time }} às {{ course.end_time }} {% trans "(Brasília time)" %}{% endif %}
+                {% elif course.type != 'recorded' %}
+                    {% trans "Not available" %}
+                {% endif %}
+            </p>
+            <p>
+                <strong>{% trans "Description" %}</strong>:
+                {{ course.description|richtext }}
+            </p>
+            <p>
+                <strong>{% trans "Price" %}</strong>:
+                <br>
+                {% if price %}
+                    R$ {{ price }} {% trans "one-time payment" %} {% if price > 100 %}*{% endif %}<br/>
+                    {% if user.is_authenticated and course.type != 'individual' and not enrolled.status or user.is_authenticated and course.type == 'individual' and interview %}
+                        <a data-toggle="collapse" href="#collapseCoupon" role="button" aria-expanded="false" aria-controls="collapseCoupon">{% trans "Apply coupon" %}</a>
                     {% endif %}
-                {% elif course.type == 'group' %}
-                    {% if course.start_date %}
+                {% elif not price and not course.start_date %}
+                    {% trans "Not available" %}
+                {% else %}
+                    {% trans "Free registration!" %}
+                {% endif %}
+            </p>
+            {% if not course.show_course %}
+                <button class="btn btn-course" disabled>{% trans "Subscriptions closed" %}</button>
+            {% elif user.is_authenticated %}
+                <form role="form" method="post">{% csrf_token %}
+                    <input type="hidden" name="content" value="{{course.id}}">
+                    {% if price %}
+                        <div class="collapse" id="collapseCoupon">
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" name="code" placeholder="{% trans "Enter coupon" %}">
+                                <div class="input-group-append">
+                                    <button type="submit" name="action" value="code" class="btn btn-outline-secondary">{% trans "Apply" %}</button>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if course.type == 'individual' %}
                         {% if enrolled.status == 'enroll' %}
-                            {% if not price %}<button type="submit" name="action" value="unsubscribe" class="btn btn-delete mb-2">{% trans "Cancel registration" %}</button>{% endif %}
+                            <br />
+                        {% elif interview.show_button == True %}
+                            <div id="mp_button" class="cho-container"></div>
+                        {% elif interview.show_button == False %}
+                            <button type="submit" name="action" value="interview" class="btn btn-course" disabled>{% trans "I'm interested" %}</button>
                         {% else %}
-                            {% if course.registered >= course.vacancies %}
-                                <button type="submit" name="action" value="enroll" class="btn btn-course" disabled>{% trans "Exhausted vacancies" %}</button>
+                            <button type="submit" name="action" value="interview" class="btn btn-course">{% trans "I'm interested" %}</button>
+                        {% endif %}
+                    {% elif course.type == 'group' %}
+                        {% if course.start_date %}
+                            {% if enrolled.status == 'enroll' %}
+                                {% if not price %}<button type="submit" name="action" value="unsubscribe" class="btn btn-delete mb-2">{% trans "Cancel registration" %}</button>{% endif %}
                             {% else %}
-                                {% if price %}
-                                    <div id="mp_button" class="cho-container"></div>
+                                {% if course.registered >= course.vacancies %}
+                                    <button type="submit" name="action" value="enroll" class="btn btn-course" disabled>{% trans "Exhausted vacancies" %}</button>
                                 {% else %}
-                                    <button type="submit" name="action" value="enroll" class="btn btn-course">{% trans "Make registration" %}</button>
+                                    {% if price %}
+                                        <div id="mp_button" class="cho-container"></div>
+                                    {% else %}
+                                        <button type="submit" name="action" value="enroll" class="btn btn-course">{% trans "Make registration" %}</button>
+                                    {% endif %}
                                 {% endif %}
                             {% endif %}
-                        {% endif %}
-                    {% else %}
-                        {% if enrolled.status == 'pre-booking' %}
-                            <button type="submit" name="action" value="pre-booking-unsubscribe" class="btn btn-danger">{% trans "Cancel pre-booking" %}</button>
                         {% else %}
-                            <button type="submit" name="action" value="pre-booking" class="btn btn-course">{% trans "Make pre-booking" %}</button>
+                            {% if enrolled.status == 'pre-booking' %}
+                                <button type="submit" name="action" value="pre-booking-unsubscribe" class="btn btn-danger">{% trans "Cancel pre-booking" %}</button>
+                            {% else %}
+                                <button type="submit" name="action" value="pre-booking" class="btn btn-course">{% trans "Make pre-booking" %}</button>
+                            {% endif %}
                         {% endif %}
+                    {% elif course.type == 'admin' and request.user.is_superuser %}
+                        <div id="mp_button" class="cho-container"></div>
+                    {% elif course.type == 'recorded' %}
+                        <div id="mp_button" class="cho-container"></div>
                     {% endif %}
-                {% elif course.type == 'admin' and request.user.is_superuser %}
-                    <div id="mp_button" class="cho-container"></div>
-                {% elif course.type == 'recorded' %}
-                    <div id="mp_button" class="cho-container"></div>
-                {% endif %}
-            </form>
-        {% else %}
-            {% if course.registered >= course.vacancies and course.type != 'individual'%}
-                <span><a class="btn btn-course disabled" href="#" aria-disabled="true">{% trans "Exhausted vacancies" %}</a></span>
+                </form>
             {% else %}
-                <span><a class="btn btn-course" href="{% url 'account_login' %}?next={% url 'enroll' course.pk %}">{% if course.start_date or course.type == "recorded" %}{% trans "Make registration" %}{% elif course.type == 'individual' %}{% trans "I'm interested" %}{% else %}{% trans "Make pre-booking" %}{% endif %}</a></span>
+                {% if course.registered >= course.vacancies and course.type != 'individual'%}
+                    <span><a class="btn btn-course disabled" href="#" aria-disabled="true">{% trans "Exhausted vacancies" %}</a></span>
+                {% else %}
+                    <span><a class="btn btn-course" href="{% url 'account_login' %}?next={% url 'enroll' course.pk %}">{% if course.start_date or course.type == "recorded" %}{% trans "Make registration" %}{% elif course.type == 'individual' %}{% trans "I'm interested" %}{% else %}{% trans "Make pre-booking" %}{% endif %}</a></span>
+                {% endif %}
             {% endif %}
-        {% endif %}
-        {% if price > 100 %}
-            <p class="mt-3"><i><small>{% trans "* This amount can be paid in installments if you choose to pay with a credit card. " %}</small></i></p>
-        {% endif %}
-    {% else %}
-        <p>{% trans "Sorry, this page could not be found." %}</p>
-    {% endif %}
+            {% if price > 100 %}
+                <p class="mt-3"><i><small>{% trans "* This amount can be paid in installments if you choose to pay with a credit card. " %}</small></i></p>
+            {% endif %}
+        </div>
+        <div id="course-content" class="tab-pane fade show {% if enrolled.status == 'enroll' %}active{% endif %}">
+            <br/>
+            {% if enrolled.status == 'enroll' %}
+                {% for material in material_items %}
+                    <div class="card userauth mb-3">
+                        <div class="card-header">
+                            <h5>{{ material.name }}</h5>
+                        </div>
+                        <div class="card-body">
+                            {% if material.video %}<div class="row"><div class="col-sm-8 col-12">{% endif %}
+                            {% if material.date %}
+                                <p><strong>{% trans "Date" %}</strong><br>{{ material.date }}</p>
+                            {% endif %}
+                            {% if material.link %}
+                                <p><strong>{% trans "Broadcast link" %}</strong><br><a href="{{ material.link }}" target="_blank">{{ material.link }}</a></p>
+                            {% endif %}
+                            {% if material.description %}
+                                <p><strong>{% trans "Description" %}</strong><br>{{ material.description|safe }}</p>
+                            {% endif %}
+
+                            {% if material.document %}
+                                {% if material.document|length > 1 %}<strong>{% trans "Files" %}</strong>{% else %}<strong>{% trans "File" %}</strong>{% endif %}
+                                <ul>
+                                {% for item in material.document %}
+                                    <li><a href="{{ item.document.url }}" download>{{ item.document.name }}</a></li>
+                                {% endfor %}
+                                </ul>
+                            {% endif %}
+                            {% if material.video %}</div>{% endif %}
+
+                            {% if material.video %}
+                                <div class="col-sm-4 col-12">
+                                {% for item in material.video %}
+                                    <video controls controlsList="nodownload" playsinline>
+                                        <source src="{{ item.video.url }}" type="video/mp4"></source>
+                                        {% trans "It looks like your browser doesn't support the video tag. Please use another browser." %}
+                                    </video>
+                                {% endfor %}
+                                </div></div>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
 {% endblock %}
 
 {% block card-footer %}

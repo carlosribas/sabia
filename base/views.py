@@ -98,6 +98,27 @@ def course_registration(request, course_id, template_name="base/course_registrat
     # Check if the user is enrolled in the course
     enrolled = CourseUser.objects.filter(course=course.id, user=request.user.id).first()
 
+    # Get materials
+    if enrolled:
+        course_material = CourseMaterial.objects.filter(course=course).order_by('date', 'order')
+    else:
+        course_material = CourseMaterial.objects.filter(course=course, public=True).order_by('date', 'order')
+
+    material_items = []
+    if course_material:
+        for item in course_material:
+            course_material_document = CourseMaterialDocument.objects.filter(course_material=item)
+            course_material_video = CourseMaterialVideo.objects.filter(course_material=item)
+
+            material_items.append({
+                'name': item.title,
+                'date': item.date,
+                'link': item.link,
+                'description': item.description,
+                'document': course_material_document,
+                'video': course_material_video
+            })
+
     # If it is an individual course, check if the user has already done the interview
     if course.type == 'individual':
         interview = CourseUserInterview.objects.filter(course=course.id, user=request.user.id).first()
@@ -238,6 +259,7 @@ def course_registration(request, course_id, template_name="base/course_registrat
         'course': course,
         'enrolled': enrolled,
         'interview': interview,
+        'material_items': material_items,
         'price': price,
         'preference': preference_response,
         'public_key': public_key
