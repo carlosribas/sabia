@@ -326,7 +326,7 @@ msgstr "Vagas esgotadas"
 
 #: base/templates/base/course_registration.html:59
 msgid "Course content"
-msgstr "Aulas"
+msgstr "Aula(s)"
 
 #: base/templates/base/course_registration.html:73
 msgid "To be agreed"
