@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-30 10:44+0000\n"
+"POT-Creation-Date: 2023-07-16 20:38+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -631,7 +631,7 @@ msgstr "Desculpe, a página que você está procurando não existe."
 #: userauth/templates/userauth/account/login.html:8
 #: userauth/templates/userauth/account/login.html:23
 #: userauth/templates/userauth/account/password_reset_from_key_done.html:15
-#: userauth/templates/userauth/account/signup.html:59
+#: userauth/templates/userauth/account/signup.html:62
 msgid "Sign in"
 msgstr "Entrar"
 
@@ -644,24 +644,33 @@ msgid "Last name"
 msgstr "Sobrenome"
 
 #: userauth/forms.py:22 userauth/models.py:31
-#: userauth/templates/userauth/account/profile.html:30
+#: userauth/templates/userauth/account/profile.html:37
 msgid "Academic background"
 msgstr "Formação acadêmica"
 
 #: userauth/forms.py:23 userauth/models.py:32
-#: userauth/templates/userauth/account/profile.html:42
+#: userauth/templates/userauth/account/profile.html:46
 msgid "Other"
 msgstr "Outro"
 
-#: userauth/models.py:14 userauth/templates/userauth/account/profile.html:33
+#: userauth/forms.py:24 userauth/models.py:34
+#: userauth/templates/userauth/account/profile.html:30
+msgid "CPF"
+msgstr ""
+
+#: userauth/forms.py:30 userauth/forms.py:36
+msgid "Invalid CPF"
+msgstr "CPF inválido"
+
+#: userauth/models.py:14 userauth/templates/userauth/account/profile.html:40
 msgid "Veterinarian"
 msgstr "Médico veterinário"
 
-#: userauth/models.py:15 userauth/templates/userauth/account/profile.html:33
+#: userauth/models.py:15 userauth/templates/userauth/account/profile.html:40
 msgid "Veterinary medicine student"
 msgstr "Aluno de medicina veterinária"
 
-#: userauth/models.py:16 userauth/templates/userauth/account/profile.html:33
+#: userauth/models.py:16 userauth/templates/userauth/account/profile.html:40
 msgid "Others"
 msgstr "Outros"
 
@@ -776,11 +785,11 @@ msgstr "Você ainda não tem conta?"
 #: userauth/templates/userauth/account/login.html:13
 #: userauth/templates/userauth/account/signup.html:5
 #: userauth/templates/userauth/account/signup.html:8
-#: userauth/templates/userauth/account/signup.html:44
+#: userauth/templates/userauth/account/signup.html:47
 #: userauth/templates/userauth/socialaccount/authentication_error.html:16
 #: userauth/templates/userauth/socialaccount/signup.html:5
 #: userauth/templates/userauth/socialaccount/signup.html:8
-#: userauth/templates/userauth/socialaccount/signup.html:43
+#: userauth/templates/userauth/socialaccount/signup.html:46
 msgid "Sign up"
 msgstr "Cadastre-se"
 
@@ -880,15 +889,15 @@ msgstr "Minha conta"
 msgid "E-mail"
 msgstr ""
 
-#: userauth/templates/userauth/account/profile.html:62
+#: userauth/templates/userauth/account/profile.html:66
 msgid "Update your account"
 msgstr "Atualizar conta"
 
-#: userauth/templates/userauth/account/signup.html:48
+#: userauth/templates/userauth/account/signup.html:51
 msgid "or sign up with one of your existing third party accounts:"
 msgstr "ou registre-se com uma de suas redes sociais:"
 
-#: userauth/templates/userauth/account/signup.html:52
+#: userauth/templates/userauth/account/signup.html:55
 msgid ""
 "\n"
 "        When you create a Baroni-Massad account you agree to the <a href=\"/"
@@ -902,8 +911,8 @@ msgstr ""
 "privacidade/\">Política de Privacidade</a>.\n"
 "        "
 
-#: userauth/templates/userauth/account/signup.html:59
-#: userauth/templates/userauth/socialaccount/signup.html:44
+#: userauth/templates/userauth/account/signup.html:62
+#: userauth/templates/userauth/socialaccount/signup.html:47
 msgid "Already have an account?"
 msgstr "Já tem uma conta?"
 
@@ -912,20 +921,20 @@ msgstr "Já tem uma conta?"
 msgid "Update account"
 msgstr "Atualizar conta"
 
-#: userauth/templates/userauth/account/update.html:49
+#: userauth/templates/userauth/account/update.html:52
 msgid "Save"
 msgstr "Salvar"
 
-#: userauth/templates/userauth/account/update.html:50
+#: userauth/templates/userauth/account/update.html:53
 #: userauth/templates/userauth/socialaccount/connections.html:36
 msgid "Back"
 msgstr "Voltar"
 
-#: userauth/templates/userauth/account/update.html:55
+#: userauth/templates/userauth/account/update.html:58
 msgid "Connect your existing account to one of your social accounts:"
 msgstr "Conecte sua conta com uma de suas redes sociais:"
 
-#: userauth/templates/userauth/account/update.html:61
+#: userauth/templates/userauth/account/update.html:64
 msgid "Delete your account"
 msgstr "Apagar sua conta"
 
@@ -958,7 +967,7 @@ msgstr ""
 "Ocorreu um erro ao tentar fazer o login através de sua conta de rede social."
 
 #: userauth/templates/userauth/socialaccount/authentication_error.html:16
-#: userauth/templates/userauth/socialaccount/signup.html:43
+#: userauth/templates/userauth/socialaccount/signup.html:46
 msgid "Sign up with e-mail and password?"
 msgstr "Se cadastrar com e-mail e senha?"
 
@@ -1013,14 +1022,14 @@ msgstr ""
 "Você vai usar sua conta do %(provider_name)s para fazer login na\n"
 "    %(site_name)s. Para finalizar, preencha o seguinte formulário:"
 
-#: userauth/templates/userauth/socialaccount/signup.html:38
+#: userauth/templates/userauth/socialaccount/signup.html:41
 msgid "Sign Up"
 msgstr "Registre-se"
 
-#: userauth/templates/userauth/socialaccount/signup.html:44
+#: userauth/templates/userauth/socialaccount/signup.html:47
 msgid "Sign in first"
 msgstr "Faça login"
 
-#: userauth/templates/userauth/socialaccount/signup.html:44
+#: userauth/templates/userauth/socialaccount/signup.html:47
 msgid " and connect to your social account in your profile."
 msgstr " e conecte sua rede social ao seu perfil."
