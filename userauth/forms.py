@@ -48,6 +48,22 @@ class SignupForm(forms.Form):
 
 
 class CustomUserUpdateForm(ModelForm):
+    # TODO: DRY!
+    def clean_cpf(self):
+        cpf = self.cleaned_data['cpf']
+        cpf_number = [int(digit) for digit in cpf if digit.isdigit()]
+        if len(cpf_number) != 11:
+            raise forms.ValidationError(_("Invalid CPF"))
+        sop = sum(a * b for a, b in zip(cpf_number[0:9], range(10, 1, -1)))
+        ed1 = (sop * 10 % 11) % 10
+        sop = sum(a * b for a, b in zip(cpf_number[0:10], range(11, 1, -1)))
+        ed2 = (sop * 10 % 11) % 10
+        if ed1 != cpf_number[9] or ed2 != cpf_number[10]:
+            raise forms.ValidationError(_("Invalid CPF"))
+        else:
+            result = ''.join(str(d) for d in cpf_number)
+            return f'{result[0:3]}.{result[3:6]}.{result[6:9]}-{result[9:]}'
+
     class Meta:
         model = CustomUser
-        fields = ['first_name', 'last_name', 'phone', 'academic_background', 'other', 'certificate', 'cpf']
+        fields = ['first_name', 'last_name', 'academic_background', 'other', 'cpf']
