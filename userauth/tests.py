@@ -23,7 +23,7 @@ class TestCustomUser(TestCase):
         self.assertEqual(profile_view(request).status_code, 200)
 
     def test_signup_form(self):
-        form_data = {'first_name': 'Maria', 'last_name': 'Silva', 'academic_background': VET}
+        form_data = {'first_name': 'Maria', 'last_name': 'Silva', 'academic_background': VET, 'cpf': '11111111111'}
         form = SignupForm(data=form_data)
         self.assertTrue(form.is_valid())
         form.signup(self, user=self.user2)

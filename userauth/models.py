@@ -31,6 +31,7 @@ class CustomUser(AbstractUser):
     academic_background = models.CharField(_("Academic background"), max_length=30, choices=USER_TYPE)
     other = models.CharField(_("Other"), max_length=100, blank=True)
     certificate = models.FileField(_("Certificate"),  upload_to=user_directory_path, blank=True, null=True)
+    cpf = models.CharField(_('CPF'), max_length=15, blank=True)
 
     class Meta:
         ordering = ['first_name']

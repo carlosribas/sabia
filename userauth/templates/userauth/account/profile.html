@@ -27,6 +27,13 @@
                 <input type="text" class="form-control" id="email" placeholder="{{ request.user.email }}" disabled>
             </div>
             <div class="col-12 col-md-6">
+                <label for="cpf">{% trans "CPF" %}</label>
+                <input type="text" class="form-control" id="cpf" placeholder="{{ request.user.cpf }}" disabled>
+            </div>
+        </div>
+        <br>
+        <div class="form-row">
+            <div class="col-12 col-md-6">
                 <label for="id_academic_background">{% trans "Academic background" %}</label>
                 <select class="form-control" id="id_academic_background" disabled>
                     <option value="{{ request.user.academic_background }}">
@@ -34,16 +41,13 @@
                     </option>
                 </select>
             </div>
-        </div>
-        {% if request.user.academic_background == "other" %}
-            <br>
-            <div class="form-row">
-                <div class="col-12">
+            {% if request.user.academic_background == "other" %}
+                <div class="col-12 col-md-6">
                     <label for="id_other">{% trans "Other" %}</label>
                     <input type="text" class="form-control" id="id_other" placeholder="{{ request.user.other }}" disabled>
                 </div>
-            </div>
-        {% endif %}
+            {% endif %}
+        </div>
 {#        <br>#}
 {#        <div class="form-row">#}
 {#            <div class="col-12 col-md-6">#}

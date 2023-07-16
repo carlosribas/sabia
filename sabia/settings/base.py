@@ -207,7 +207,7 @@ AUTH_USER_MODEL = 'userauth.CustomUser'
 
 WAGTAIL_USER_CREATION_FORM = 'userauth.forms.WagtailUserCreationForm'
 WAGTAIL_USER_EDIT_FORM = 'userauth.forms.WagtailUserEditForm'
-WAGTAIL_USER_CUSTOM_FIELDS = ['academic_background', 'other', 'certificate', 'phone']
+WAGTAIL_USER_CUSTOM_FIELDS = ['academic_background', 'other', 'certificate', 'phone', 'cpf']
 WAGTAILEMBEDS_FINDERS = [
     {
         'class': 'wagtail.embeds.finders.oembed'
